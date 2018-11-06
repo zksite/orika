@@ -54,7 +54,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <javassist.version>3.23.1-GA</javassist.version>
+        <javassist.version>3.24.0-GA</javassist.version>
         <springframework.version>4.3.14.RELEASE</springframework.version>
         <hibernate.version>5.0.12.Final</hibernate.version>
         <junit.version>4.12</junit.version>
