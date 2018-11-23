@@ -263,6 +263,9 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
     
     public java.lang.reflect.Type getTypeByVariable(final TypeVariable<?> typeVariable) {
         if (isParameterized) {
+            if (typesByVariable == null) {
+                return TypeFactory.TYPE_OF_OBJECT;
+            }
             return typesByVariable.get(typeVariable.getName());
         } else {
             return null;
