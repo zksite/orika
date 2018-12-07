@@ -1,4 +1,4 @@
-/*
+ /*
  * Orika - simpler, better and faster Java bean mapping
  *
  * Copyright (C) 2011-2013 Orika authors
@@ -82,8 +82,14 @@ abstract class TypeUtil {
                     if (typeArg instanceof TypeVariable) {
                         var = (TypeVariable<?>) typeArg;
                     }
-                    Type<?> typeFromReference = (Type<?>) currentReference.getTypeByVariable(var);
-                    
+					Type<?> typeFromReference = null;
+					Type<?> targetReference = currentReference;
+					while (!TypeFactory.TYPE_OF_OBJECT.equals(targetReference)) {
+						typeFromReference = (Type<?>) targetReference.getTypeByVariable(var);
+						if(typeFromReference != null)
+							break;
+						targetReference = TypeFactory.valueOf(targetReference.getRawType().getGenericSuperclass());
+					}
                     if (typeFromReference != null && typeArg.equals(var)) {
                         if (actualTypeArguments[i] == null
                                 || (actualTypeArguments[i] instanceof Type && ((Type<?>) actualTypeArguments[i]).isAssignableFrom(typeFromReference))) {
