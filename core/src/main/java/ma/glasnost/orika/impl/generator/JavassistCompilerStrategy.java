@@ -106,14 +106,10 @@ public class JavassistCompilerStrategy extends CompilerStrategy {
             if (!sourceFile.exists() && !sourceFile.createNewFile()) {
                 throw new IOException("Could not write source file for " + sourceCode.getClassName());
             }
-            
-            FileWriter fw = null;
-            try {
-                fw = new FileWriter(sourceFile);
+
+            try (FileWriter fw = new FileWriter(sourceFile)) {
                 fw.append(sourceCode.toSourceFile());
-            } finally {
-                if (fw != null)
-                    fw.close();
+                LOG.debug("Source file written to {}", sourceFile);
             }
         }
     }
@@ -231,7 +227,7 @@ public class JavassistCompilerStrategy extends CompilerStrategy {
                 try {
                     byteCodeClass.addField(CtField.make(fieldDef, byteCodeClass));
                 } catch (CannotCompileException e) {
-                    LOG.error("An exception occured while compiling: " + fieldDef + " for " + sourceCode.getClassName(), e);
+                    LOG.error("An exception occurred while compiling: " + fieldDef + " for " + sourceCode.getClassName(), e);
                     throw e;
                 }
             }
