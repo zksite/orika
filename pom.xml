@@ -291,6 +291,9 @@
 	      <version>2.9.1</version>
 	      <configuration>
           <doclint>none</doclint>
+          <additionalparam>-Xdoclint:none</additionalparam>
+          <additionalOptions>-Xdoclint:none</additionalOptions>
+          <additionalJOption>-Xdoclint:none</additionalJOption>
 	      </configuration>
 	    </plugin>
 
