@@ -8,7 +8,7 @@
 Orika !
 -----------------------------------------------------------------------
 
-**NEW** We are pleased to announce the release of Orika **1.5.2** ! _This version is available on Maven central repository_ 
+**NEW** We are pleased to announce the release of Orika **1.5.4** ! _This version is available on Maven central repository_ 
 
 What?
 =====
@@ -37,3 +37,12 @@ How?
 Orika uses byte code generation to create fast mappers with minimal overhead. 
 
 Want to give Orika a try? Check out our new [User Guide](http://orika-mapper.github.com/orika-docs/) 
+
+Acknowledgements
+=================
+* YourKit supports Orika with its full-featured Java Profiler. Take a look at YourKit's leading software products: <a href="http://www.yourkit.com/java/profiler/index.jsp">YourKit Java Profiler</a>.
+<img src="https://www.yourkit.com/images/yklogo.png" title="YourKit">
+
+* <strong><a href="https://www.jetbrains.com/?from=Orika">JetBrains</a></strong> kindly provides Orika with a free open-source licence for their IntelliJ IDEA Ultimate edition. 
+<img src="https://camo.githubusercontent.com/a93f3a50613d2f7f26ca3cc70505e16921d6001b/687474703a2f2f7777772e6a6574627261696e732e636f6d2f696d672f6c6f676f732f6c6f676f5f696e74656c6c696a5f696465612e706e67">
+
