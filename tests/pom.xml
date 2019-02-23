@@ -13,7 +13,7 @@
 	<parent>
 		<artifactId>orika-parent</artifactId>
 		<groupId>ma.glasnost.orika</groupId>
-		<version>1.5.3-SNAPSHOT</version>
+		<version>1.5.5-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<artifactId>orika-tests</artifactId>
@@ -50,7 +50,7 @@
 
 		<dependency>
 			<groupId>org.hamcrest</groupId>
-			<artifactId>hamcrest-library</artifactId>
+			<artifactId>hamcrest</artifactId>
 		</dependency>
 
 		<dependency>
@@ -73,7 +73,7 @@
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-entitymanager</artifactId>
+			<artifactId>hibernate-core</artifactId>
 			<scope>compile</scope>
 		</dependency>
 
