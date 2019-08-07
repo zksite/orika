@@ -54,7 +54,7 @@ public class Convert extends AbstractSpecification {
             if (destination.type().isPrimitive() && source.type().isPrimitive()) {
                 return format("(%s == %s)", destination, source);
             } else if (destination.type().isPrimitive()) {
-                return format("(%s != null && %s == %s.%sValue())", source, destination, source, source.type().getName());
+                return format("(%s != null && %s == %s.%sValue())", source, destination, source, destination.type().getName());
             } else if (source.type().isPrimitive()) {
                 return format("(%s != null && %s.%sValue() == %s)", destination, destination, destination.type()
                         .getPrimitiveType()
