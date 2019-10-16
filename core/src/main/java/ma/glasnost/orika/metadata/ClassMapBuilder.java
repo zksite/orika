@@ -89,7 +89,8 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
     private Boolean sourcesMappedOnNull;
     private Boolean destinationsMappedOnNull;
     private Boolean favorsExtension;
-    
+    private Boolean destinationValueRetrievedOnMapping;
+
     private static final Logger LOGGER = LoggerFactory.getLogger(ClassMapBuilder.class);
     
     /**
@@ -326,7 +327,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
         
         try {
             final FieldMapBuilder<A, B> fieldMapBuilder = new FieldMapBuilder<A, B>(this, fieldNameA, fieldNameB, byDefault,
-                    sourcesMappedOnNull, destinationsMappedOnNull);
+                    sourcesMappedOnNull, destinationsMappedOnNull, destinationValueRetrievedOnMapping);
             
             return fieldMapBuilder;
         } catch (MappingException e) {
@@ -348,7 +349,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      * @return
      */
     public FieldMapBuilder<A, B> fieldMap(Property fieldA, Property fieldB, boolean byDefault) {
-        return new FieldMapBuilder<A, B>(this, fieldA, fieldB, byDefault, sourcesMappedOnNull, destinationsMappedOnNull);
+        return new FieldMapBuilder<A, B>(this, fieldA, fieldB, byDefault, sourcesMappedOnNull, destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
     /**
@@ -361,7 +362,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      */
     public FieldMapBuilder<A, B> fieldMap(String fieldNameA, Property fieldB, boolean byDefault) {
         return new FieldMapBuilder<A, B>(this, resolvePropertyForA(fieldNameA), fieldB, byDefault, sourcesMappedOnNull,
-                destinationsMappedOnNull);
+                destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
     /**
@@ -374,7 +375,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      */
     public FieldMapBuilder<A, B> fieldMap(Property fieldA, String fieldNameB, boolean byDefault) {
         return new FieldMapBuilder<A, B>(this, fieldA, resolvePropertyForB(fieldNameB), byDefault, sourcesMappedOnNull,
-                destinationsMappedOnNull);
+                destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
     /**
@@ -387,7 +388,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      */
     public FieldMapBuilder<A, B> fieldMap(Property.Builder fieldA, Property.Builder fieldB, boolean byDefault) {
         return new FieldMapBuilder<A, B>(this, fieldA.build((PropertyResolver) propertyResolver),
-                fieldB.build((PropertyResolver) propertyResolver), byDefault, sourcesMappedOnNull, destinationsMappedOnNull);
+                fieldB.build((PropertyResolver) propertyResolver), byDefault, sourcesMappedOnNull, destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
     /**
@@ -400,7 +401,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      */
     public FieldMapBuilder<A, B> fieldMap(String fieldNameA, Property.Builder fieldB, boolean byDefault) {
         return new FieldMapBuilder<A, B>(this, resolvePropertyForA(fieldNameA), fieldB.build((PropertyResolver) propertyResolver),
-                byDefault, sourcesMappedOnNull, destinationsMappedOnNull);
+                byDefault, sourcesMappedOnNull, destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
     /**
@@ -413,7 +414,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      */
     public FieldMapBuilder<A, B> fieldMap(Property.Builder fieldA, String fieldNameB, boolean byDefault) {
         return new FieldMapBuilder<A, B>(this, fieldA.build((PropertyResolver) propertyResolver), resolvePropertyForB(fieldNameB),
-                byDefault, sourcesMappedOnNull, destinationsMappedOnNull);
+                byDefault, sourcesMappedOnNull, destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
     /**
@@ -756,7 +757,22 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
         
         return this;
     }
-    
+
+    /**
+     * @param destinationValueRetrievedOnMapping
+     *            true|false to indicate whether the destination properties values of
+     *            this class map's fields should be retrieved on mapping (when mapping
+     *            in any direction). If false, it will be assumed that the  distination value
+     *            is always null. If true, a real destination value will be used.
+     *
+     * @return this FieldMapBuilder
+     */
+    public ClassMapBuilder<A, B> retrieveDestinationValueOnMapping(boolean destinationValueRetrievedOnMapping) {
+        this.destinationValueRetrievedOnMapping = destinationValueRetrievedOnMapping;
+
+        return this;
+    }
+
     /**
      * Registers the ClassMap defined by this builder with it's initiating
      * MapperFactory

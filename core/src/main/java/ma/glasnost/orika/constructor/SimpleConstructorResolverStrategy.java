@@ -237,6 +237,6 @@ public class SimpleConstructorResolverStrategy implements ConstructorResolverStr
                 .build();
         return new FieldMap(existing.getSource(), destProp, null,
                 null, MappingDirection.A_TO_B, false, existing.getConverterId(),
-                byDefault, null, null);
+                byDefault, null, null, null);
     }
 }
