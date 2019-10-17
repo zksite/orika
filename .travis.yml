@@ -1,9 +1,9 @@
 sudo: false
 language: java
 jdk:
-  - oraclejdk8
-  - oraclejdk9
-  - oraclejdk11
+  - openjdk8
+  - openjdk9
+  - openjdk11
 branches:
   only:
     - master
@@ -15,3 +15,6 @@ notifications:
   email:
     on_success: always
     on_failure: always
+cache:
+  directories:
+    - $HOME/.m2
