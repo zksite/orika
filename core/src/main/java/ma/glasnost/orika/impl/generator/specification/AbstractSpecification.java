@@ -53,7 +53,22 @@ public abstract class AbstractSpecification implements Specification {
         }
         return mapNull;
     }
-    
+
+    /**
+     * Tests whether this fieldMap should get destination property value on mapping;
+     *
+     * @param fieldMap
+     * @param context
+     * @return true if destination should be retrieved, otherwise false.
+     */
+    public static boolean shouldGetDestinationOnMapping(FieldMap fieldMap, SourceCodeContext context) {
+        Boolean getDestinationOnMapping = fieldMap.isDestinationValueRetrievedOnMapping();
+        if (getDestinationOnMapping == null) {
+            getDestinationOnMapping = context.shouldGetDestinationOnMapping();
+        }
+        return getDestinationOnMapping;
+    }
+
     public abstract boolean appliesTo(FieldMap fieldMap);
     
     public String generateEqualityTestCode(FieldMap fieldMap, VariableRef source, VariableRef destination, SourceCodeContext code) {

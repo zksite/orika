@@ -35,9 +35,10 @@ public class FieldMap implements MappedTypePair<Object, Object> {
     private final String destinationExpression;
     private final Boolean sourceMappedOnNull;
     private final Boolean destinationMappedOnNull;
+    private final Boolean destinationValueRetrievedOnMapping;
     
     public FieldMap(Property a, Property b, Property aInverse, Property bInverse, MappingDirection mappingDirection, boolean excluded,
-            String converterId, boolean byDefault, Boolean sourceMappedOnNull, Boolean destinationMappedOnNull) {
+            String converterId, boolean byDefault, Boolean sourceMappedOnNull, Boolean destinationMappedOnNull, Boolean destinationValueRetrievedOnMapping) {
         this.source = a;
         this.destination = b;
         this.aInverse = aInverse;
@@ -48,6 +49,7 @@ public class FieldMap implements MappedTypePair<Object, Object> {
         this.byDefault = byDefault;
         this.sourceMappedOnNull = sourceMappedOnNull;
         this.destinationMappedOnNull = destinationMappedOnNull;
+        this.destinationValueRetrievedOnMapping = destinationValueRetrievedOnMapping;
         this.sourceExpression = this.source.getExpression();
         this.destinationExpression = this.destination.getExpression();
     }
@@ -55,7 +57,7 @@ public class FieldMap implements MappedTypePair<Object, Object> {
     public FieldMap copy() {
         
         return new FieldMap(copy(source), copy(destination), copy(aInverse), copy(bInverse), mappingDirection, excluded, converterId,
-                byDefault, sourceMappedOnNull, destinationMappedOnNull);
+                byDefault, sourceMappedOnNull, destinationMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
     private Property copy(Property property) {
@@ -115,7 +117,15 @@ public class FieldMap implements MappedTypePair<Object, Object> {
     public Boolean isDestinationMappedOnNull() {
         return destinationMappedOnNull;
     }
-    
+
+    /**
+     * @return destinationValueRetrievedOnMapping; can be null, which indicates no
+     *         preference and that the global value should be used.
+     */
+    public Boolean isDestinationValueRetrievedOnMapping() {
+        return destinationValueRetrievedOnMapping;
+    }
+
     public Property getInverse() {
         return bInverse;
     }
@@ -126,7 +136,7 @@ public class FieldMap implements MappedTypePair<Object, Object> {
     
     public FieldMap flip() {
         return new FieldMap(destination, source, bInverse, aInverse, mappingDirection.flip(), excluded, converterId, byDefault,
-                destinationMappedOnNull, sourceMappedOnNull);
+                destinationMappedOnNull, sourceMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
     public boolean is(Specification specification) {

@@ -178,11 +178,15 @@ public class SourceCodeContext {
     List<String> getMethods() {
         return methods;
     }
-    
+
     public boolean shouldMapNulls() {
         return (Boolean) mappingContext.getProperty(Properties.SHOULD_MAP_NULLS);
     }
-    
+
+    public boolean shouldGetDestinationOnMapping() {
+        return (Boolean) mappingContext.getProperty(Properties.SHOULD_GET_DESTINATION_ON_MAPPING);
+    }
+
     public MappingContext getMappingContext() {
         return mappingContext;
     }
@@ -745,12 +749,14 @@ public class SourceCodeContext {
 
             Converter<Object, Object> converter = getConverter(fieldMap, fieldMap.getConverterId());
             source.setConverter(converter);
-            
+
+            boolean getDestinationOnMapping = AbstractSpecification.shouldGetDestinationOnMapping(fieldMap, this);
+
             if (shouldCaptureFieldContext) {
-                beginCaptureFieldContext(out, fieldMap, source, destination);
+                beginCaptureFieldContext(out, fieldMap, source, destination, getDestinationOnMapping);
             }
             StringBuilder filterClosing = new StringBuilder();
-            VariableRef[] filteredProperties = applyFilters(source, destination, out, filterClosing);
+            VariableRef[] filteredProperties = applyFilters(source, destination, out, filterClosing, getDestinationOnMapping);
             source = filteredProperties[0];
             destination = filteredProperties[1];
             
@@ -774,11 +780,11 @@ public class SourceCodeContext {
         }
         return out.toString();
     }
-    
-    private void beginCaptureFieldContext(StringBuilder out, FieldMap fieldMap, VariableRef source, VariableRef dest) {
+
+    private void beginCaptureFieldContext(StringBuilder out, FieldMap fieldMap, VariableRef source, VariableRef dest, boolean getDestinationValueOnMapping) {
         out.append(format("mappingContext.beginMappingField(\"%s\", %s, %s, \"%s\", %s, %s);\n" + "try{\n",
                 escapeQuotes(fieldMap.getSource().getExpression()), usedType(fieldMap.getAType()), source.asWrapper(),
-                escapeQuotes(fieldMap.getDestination().getExpression()), usedType(fieldMap.getBType()), dest.asWrapper()));
+                escapeQuotes(fieldMap.getDestination().getExpression()), usedType(fieldMap.getBType()), (getDestinationValueOnMapping)?dest.asWrapper():"null"));
     }
     
     private void endCaptureFieldContext(StringBuilder out) {
@@ -789,7 +795,7 @@ public class SourceCodeContext {
         return string.replaceAll("(?<!\\\\)\"", "\\\\\"");
     }
     
-    public VariableRef[] applyFilters(VariableRef sourceProperty, VariableRef destinationProperty, StringBuilder out, StringBuilder closing) {
+    public VariableRef[] applyFilters(VariableRef sourceProperty, VariableRef destinationProperty, StringBuilder out, StringBuilder closing, boolean getDestinationOnMapping) {
         /*
          * TODO: need code which collects all of the applicable filters and adds
          * them into an aggregate filter object
@@ -800,7 +806,7 @@ public class SourceCodeContext {
                 out.append("if (");
                 out.append(format("(%s && %s.shouldMap(%s, \"%s\", %s, %s, \"%s\", %s, mappingContext))", destinationProperty.pathNotNull(),
                     usedFilter(filter), usedType(sourceProperty.type()), varPath(sourceProperty), sourceProperty.asWrapper(),
-                    usedType(destinationProperty.type()), varPath(destinationProperty), destinationProperty.asWrapper()));
+                    usedType(destinationProperty.type()), varPath(destinationProperty), (getDestinationOnMapping)?destinationProperty.asWrapper():"null"));
 
                 out.append(" || ");
 
@@ -812,7 +818,7 @@ public class SourceCodeContext {
             } else {
                 out.append(format("if (%s.shouldMap(%s, \"%s\", %s, %s, \"%s\", %s, mappingContext)) {", usedFilter(filter),
                     usedType(sourceProperty.type()), varPath(sourceProperty), sourceProperty.asWrapper(),
-                    usedType(destinationProperty.type()), varPath(destinationProperty), destinationProperty.asWrapper()));
+                    usedType(destinationProperty.type()), varPath(destinationProperty), (getDestinationOnMapping)?destinationProperty.asWrapper():"null"));
             }
 
             sourceProperty = getSourceFilter(sourceProperty, destinationProperty, filter);

@@ -155,7 +155,9 @@ public class DefaultMapperFactory implements MapperFactory, Reportable {
         props.put(Properties.MAPPER_FACTORY, this);
         props.put(Properties.FILTERS, this.filtersRegistry);
         props.put(Properties.CAPTURE_FIELD_CONTEXT, builder.captureFieldContext);
-        
+        props.put(Properties.SHOULD_GET_DESTINATION_ON_MAPPING, builder.getDestinationOnMapping);
+
+
         /*
          * Register default concrete types for common collection types; these
          * can be overridden as needed by user code.
@@ -273,7 +275,19 @@ public class DefaultMapperFactory implements MapperFactory, Reportable {
          * But for Testing the MultipleMapperWrapper should be use in one TestSuite for all TestCase to test as much scenarios as possible.
          */
         protected boolean alwaysCreateMultipleMapperWrapper;
-        
+        /**
+         * The configured value of whether or not to retrieve destination property value on mapping;
+         * if false, it will be assumed that the value of the destination property is always null;
+         * if true, the real value of the destination property will be used.
+         * <p>
+         * Sometimes it may be useful to set this value to false. For example, in case when you don't need to know
+         * current destination value and you want to map the value from source to distination regardless of the current
+         * destination value. Also, it may be useful if your logic to retrieve a destination value is too expensive or
+         * produces exceptions if the destination value isn't specified yet.
+         * <p>
+         */
+        protected Boolean getDestinationOnMapping;
+
         /**
          * Instantiates a new MapperFactoryBuilder
          */
@@ -294,6 +308,7 @@ public class DefaultMapperFactory implements MapperFactory, Reportable {
             alwaysCreateMultipleMapperWrapper = valueOf(
                     getProperty("ma.glasnost.orika.alwaysCreateMultipleMapperWrapper", "false"));
             codeGenerationStrategy = new DefaultCodeGenerationStrategy();
+            getDestinationOnMapping = valueOf(getProperty(GET_DESTINATION_ON_MAPPING, "true"));
         }
         
         /**
@@ -456,7 +471,7 @@ public class DefaultMapperFactory implements MapperFactory, Reportable {
             this.mapNulls = mapNulls;
             return self();
         }
-        
+
         /**
          * Configure whether to dump the current state of the mapping
          * infrastructure objects upon occurrence of an exception while mapping.
@@ -532,7 +547,18 @@ public class DefaultMapperFactory implements MapperFactory, Reportable {
             this.codeGenerationStrategy  = codeGenerationStrategy ;
             return self();
         }
-        
+
+        /**
+         * Configure whether to retrieve distination property value during mapping in generated mapper code
+         *
+         * @param getDestinationOnMapping
+         * @return a reference to <code>this</code> MapperFactoryBuilder
+         */
+        public B getDestinationOnMapping(boolean getDestinationOnMapping) {
+            this.getDestinationOnMapping = getDestinationOnMapping;
+            return self();
+        }
+
         /**
          * @return a new instance of the Factory for which this builder is
          *         defined. The construction should be performed via the

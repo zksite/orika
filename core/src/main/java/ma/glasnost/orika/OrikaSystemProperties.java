@@ -171,4 +171,10 @@ public final class OrikaSystemProperties {
      * Default value is <code>false</code>
      */
     public static final String CAPTURE_FIELD_CONTEXT = "ma.glasnost.orika.captureFieldContext";
+
+    /**
+     * Specifies whether destination properies' values will be retrieved on mappings or not.
+     * default value is <code>true</code>
+     */
+    public static final String GET_DESTINATION_ON_MAPPING = "ma.glasnost.orika.getDestinationOnMapping";
 }
