@@ -441,7 +441,7 @@ public abstract class TypeFactory {
         if (mapped != null) {
             typeResult = (Type<T>) mapped.get();
         }
-        if (typeResult == null) {
+        if (mapped == null || typeResult == null) {
             synchronized (rawType) {
                 mapped = typeCache.get(key);
                 if (mapped != null) {
