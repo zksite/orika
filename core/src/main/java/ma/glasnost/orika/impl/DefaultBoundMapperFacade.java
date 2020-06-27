@@ -251,23 +251,20 @@ class DefaultBoundMapperFacade<A, B> implements BoundMapperFacade<A, B> {
         public MappingStrategy getStrategy(Object sourceObject, MappingContext context) {
             MappingStrategy strategy = null;
             Class<?> sourceClass = getClass(sourceObject);
-            if (defaultStrategy != null && sourceClass.equals(idClass)) {
-                strategy = defaultStrategy;
-            } else if (defaultStrategy == null) {
+            if (defaultStrategy == null) {
                 synchronized(this) {
                     if (defaultStrategy == null) {
                         defaultStrategy = mapperFacade.resolveMappingStrategy(sourceObject, aType, bType, inPlace, context);
                         idClass = sourceClass;
                         strategies.put(idClass, defaultStrategy);
                     }
-                }
+                } 
+            }
+            if (sourceClass.equals(idClass)) {
                 strategy = defaultStrategy;
             } else {
-                strategy = strategies.get(sourceClass);
-                if (strategy == null) {
-                    strategy = mapperFacade.resolveMappingStrategy(sourceObject, aType, bType, inPlace, context);
-                    strategies.put(sourceClass, strategy);
-                }
+                strategy = strategies.computeIfAbsent(sourceClass, 
+                        k -> mapperFacade.resolveMappingStrategy(sourceObject, aType, bType, inPlace, context));
             }
             
             /*
