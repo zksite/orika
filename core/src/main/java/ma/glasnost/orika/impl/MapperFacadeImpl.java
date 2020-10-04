@@ -18,6 +18,8 @@
 
 package ma.glasnost.orika.impl;
 
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Sets;
 import ma.glasnost.orika.*;
 import ma.glasnost.orika.MappingStrategy.Key;
 import ma.glasnost.orika.StateReporter.Reportable;
@@ -411,13 +413,15 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
     
     public final <S, D> Set<D> mapAsSet(final Iterable<S> source, final Type<S> sourceType, final Type<D> destinationType,
             final MappingContext context) {
-        return (Set<D>) mapAsCollection(source, sourceType, destinationType, new HashSet<D>(), context);
+        HashSet<D> destination = source instanceof Collection<?> ? new HashSet<>(Iterables.size(source)) : new HashSet<>();
+        return (Set<D>) mapAsCollection(source, sourceType, destinationType, destination, context);
     }
     
     public final <S, D> List<D> mapAsList(final Iterable<S> source, final Type<S> sourceType, final Type<D> destinationType) {
         MappingContext context = contextFactory.getContext();
         try {
-            return (List<D>) mapAsCollection(source, sourceType, destinationType, new ArrayList<D>(), context);
+            List<D> destination = source instanceof Collection<?> ? new ArrayList<>(Iterables.size(source)) : new ArrayList<>();
+            return (List<D>) mapAsCollection(source, sourceType, destinationType, destination, context);
         } finally {
             contextFactory.release(context);
         }
@@ -425,7 +429,8 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
     
     public final <S, D> List<D> mapAsList(final Iterable<S> source, final Type<S> sourceType, final Type<D> destinationType,
             final MappingContext context) {
-        return (List<D>) mapAsCollection(source, sourceType, destinationType, new ArrayList<D>(), context);
+        ArrayList<D> destination = source instanceof Collection<?> ? new ArrayList<>(Iterables.size(source)) : new ArrayList<>();
+        return (List<D>) mapAsCollection(source, sourceType, destinationType, destination, context);
     }
     
     public <S, D> D[] mapAsArray(final D[] destination, final Iterable<S> source, final Type<S> sourceType, final Type<D> destinationType) {
@@ -854,7 +859,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
     public <S, Dk, Dv> Map<Dk, Dv> mapAsMap(final Iterable<S> source, final Type<S> sourceType,
             final Type<? extends Map<Dk, Dv>> destinationType, final MappingContext context) {
         
-        Map<Dk, Dv> destination = new HashMap<Dk, Dv>();
+        Map<Dk, Dv> destination = source instanceof Collection<?> ? new HashMap<>(Iterables.size(source)) : new HashMap<>();
         
         Type<?> entryType = TypeFactory.valueOf(Entry.class, destinationType.getNestedType(0), destinationType.getNestedType(1));
         ElementStrategyContext<S, Entry<Dk, Dv>> elementContext = new ElementStrategyContext<S, Entry<Dk, Dv>>(context, sourceType,
@@ -881,7 +886,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
     public <S, Dk, Dv> Map<Dk, Dv> mapAsMap(final S[] source, final Type<S> sourceType, final Type<? extends Map<Dk, Dv>> destinationType,
             final MappingContext context) {
         
-        Map<Dk, Dv> destination = new HashMap<Dk, Dv>();
+        Map<Dk, Dv> destination = new HashMap<Dk, Dv>(source.length);
         Type<MapEntry<Dk, Dv>> entryType = MapEntry.concreteEntryType(destinationType);
         ElementStrategyContext<S, MapEntry<Dk, Dv>> elementContext = new ElementStrategyContext<S, MapEntry<Dk, Dv>>(context, sourceType,
                 entryType);
