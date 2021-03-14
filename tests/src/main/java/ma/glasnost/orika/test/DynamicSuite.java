@@ -18,6 +18,22 @@
 
 package ma.glasnost.orika.test;
 
+import javassist.ClassPool;
+import javassist.CtClass;
+import javassist.CtConstructor;
+import javassist.CtField;
+import javassist.CtMethod;
+import org.junit.Test;
+import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
+import org.junit.runner.Description;
+import org.junit.runner.Runner;
+import org.junit.runner.notification.RunNotifier;
+import org.junit.runners.BlockJUnit4ClassRunner;
+import org.junit.runners.ParentRunner;
+import org.junit.runners.model.InitializationError;
+import org.junit.runners.model.RunnerBuilder;
+import org.junit.runners.model.TestClass;
+
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.lang.annotation.ElementType;
@@ -35,23 +51,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
-
-import javassist.ClassPool;
-import javassist.CtClass;
-import javassist.CtConstructor;
-import javassist.CtField;
-import javassist.CtMethod;
-
-import org.junit.Test;
-import org.junit.internal.builders.AllDefaultPossibilitiesBuilder;
-import org.junit.runner.Description;
-import org.junit.runner.Runner;
-import org.junit.runner.notification.RunNotifier;
-import org.junit.runners.BlockJUnit4ClassRunner;
-import org.junit.runners.ParentRunner;
-import org.junit.runners.model.InitializationError;
-import org.junit.runners.model.RunnerBuilder;
-import org.junit.runners.model.TestClass;
 
 /**
  * DynamicSuite resolves and runs a test suite dynamically containing all
@@ -89,7 +88,7 @@ public class DynamicSuite extends ParentRunner<Runner> {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface TestCasePattern {
-		public String value();
+		String value();
 	}
 
 	/**
@@ -113,7 +112,7 @@ public class DynamicSuite extends ParentRunner<Runner> {
 	@Retention(RetentionPolicy.RUNTIME)
 	@Target(ElementType.TYPE)
 	public @interface Scenario {
-		public String name() default "";
+		String name() default "";
 	}
 
 	/**
@@ -149,7 +148,7 @@ public class DynamicSuite extends ParentRunner<Runner> {
 	 * @return
 	 */
 	public static List<Class<?>> findTestCases(Class<?> theClass) {
-		List<File> classFolders = new ArrayList<File>();
+		List<File> classFolders = new ArrayList<>();
 		try {
 		    ClassLoader loader = theClass.getClassLoader();
 		    if (loader instanceof URLClassLoader) {
@@ -166,7 +165,7 @@ public class DynamicSuite extends ParentRunner<Runner> {
 			throw new RuntimeException(e);
 		}
 		String testCaseRegex = getTestCasePattern(theClass);
-		List<Class<?>> classes = new ArrayList<Class<?>>();
+		List<Class<?>> classes = new ArrayList<>();
 		for (File classFolder: classFolders) {
 		    classes.addAll(findTestCases(classFolder, testCaseRegex));
 		}
@@ -208,12 +207,11 @@ public class DynamicSuite extends ParentRunner<Runner> {
 			Pattern testCasePattern = Pattern.compile(testCaseRegex);
 
 			ClassLoader tccl = Thread.currentThread().getContextClassLoader();
-			List<Class<?>> testCases = new ArrayList<Class<?>>();
+			List<Class<?>> testCases = new ArrayList<>();
 
 			int classFolderPathLength = classFolder.getAbsolutePath().length();
 
-			LinkedList<File> stack = new LinkedList<File>();
-			stack.addAll(Arrays.asList(classFolder.listFiles()));
+			LinkedList<File> stack = new LinkedList<>(Arrays.asList(classFolder.listFiles()));
 			File currentDirectory = classFolder;
 			String currentPackage = "";
 			while (!stack.isEmpty()) {
@@ -276,8 +274,6 @@ public class DynamicSuite extends ParentRunner<Runner> {
 
 	private final List<Runner> fRunners;
 	private final String name;
-	private final String scenarioName;
-	private final TestScenarioProxyFactory proxyFactory;
 
 	public DynamicSuite(Class<?> klass, RunnerBuilder builder)
 			throws InitializationError {
@@ -303,15 +299,15 @@ public class DynamicSuite extends ParentRunner<Runner> {
 			throws InitializationError {
 		super(klass);
 		try {
-			this.proxyFactory = new TestScenarioProxyFactory();
-			this.scenarioName = getScenarioName(getTestClass());
+			TestScenarioProxyFactory proxyFactory = new TestScenarioProxyFactory();
+			String scenarioName = getScenarioName(getTestClass());
 
 			if (scenarioName == null) {
 				this.fRunners = runners;
 				this.name = klass.getName();
 			} else {
 				this.name = klass.getName() + "[" + scenarioName + "]";
-				this.fRunners = new ArrayList<Runner>(runners.size());
+				this.fRunners = new ArrayList<>(runners.size());
 				for (Runner runner : runners) {
 					if (!(runner instanceof BlockJUnit4ClassRunner)) {
 						throw new IllegalArgumentException(
@@ -358,13 +354,13 @@ public class DynamicSuite extends ParentRunner<Runner> {
 	 */
 	private static class TestScenarioProxyFactory {
 
-		private ClassPool pool;
-		private ConcurrentHashMap<String, Class<Runner>> proxyCache;
+		private final ClassPool pool;
+		private final ConcurrentHashMap<String, Class<Runner>> proxyCache;
 
 		private TestScenarioProxyFactory() {
 			this.pool = new ClassPool();
 			this.pool.appendSystemPath();
-			this.proxyCache = new ConcurrentHashMap<String, Class<Runner>>();
+			this.proxyCache = new ConcurrentHashMap<>();
 		}
 
 		@SuppressWarnings("unchecked")

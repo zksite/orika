@@ -17,11 +17,11 @@
  */
 package ma.glasnost.orika.converter.builtin;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.metadata.Type;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
 
 /**
  * NumericConverters contains a set of common conversions between the "big"
@@ -65,7 +65,7 @@ public class NumericConverters {
          */
         @Override
         public BigDecimal convertFrom(Double source, Type<BigDecimal> destinationType, MappingContext context) {
-            return BigDecimal.valueOf(source.doubleValue());
+            return BigDecimal.valueOf(source);
         }
     }
     
@@ -155,7 +155,7 @@ public class NumericConverters {
          */
         @Override
         public BigInteger convertFrom(Long source, Type<BigInteger> destinationType, MappingContext context) {
-            return BigInteger.valueOf(source.longValue());
+            return BigInteger.valueOf(source);
         }
     }
     

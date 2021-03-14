@@ -56,8 +56,8 @@ public class RegexPropertyResolver extends IntrospectorPropertyResolver {
     private final Pattern readPattern;
     private final Pattern writePattern;
     private final boolean includeJavaBeans;
-    private int writeMethodRegexCaptureGroupIndex;
-    private int readMethodRegexCaptureGroupIndex;
+    private final int writeMethodRegexCaptureGroupIndex;
+    private final int readMethodRegexCaptureGroupIndex;
 
     /**
      * @param readMethodRegex
@@ -97,7 +97,7 @@ public class RegexPropertyResolver extends IntrospectorPropertyResolver {
      */
     protected void collectProperties(Class<?> type, Type<?> referenceType, Map<String, Property> properties) {
 
-        Map<String, Property.Builder> collectedMethods = new LinkedHashMap<String, Property.Builder>();
+        Map<String, Property.Builder> collectedMethods = new LinkedHashMap<>();
         for (Method m : type.getMethods()) {
 
             if (m.getParameterTypes().length == 0 && m.getReturnType() != null && m.getReturnType() != Void.TYPE) {

@@ -1,5 +1,17 @@
 package ma.glasnost.orika.test.concurrency;
 
+import com.google.common.collect.Lists;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.test.MappingUtil;
+import ma.glasnost.orika.test.concurrency.model.ModelWithNestedObjDest;
+import ma.glasnost.orika.test.concurrency.model.ModelWithNestedObjSource;
+import ma.glasnost.orika.test.concurrency.model.NestedModel;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
@@ -11,20 +23,6 @@ import java.util.concurrent.TimeoutException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-import com.google.common.collect.Lists;
-
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.test.MappingUtil;
-import ma.glasnost.orika.test.concurrency.model.ModelWithNestedObjDest;
-import ma.glasnost.orika.test.concurrency.model.ModelWithNestedObjSource;
-import ma.glasnost.orika.test.concurrency.model.NestedModel;
-
 /**
  * Checks that instantiation and cache inside of <{@link ma.glasnost.orika.impl.DefaultBoundMapperFacade} is thread safe.
  */
@@ -32,7 +30,7 @@ public class DefaultBoundMapperFacadeConcurrentInitTestCase {
 
     private MapperFacade mapper;
 
-    private int threads = 20;
+    private final int threads = 20;
     private ExecutorService executor;
 
     @Before

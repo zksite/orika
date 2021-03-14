@@ -17,16 +17,15 @@
  */
 package ma.glasnost.orika.test.perf;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.ClassMap;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DefaultMapperFactoryGenerationConcurrencyTestCase {
     
@@ -87,7 +86,7 @@ public class DefaultMapperFactoryGenerationConcurrencyTestCase {
     @Test 
     public void concurrencyTest() throws Exception {
 
-        List<Thread> threads = new ArrayList<Thread>();
+        List<Thread> threads = new ArrayList<>();
         
         for(int i=0; i<50; ++i) {
             threads.add(new Thread(new DefaultMapperFactoryGenerationConcurrencyTestCase.ConcurrencyTestRunnable()));

@@ -1,20 +1,17 @@
 package ma.glasnost.orika.test.community;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.metadata.TypeFactory;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Test;
-
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.MappingContext;
-import ma.glasnost.orika.ObjectFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-import ma.glasnost.orika.metadata.TypeFactory;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Support for mapping one type to many.
@@ -29,20 +26,17 @@ public class Issue176WithInterfacesTestCase {
         
         final MapperFactory factory = new DefaultMapperFactory.Builder().build();
         
-        factory.registerObjectFactory(new ObjectFactory<B>() {
-            public B create(Object source, MappingContext mappingContext) {
-                A a = (A) source;
-                final B b;
-                if (a.type.equals("1")) {
-                    b = new B1();
-                } else if (a.type.equals("2")) {
-                    b = new B2();
-                } else {
-                    throw new IllegalArgumentException("type not supported: " + a.type);
-                }
-                return b;
+        factory.registerObjectFactory((source, mappingContext) -> {
+            A a = (A) source;
+            final B b;
+            if (a.type.equals("1")) {
+                b = new B1();
+            } else if (a.type.equals("2")) {
+                b = new B2();
+            } else {
+                throw new IllegalArgumentException("type not supported: " + a.type);
             }
-            
+            return b;
         }, TypeFactory.valueOf(B.class), TypeFactory.valueOf(A.class));
         
         factory.classMap(A.class, B1.class)
@@ -81,20 +75,17 @@ public class Issue176WithInterfacesTestCase {
         
         final MapperFactory factory = new DefaultMapperFactory.Builder().build();
         
-        factory.registerObjectFactory(new ObjectFactory<B>() {
-            public B create(Object source, MappingContext mappingContext) {
-                A a = (A) source;
-                final B b;
-                if (a.type.equals("1")) {
-                    b = new B1();
-                } else if (a.type.equals("2")) {
-                    b = new B2();
-                } else {
-                    throw new IllegalArgumentException("type not supported: " + a.type);
-                }
-                return b;
+        factory.registerObjectFactory((source, mappingContext) -> {
+            A a = (A) source;
+            final B b;
+            if (a.type.equals("1")) {
+                b = new B1();
+            } else if (a.type.equals("2")) {
+                b = new B2();
+            } else {
+                throw new IllegalArgumentException("type not supported: " + a.type);
             }
-            
+            return b;
         }, TypeFactory.valueOf(B.class), TypeFactory.valueOf(A.class));
         
         factory.classMap(A.class, B1.class)
@@ -190,10 +181,10 @@ public class Issue176WithInterfacesTestCase {
     
     // A-Hierarchy:
     public static class ASuperContainer {
-        public List<ASuper> elelemts = new ArrayList<ASuper>();
+        public List<ASuper> elelemts = new ArrayList<>();
     }
     
-    public static interface ASuper {
+    public interface ASuper {
         // marker interface
     }
     
@@ -209,14 +200,14 @@ public class Issue176WithInterfacesTestCase {
     
     // B-Hierarchy:
     public static class BSuperContainer {
-        public List<BSuper> elelemts = new ArrayList<BSuper>();
+        public List<BSuper> elelemts = new ArrayList<>();
     }
     
-    public static interface BSuper {
+    public interface BSuper {
         // marker interface
     }
     
-    public static interface B extends BSuper {
+    public interface B extends BSuper {
         // marker interface
     }
     

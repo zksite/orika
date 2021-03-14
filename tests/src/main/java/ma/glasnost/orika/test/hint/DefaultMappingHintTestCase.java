@@ -18,13 +18,9 @@
 
 package ma.glasnost.orika.test.hint;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import ma.glasnost.orika.DefaultFieldMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.test.MappingUtil;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.Author;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.AuthorMyDTO;
@@ -35,6 +31,8 @@ import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.BookParent;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.Library;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.LibraryMyDTO;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.LibraryParent;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class DefaultMappingHintTestCase {
     
@@ -92,18 +90,13 @@ public class DefaultMappingHintTestCase {
         /**
          * This sample hint converts "myProperty" to "property", and vis-versa.
          */
-        new DefaultFieldMapper() {
- 
-			@Override
-			public String suggestMappedField(String fromProperty, Type<?> fromPropertyType) {
-				if (fromProperty.startsWith("my")) {
-                    return fromProperty.substring(2, 3).toLowerCase() + fromProperty.substring(3);
-                } else {
-                    return "my" + fromProperty.substring(0, 1).toUpperCase() + fromProperty.substring(1);
-                }
-			}
-            
-        };
+                (fromProperty, fromPropertyType) -> {
+                    if (fromProperty.startsWith("my")) {
+                        return fromProperty.substring(2, 3).toLowerCase() + fromProperty.substring(3);
+                    } else {
+                        return "my" + fromProperty.substring(0, 1).toUpperCase() + fromProperty.substring(1);
+                    }
+                };
         
         MapperFactory factory = MappingUtil.getMapperFactory();
         factory.registerClassMap(factory.classMap(Library.class, LibraryMyDTO.class).byDefault(myHint).toClassMap());
@@ -136,18 +129,13 @@ public class DefaultMappingHintTestCase {
         /**
          * This sample hint converts "myProperty" to "property", and vis-versa.
          */
-        new DefaultFieldMapper() {
-
-			@Override
-			public String suggestMappedField(String fromProperty, Type<?> fromPropertyType) {
-                if (fromProperty.startsWith("my")) {
-                    return fromProperty.substring(2, 3).toLowerCase() + fromProperty.substring(3);
-                } else {
-                    return "my" + fromProperty.substring(0, 1).toUpperCase() + fromProperty.substring(1);
-                }
-			}
-            
-        };
+                (fromProperty, fromPropertyType) -> {
+                    if (fromProperty.startsWith("my")) {
+                        return fromProperty.substring(2, 3).toLowerCase() + fromProperty.substring(3);
+                    } else {
+                        return "my" + fromProperty.substring(0, 1).toUpperCase() + fromProperty.substring(1);
+                    }
+                };
         
         MapperFactory factory = MappingUtil.getMapperFactory();
         factory.registerDefaultFieldMapper(myHint);

@@ -17,6 +17,11 @@
  */
 package ma.glasnost.orika.converter.builtin;
 
+import ma.glasnost.orika.CustomConverter;
+import ma.glasnost.orika.MappingContext;
+import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.metadata.TypeFactory;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.security.AccessController;
@@ -25,11 +30,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
-
-import ma.glasnost.orika.CustomConverter;
-import ma.glasnost.orika.MappingContext;
-import ma.glasnost.orika.metadata.Type;
-import ma.glasnost.orika.metadata.TypeFactory;
 
 /**
  * CloneableConverter allows configuration of a number of specific types which
@@ -44,7 +44,7 @@ import ma.glasnost.orika.metadata.TypeFactory;
  */
 public class CloneableConverter extends CustomConverter<Object, Object> {
     
-    private final Set<Type<Cloneable>> clonedTypes = new HashSet<Type<Cloneable>>();
+    private final Set<Type<Cloneable>> clonedTypes = new HashSet<>();
     private final Map<Class<?>, Method> cachedMethods;
     private final Method cloneMethod;
     private final String description;
@@ -65,7 +65,7 @@ public class CloneableConverter extends CustomConverter<Object, Object> {
             methodCache = null;
         } catch (SecurityException e) {
             clone = null;
-            methodCache = new WeakHashMap<Class<?>, Method>();
+            methodCache = new WeakHashMap<>();
         } catch (NoSuchMethodException e) {
             throw new IllegalStateException(e);
         }
@@ -108,7 +108,7 @@ public class CloneableConverter extends CustomConverter<Object, Object> {
         return shouldClone(sourceType) && sourceType.equals(destinationType);
     }
     
-    public Object convert(Object source, Type<? extends Object> destinationType, MappingContext context) {
+    public Object convert(Object source, Type<?> destinationType, MappingContext context) {
     	if (source == null) {
     		return null;
     	}
@@ -129,9 +129,7 @@ public class CloneableConverter extends CustomConverter<Object, Object> {
                         try {
                             clone = destinationType.getRawType().getMethod("clone");
                             cachedMethods.put(source.getClass(), clone);
-                        } catch (NoSuchMethodException e) {
-                            throw new IllegalStateException(e);
-                        } catch (SecurityException e) {
+                        } catch (NoSuchMethodException | SecurityException e) {
                             throw new IllegalStateException(e);
                         }
                     }
@@ -142,11 +140,7 @@ public class CloneableConverter extends CustomConverter<Object, Object> {
             } else {
                 return clone.invoke(source);
             }
-        } catch (IllegalArgumentException e) {
-            throw new IllegalStateException(e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        } catch (InvocationTargetException e) {
+        } catch (IllegalArgumentException | InvocationTargetException | IllegalAccessException e) {
             throw new IllegalStateException(e);
         }
     }

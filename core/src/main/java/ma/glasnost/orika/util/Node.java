@@ -9,12 +9,12 @@ class Node<T> {
 
 	public Node(T value) {
 		this.value = value;
-		inEdges = new LinkedHashSet<Edge<T>>();
-		outEdges = new LinkedHashSet<Edge<T>>();
+		inEdges = new LinkedHashSet<>();
+		outEdges = new LinkedHashSet<>();
 	}
 
 	public Node<T> addEdge(Node<T> node) {
-		Edge<T> e = new Edge<T>(this, node);
+		Edge<T> e = new Edge<>(this, node);
 		outEdges.add(e);
 		node.inEdges.add(e);
 		return this;

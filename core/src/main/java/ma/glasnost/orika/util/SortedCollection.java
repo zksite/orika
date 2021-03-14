@@ -17,6 +17,8 @@
  */
 package ma.glasnost.orika.util;
 
+import ma.glasnost.orika.util.Ordering.OrderingRelation;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -24,8 +26,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-
-import ma.glasnost.orika.util.Ordering.OrderingRelation;
 
 /**
  * A simple sorted collection implementation that allows for duplicates; new
@@ -54,9 +54,9 @@ public class SortedCollection<V> implements Collection<V> {
 
 	private final ReentrantReadWriteLock sortLock = new ReentrantReadWriteLock();
 
-	private Set<Node<V>> nodes = new LinkedHashSet<Node<V>>();
+	private final Set<Node<V>> nodes = new LinkedHashSet<>();
 
-	private List<V> items = new ArrayList<V>();
+	private final List<V> items = new ArrayList<>();
 
 	private volatile List<V> sortedItems = null;
 
@@ -83,7 +83,7 @@ public class SortedCollection<V> implements Collection<V> {
 			rwl.writeLock().lock();
 			if (mustAdd(value)) {
 				items.add(value);
-				Node<V> newNode = new Node<V>(value);
+				Node<V> newNode = new Node<>(value);
 				for (Node<V> from : nodes) {
 					final OrderingRelation order = ordering.order(
 							from.getValue(), newNode.getValue());

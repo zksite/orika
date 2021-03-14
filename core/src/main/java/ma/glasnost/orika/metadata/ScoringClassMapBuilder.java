@@ -17,6 +17,12 @@
  */
 package ma.glasnost.orika.metadata;
 
+import ma.glasnost.orika.DefaultFieldMapper;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.property.PropertyResolverStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
@@ -26,13 +32,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Set;
-
-import ma.glasnost.orika.DefaultFieldMapper;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.property.PropertyResolverStrategy;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * ScoringClassMapBuilder is an extension of the basic ClassMapBuilder that
@@ -255,7 +254,7 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
          * For our custom 'byDefault' method, we're going to try and match
          * fields by their Levenshtein distance
          */
-        PriorityQueue<FieldMatchScore> matchScores = new PriorityQueue<FieldMatchScore>();
+        PriorityQueue<FieldMatchScore> matchScores = new PriorityQueue<>();
         
         Map<String, Property> propertiesForA = getPropertyExpressions(getAType());
         Map<String, Property> propertiesForB = getPropertyExpressions(getBType());
@@ -271,7 +270,7 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
             }
         }
         
-        Set<String> unmatchedFields = new LinkedHashSet<String>(this.getPropertiesForTypeA());
+        Set<String> unmatchedFields = new LinkedHashSet<>(this.getPropertiesForTypeA());
         unmatchedFields.remove("class");
         
         for (FieldMatchScore score : matchScores) {
@@ -279,7 +278,7 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
             if (!this.getMappedPropertiesForTypeA().contains(score.propertyA.getExpression())
                     && !this.getMappedPropertiesForTypeB().contains(score.propertyB.getExpression())) {
                 if (LOGGER.isTraceEnabled()) {
-                    LOGGER.trace("\n" + score.toString());
+                    LOGGER.trace("\n" + score);
                 }
                 if (score.meetsMinimumScore()) {
                     fieldMap(score.propertyA.getExpression(), score.propertyB.getExpression()).direction(direction).add();
@@ -312,7 +311,7 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
      */
     public static class Factory extends ClassMapBuilderFactory {
         
-        private PropertyMatchingWeights matchingWeights;
+        private final PropertyMatchingWeights matchingWeights;
         
         /**
          * Constructs a new Factory for ScoringClassMapBuilder instances
@@ -344,7 +343,7 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
         protected <A, B> ClassMapBuilder<A, B> newClassMapBuilder(Type<A> aType, Type<B> bType, MapperFactory mapperFactory,
                 PropertyResolverStrategy propertyResolver, DefaultFieldMapper[] defaults) {
             
-            return new ScoringClassMapBuilder<A, B>(aType, bType, mapperFactory, propertyResolver, defaults, matchingWeights);
+            return new ScoringClassMapBuilder<>(aType, bType, mapperFactory, propertyResolver, defaults, matchingWeights);
         }
         
     }
@@ -364,16 +363,15 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
         private static final double MAX_POSSIBLE_SCORE = 50.0;
         
         private final PropertyMatchingWeights matchingWeights;
-        
-        private boolean contains;
-        private boolean containsIgnoreCase;
-        private double typeMatch;
-        private Property propertyA;
-        private Property propertyB;
-        private int hashCode;
-        private double commonWordCount;
-        private double avgWordCount;
-        private double wordMatchScore;
+
+        private final boolean containsIgnoreCase;
+        private final double typeMatch;
+        private final Property propertyA;
+        private final Property propertyB;
+        private final int hashCode;
+        private final double commonWordCount;
+        private final double avgWordCount;
+        private final double wordMatchScore;
         private double score;
         private double typeMatchScore;
         private double commonWordsScore;
@@ -408,8 +406,8 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
             
             this.commonWordCount = commonWords.size();
             this.wordMatchScore = computeWordMatchScore(aWords, bWords);
-            
-            this.contains = propertyA.getName().contains(propertyB.getName()) || propertyB.getName().contains(propertyA.getName());
+
+            boolean contains = propertyA.getName().contains(propertyB.getName()) || propertyB.getName().contains(propertyA.getName());
             this.containsIgnoreCase = contains || propertyALower.contains(propertyBLower) || propertyBLower.contains(propertyALower);
             
             if ((propertyA.isMultiOccurrence() && !propertyB.isMultiOccurrence())
@@ -448,11 +446,9 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
         }
 
         private <T> Set<T> flatten(List<List<T>> aWords) {
-            Set<T> set = new LinkedHashSet<T>();
+            Set<T> set = new LinkedHashSet<>();
             for (List<T> collection: aWords) {
-                for (T item: collection) {
-                    set.add(item);
-                }
+                set.addAll(collection);
             }
             return set;
         }
@@ -475,10 +471,10 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
          */
         double computeWordMatchScore(List<List<String>> aWords, List<List<String>> bWords) {
             
-            Set<String> aWordsRemaining = new LinkedHashSet<String>(flatten(aWords));
-            Set<String> bWordsRemaining = new LinkedHashSet<String>(flatten(bWords));
+            Set<String> aWordsRemaining = new LinkedHashSet<>(flatten(aWords));
+            Set<String> bWordsRemaining = new LinkedHashSet<>(flatten(bWords));
             
-            PriorityQueue<WordPair> orderedPairs = new PriorityQueue<WordPair>();
+            PriorityQueue<WordPair> orderedPairs = new PriorityQueue<>();
             double aDepth = 0;
             for (List<String> aWordList : aWords) {
                 ++aDepth;
@@ -527,9 +523,9 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
          * 
          */
         private static class WordPair implements Comparable<WordPair>{
-            private String aWord;
-            private String bWord;
-            private double score;
+            private final String aWord;
+            private final String bWord;
+            private final double score;
             
             private WordPair(String aWord, String bWord,  double aWordDepth, double bWordDepth, PropertyMatchingWeights matchingWeights) {
                 this.aWord = aWord;
@@ -632,9 +628,9 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
                 lengthOfT = t.length();
             }
             
-            int previousCosts[] = new int[lengthOfS + 1];
-            int costs[] = new int[lengthOfS + 1];
-            int swap[];
+            int[] previousCosts = new int[lengthOfS + 1];
+            int[] costs = new int[lengthOfS + 1];
+            int[] swap;
             
             int indexOfS;
             int indexOfT;
@@ -685,9 +681,9 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
          * @return
          */
         private static List<List<String>> splitIntoLowerCaseWords(String s) {
-            List<List<String>> results = new ArrayList<List<String>>();
+            List<List<String>> results = new ArrayList<>();
             for (String property: s.split("[.]")) {
-                List<String> words = new LinkedList<String>();
+                List<String> words = new LinkedList<>();
                 results.add(words);
                 for (String word : property.split(WORD_SPLITTER)) {
                     if (word != null && word.trim().length() > 0) {
@@ -706,13 +702,7 @@ public class ScoringClassMapBuilder<A, B> extends ClassMapBuilder<A, B> {
             /*
              * Higher scores are better, and should be ordered first ("lower")
              */
-            if (this.score < that.score) {
-                return 1;
-            } else if (this.score > that.score) {
-                return -1;
-            } else {
-                return 0;
-            }
+            return Double.compare(that.score, this.score);
         }
         
         private int computeHashCode() {

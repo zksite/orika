@@ -23,7 +23,6 @@ import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.impl.ConfigurableMapper;
 import ma.glasnost.orika.metadata.Type;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -44,8 +43,8 @@ public class Issue45TestCase {
     }
     
     public static class Dest1 {
-        private String name;
-        private String description;
+        private final String name;
+        private final String description;
         
         public Dest1(Source src) {
             this.name = src.name;

@@ -54,7 +54,7 @@ public class ArrayOrCollectionToCollection extends AbstractSpecification {
         }
         
         // Start check if source property ! = null
-        out.append(s.ifNotNull() + " {\n");
+        out.append(s.ifNotNull()).append(" {\n");
         
         /*
          *  TODO: migrate this to create a new destination variable first; 

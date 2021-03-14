@@ -18,9 +18,6 @@
 
 package ma.glasnost.orika.test.community;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.namespace.QName;
-
 import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
@@ -31,9 +28,11 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeBuilder;
 import ma.glasnost.orika.metadata.TypeFactory;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import javax.xml.bind.JAXBElement;
+import javax.xml.namespace.QName;
 
 public class JaxbElementTestCase {
     
@@ -113,8 +112,8 @@ public class JaxbElementTestCase {
         
         public static class EventConverter extends CustomConverter<EventDTO, Actor> {
             
-            private MapperFacade mapper;
-            private Type<ActorDTO> typeOf_ActorDTO = new TypeBuilder<ActorDTO>() {
+            private final MapperFacade mapper;
+            private final Type<ActorDTO> typeOf_ActorDTO = new TypeBuilder<ActorDTO>() {
             }.build();
             
             public EventConverter(MapperFacade mapper) {
@@ -138,7 +137,7 @@ public class JaxbElementTestCase {
         MapperFacade mapper = new MyMapper();
         
         EventDTO event = new EventDTO();
-        MockJAXBElement<ActorDTO> element = new MockJAXBElement<ActorDTO>();
+        MockJAXBElement<ActorDTO> element = new MockJAXBElement<>();
         PersonDTO person = new PersonDTO();
         person.setName("Chuck Testa");
         element.setValue(person);
@@ -163,7 +162,7 @@ public class JaxbElementTestCase {
         
         public JAXBElement<Actor> create(Object source, MappingContext mappingContext) {
             if (source instanceof Actor) {
-                return new JAXBElement<Actor>(new QName("http://example.com/JAXBTest", "Actor"), Actor.class, (Actor) source);
+                return new JAXBElement<>(new QName("http://example.com/JAXBTest", "Actor"), Actor.class, (Actor) source);
             }
             throw new IllegalArgumentException("source must be an Actor");
         }

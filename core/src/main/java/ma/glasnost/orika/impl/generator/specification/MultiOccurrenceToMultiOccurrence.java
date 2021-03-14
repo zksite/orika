@@ -24,12 +24,24 @@ import ma.glasnost.orika.impl.generator.Node;
 import ma.glasnost.orika.impl.generator.Node.NodeList;
 import ma.glasnost.orika.impl.generator.SourceCodeContext;
 import ma.glasnost.orika.impl.generator.VariableRef;
-import ma.glasnost.orika.metadata.*;
+import ma.glasnost.orika.metadata.ClassMapBuilder;
+import ma.glasnost.orika.metadata.FieldMap;
+import ma.glasnost.orika.metadata.MapperKey;
+import ma.glasnost.orika.metadata.Property;
+import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.metadata.TypeFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import static java.lang.String.format;
-import static ma.glasnost.orika.impl.generator.SourceCodeContext.*;
+import static ma.glasnost.orika.impl.generator.SourceCodeContext.append;
+import static ma.glasnost.orika.impl.generator.SourceCodeContext.join;
+import static ma.glasnost.orika.impl.generator.SourceCodeContext.statement;
 
 /**
  * MultiOccurrenceToMultiOccurrence handles the mapping of one or more
@@ -116,7 +128,7 @@ public class MultiOccurrenceToMultiOccurrence implements AggregateSpecification 
          * of multiple source variables; only keep iterating so long as all variables
          * in a parallel set are non-empty
          */
-        List<String> sourceSizes = new ArrayList<String>();
+        List<String> sourceSizes = new ArrayList<>();
         for (Node ref : sourceNodes) {
             if (!ref.isLeaf()) {
                 sourceSizes.add(ref.multiOccurrenceVar.size());
@@ -158,7 +170,7 @@ public class MultiOccurrenceToMultiOccurrence implements AggregateSpecification 
                 if (destRef.newDestination.isArray()) {
                     out.append(statement(destRef.newDestination.declareIterator()));
                 }
-                List<Node> children = new ArrayList<Node>();
+                List<Node> children = new ArrayList<>();
                 children.add(destRef);
                 while (!children.isEmpty()) {
                     Node child = children.remove(0);
@@ -184,7 +196,7 @@ public class MultiOccurrenceToMultiOccurrence implements AggregateSpecification 
            iterates(destNodes, out, endWhiles);
        }
 
-        LinkedList<Node> stack = new LinkedList<Node>(destNodes);
+        LinkedList<Node> stack = new LinkedList<>(destNodes);
         while (!stack.isEmpty()) {
 
             Node currentNode = stack.removeFirst();
@@ -276,7 +288,7 @@ public class MultiOccurrenceToMultiOccurrence implements AggregateSpecification 
             }
         }
 
-        out.append(endWhiles.toString());
+        out.append(endWhiles);
 
         /*
          * Finally, we loop over the destination nodes and assign/copy all of the temporary
@@ -358,9 +370,9 @@ public class MultiOccurrenceToMultiOccurrence implements AggregateSpecification 
          * Register all of the subordinate ClassMaps needed by this multi-occurrence
          * mapping
          */
-        Map<MapperKey, ClassMapBuilder<?,?>> builders = new HashMap<MapperKey, ClassMapBuilder<?,?>>();
+        Map<MapperKey, ClassMapBuilder<?,?>> builders = new HashMap<>();
 
-        LinkedList<Node> stack = new LinkedList<Node>(destNodes);
+        LinkedList<Node> stack = new LinkedList<>(destNodes);
         while (!stack.isEmpty()) {
 
             Node currentNode = stack.removeFirst();
@@ -447,7 +459,7 @@ public class MultiOccurrenceToMultiOccurrence implements AggregateSpecification 
 
         if (atLeastOneIter) {
             out.append("\n");
-            out.append(loopSource.toString());
+            out.append(loopSource);
         }
 
         for (Node node : nodes) {

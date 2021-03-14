@@ -17,6 +17,14 @@
  */
 package ma.glasnost.orika.impl;
 
+import ma.glasnost.orika.Mapper;
+import ma.glasnost.orika.MappingContext;
+import ma.glasnost.orika.metadata.MapperKey;
+import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.metadata.TypeFactory;
+import ma.glasnost.orika.util.Ordering;
+import ma.glasnost.orika.util.SortedCollection;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -26,14 +34,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
 
-import ma.glasnost.orika.Mapper;
-import ma.glasnost.orika.MappingContext;
-import ma.glasnost.orika.metadata.MapperKey;
-import ma.glasnost.orika.metadata.Type;
-import ma.glasnost.orika.metadata.TypeFactory;
-import ma.glasnost.orika.util.Ordering;
-import ma.glasnost.orika.util.SortedCollection;
-
 /**
  * The MultipleMapperWrapper wraps multiple instances of {@link Mapper} and decide dynamically during Mapping which {@link Mapper} should be
  * used.
@@ -42,15 +42,15 @@ import ma.glasnost.orika.util.SortedCollection;
  * @see <a href="https://github.com/orika-mapper/orika/issues/176">https://github.com/orika-mapper/orika/issues/176</a>
  */
 public final class MultipleMapperWrapper extends GeneratedMapperBase {
-    private Collection<Mapper<Object, Object>> mappersRegistry;
-    private Map<MapperKey, Mapper<Object, Object>> mappersCache;
+    private final Collection<Mapper<Object, Object>> mappersRegistry;
+    private final Map<MapperKey, Mapper<Object, Object>> mappersCache;
     
     public MultipleMapperWrapper(Type<Object> typeA, Type<Object> typeB, List<Mapper<Object, Object>> mappers) {
         super();
         setAType(typeA);
         setBType(typeB);
-        mappersRegistry = new SortedCollection<Mapper<Object, Object>>(mappers, Ordering.MAPPER);
-        mappersCache = new WeakHashMap<MapperKey, Mapper<Object, Object>>();
+        mappersRegistry = new SortedCollection<>(mappers, Ordering.MAPPER);
+        mappersCache = new WeakHashMap<>();
     }
     
     @Override
@@ -64,8 +64,8 @@ public final class MultipleMapperWrapper extends GeneratedMapperBase {
     }
     
     private MapperKey createMapperKey(Object a, Object b) {
-        Type<? extends Object> aType = TypeFactory.valueOf(a.getClass());
-        Type<? extends Object> bType = TypeFactory.valueOf(b.getClass());
+        Type<?> aType = TypeFactory.valueOf(a.getClass());
+        Type<?> bType = TypeFactory.valueOf(b.getClass());
         if (aType.getRawType().isAssignableFrom(this.getAType().getRawType())) {
             aType = this.getAType();
         }
@@ -132,7 +132,7 @@ public final class MultipleMapperWrapper extends GeneratedMapperBase {
     
     @Override
     public Mapper<Object, Object>[] getUsedMappers() {
-        Set<Mapper<Object, Object>> usedMappers = new HashSet<Mapper<Object, Object>>();
+        Set<Mapper<Object, Object>> usedMappers = new HashSet<>();
         for (Mapper<Object, Object> mapper : mappersRegistry) {
             if (mapper instanceof GeneratedMapperBase) {
                 GeneratedMapperBase generatedMapper = (GeneratedMapperBase) mapper;

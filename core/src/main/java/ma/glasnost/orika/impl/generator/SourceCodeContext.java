@@ -18,7 +18,12 @@
 
 package ma.glasnost.orika.impl.generator;
 
-import ma.glasnost.orika.*;
+import ma.glasnost.orika.BoundMapperFacade;
+import ma.glasnost.orika.Converter;
+import ma.glasnost.orika.Filter;
+import ma.glasnost.orika.MapEntry;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.Properties;
 import ma.glasnost.orika.converter.ConverterFactory;
 import ma.glasnost.orika.impl.AggregateFilter;
@@ -28,11 +33,25 @@ import ma.glasnost.orika.impl.generator.Node.NodeList;
 import ma.glasnost.orika.impl.generator.UsedMapperFacadesContext.UsedMapperFacadesIndex;
 import ma.glasnost.orika.impl.generator.specification.AbstractSpecification;
 import ma.glasnost.orika.impl.util.ClassUtil;
-import ma.glasnost.orika.metadata.*;
+import ma.glasnost.orika.metadata.FieldMap;
+import ma.glasnost.orika.metadata.NestedProperty;
+import ma.glasnost.orika.metadata.Property;
+import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.metadata.TypeFactory;
 import ma.glasnost.orika.property.PropertyResolverStrategy;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static java.lang.String.format;
@@ -48,14 +67,14 @@ public class SourceCodeContext {
     
     private static final AtomicInteger UNIQUE_CLASS_INDEX = new AtomicInteger();
     
-    private StringBuilder sourceBuilder;
+    private final StringBuilder sourceBuilder;
     private String classSimpleName;
-    private String packageName;
-    private String className;
-    private CompilerStrategy compilerStrategy;
-    private List<String> methods;
-    private List<String> fields;
-    private Class<?> superClass;
+    private final String packageName;
+    private final String className;
+    private final CompilerStrategy compilerStrategy;
+    private final List<String> methods;
+    private final List<String> fields;
+    private final Class<?> superClass;
     
     private final UsedTypesContext usedTypes;
     private final UsedConvertersContext usedConverters;
@@ -103,11 +122,11 @@ public class SourceCodeContext {
         
         this.classSimpleName = makeUniqueClassName(this.classSimpleName);
         this.className = this.packageName + "." + this.classSimpleName;
-        this.methods = new ArrayList<String>();
-        this.fields = new ArrayList<String>();
+        this.methods = new ArrayList<>();
+        this.fields = new ArrayList<>();
         
-        sourceBuilder.append("package " + packageName + ";\n\n");
-        sourceBuilder.append("public class " + classSimpleName + " extends " + superClass.getCanonicalName() + " {\n");
+        sourceBuilder.append("package ").append(packageName).append(";\n\n");
+        sourceBuilder.append("public class ").append(classSimpleName).append(" extends ").append(superClass.getCanonicalName()).append(" {\n");
         
         this.usedTypes = new UsedTypesContext();
         this.usedConverters = new UsedConvertersContext();
@@ -117,7 +136,7 @@ public class SourceCodeContext {
         this.usedMapperFacades = new UsedMapperFacadesContext();
         this.logDetails = logDetails;
         
-        this.aggregateFieldMaps = new LinkedHashMap<AggregateSpecification, List<FieldMap>>();
+        this.aggregateFieldMaps = new LinkedHashMap<>();
     }
     
     private String makeUniqueClassName(String name) {
@@ -197,7 +216,7 @@ public class SourceCodeContext {
      * @param methodSource
      */
     public void addMethod(String methodSource) {
-        sourceBuilder.append("\n" + methodSource + "\n");
+        sourceBuilder.append("\n").append(methodSource).append("\n");
         this.methods.add(methodSource);
     }
     
@@ -208,7 +227,7 @@ public class SourceCodeContext {
      *            the source from which to compile the field
      */
     public void addField(String fieldSource) {
-        sourceBuilder.append("\n" + fieldSource + "\n");
+        sourceBuilder.append("\n").append(fieldSource).append("\n");
         this.fields.add(fieldSource);
     }
     
@@ -253,16 +272,16 @@ public class SourceCodeContext {
         Filter<Object, Object>[] usedFiltersArray = usedFilters.toArray();
         if (logDetails != null) {
             if (usedTypesArray.length > 0) {
-                logDetails.append("\n\t" + Type.class.getSimpleName() + "s used: " + Arrays.toString(usedTypesArray));
+                logDetails.append("\n\t").append(Type.class.getSimpleName()).append("s used: ").append(Arrays.toString(usedTypesArray));
             }
             if (usedConvertersArray.length > 0) {
-                logDetails.append("\n\t" + Converter.class.getSimpleName() + "s used: " + Arrays.toString(usedConvertersArray));
+                logDetails.append("\n\t").append(Converter.class.getSimpleName()).append("s used: ").append(Arrays.toString(usedConvertersArray));
             }
             if (usedMapperFacadesArray.length > 0) {
-                logDetails.append("\n\t" + BoundMapperFacade.class.getSimpleName() + "s used: " + Arrays.toString(usedMapperFacadesArray));
+                logDetails.append("\n\t").append(BoundMapperFacade.class.getSimpleName()).append("s used: ").append(Arrays.toString(usedMapperFacadesArray));
             }
             if (usedFiltersArray.length > 0) {
-                logDetails.append("\n\t" + Filter.class.getSimpleName() + "s used: " + Arrays.toString(usedFiltersArray));
+                logDetails.append("\n\t").append(Filter.class.getSimpleName()).append("s used: ").append(Arrays.toString(usedFiltersArray));
             }
         }
         instance.setUsedTypes(usedTypesArray);
@@ -484,7 +503,7 @@ public class SourceCodeContext {
     public static String join(List<?> list, String separator) {
         StringBuilder result = new StringBuilder();
         for (Object item : list) {
-            result.append(item + separator);
+            result.append(item).append(separator);
         }
         return result.length() > 0 ? result.substring(0, result.length() - separator.length()) : "";
     }
@@ -518,7 +537,7 @@ public class SourceCodeContext {
         StringBuilder comparator = new StringBuilder();
         
         String or = "";
-        Set<FieldMap> fieldMaps = new HashSet<FieldMap>();
+        Set<FieldMap> fieldMaps = new HashSet<>();
         for (Node node : source.children) {
             if (node.value != null) {
                 fieldMaps.add(node.value);
@@ -530,7 +549,7 @@ public class SourceCodeContext {
             }
         }
         
-        Set<String> comparisons = new HashSet<String>();
+        Set<String> comparisons = new HashSet<>();
         for (FieldMap fieldMap : fieldMaps) {
             if (!(fieldMap.is(aMultiOccurrenceElementMap()) && fieldMap.isByDefault()) && !fieldMap.isExcluded() && !fieldMap.isIgnored()) {
                 
@@ -546,7 +565,7 @@ public class SourceCodeContext {
                     
                     String code = this.compareFields(fieldMap, sourceRef, destRef, dest.elementRef.type(), null);
                     if (!"".equals(code) && comparisons.add(code)) {
-                        comparator.append(or + "!(" + code + ")");
+                        comparator.append(or).append("!(").append(code).append(")");
                         or = " || ";
                     }
                 }
@@ -631,13 +650,13 @@ public class SourceCodeContext {
      */
     public Set<FieldMap> getAssociatedMappings(Collection<FieldMap> fieldMaps, FieldMap map) {
         
-        Set<FieldMap> associated = new LinkedHashSet<FieldMap>();
+        Set<FieldMap> associated = new LinkedHashSet<>();
         associated.add(map);
-        Set<FieldMap> unprocessed = new LinkedHashSet<FieldMap>(fieldMaps);
+        Set<FieldMap> unprocessed = new LinkedHashSet<>(fieldMaps);
         unprocessed.remove(map);
         
-        Set<String> nextRoundSources = new LinkedHashSet<String>();
-        Set<String> nextRoundDestinations = new LinkedHashSet<String>();
+        Set<String> nextRoundSources = new LinkedHashSet<>();
+        Set<String> nextRoundDestinations = new LinkedHashSet<>();
         Set<String> thisRoundSources = Collections.singleton(root(map.getSource()).getExpression());
         Set<String> thisRoundDestinations = Collections.singleton(root(map.getDestination()).getExpression());
         
@@ -664,8 +683,8 @@ public class SourceCodeContext {
             
             thisRoundSources = nextRoundSources;
             thisRoundDestinations = nextRoundDestinations;
-            nextRoundSources = new LinkedHashSet<String>();
-            nextRoundDestinations = new LinkedHashSet<String>();
+            nextRoundSources = new LinkedHashSet<>();
+            nextRoundDestinations = new LinkedHashSet<>();
         }
         
         return associated;
@@ -683,11 +702,7 @@ public class SourceCodeContext {
     public boolean aggregateSpecsApply(FieldMap fieldMap) {
         for (AggregateSpecification spec : codeGenerationStrategy.getAggregateSpecifications()) {
             if (spec.appliesTo(fieldMap)) {
-                List<FieldMap> fieldMaps = this.aggregateFieldMaps.get(spec);
-                if (fieldMaps == null) {
-                    fieldMaps = new ArrayList<FieldMap>();
-                    this.aggregateFieldMaps.put(spec, fieldMaps);
-                }
+                List<FieldMap> fieldMaps = this.aggregateFieldMaps.computeIfAbsent(spec, k -> new ArrayList<>());
                 fieldMaps.add(fieldMap);
                 return true;
             }
@@ -776,7 +791,7 @@ public class SourceCodeContext {
             if (shouldCaptureFieldContext) {
                 endCaptureFieldContext(out);
             }
-            out.append(closing.toString());
+            out.append(closing);
         }
         return out.toString();
     }
@@ -924,7 +939,7 @@ public class SourceCodeContext {
      */
     private Filter<Object, Object> getFilter(VariableRef sourceProperty, VariableRef destinationProperty) {
         
-        List<Filter<Object, Object>> applicableFilters = new ArrayList<Filter<Object, Object>>();
+        List<Filter<Object, Object>> applicableFilters = new ArrayList<>();
         for (Filter<Object, Object> filter : filters) {
             if (filter.appliesTo(sourceProperty.property(), destinationProperty.property())) {
                 applicableFilters.add(filter);

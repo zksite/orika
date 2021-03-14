@@ -18,22 +18,21 @@
 
 package ma.glasnost.orika.test.property;
 
-import java.math.BigDecimal;
-import java.util.Map;
-
-import org.junit.Assert;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.metadata.NestedProperty;
 import ma.glasnost.orika.metadata.Property;
 import ma.glasnost.orika.property.IntrospectorPropertyResolver;
 import ma.glasnost.orika.property.PropertyResolverStrategy;
 import ma.glasnost.orika.test.MappingUtil;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.math.BigDecimal;
+import java.util.Map;
 
 public class IntrospectorResolverTestCase {
 
-    private PropertyResolverStrategy propertyResolver = new IntrospectorPropertyResolver();
+    private final PropertyResolverStrategy propertyResolver = new IntrospectorPropertyResolver();
     
 	@Test
 	public void testNestedProperty() {
@@ -64,7 +63,7 @@ public class IntrospectorResolverTestCase {
 		MapperFacade mapper = MappingUtil.getMapperFactory().getMapperFacade();
 		SpecialCaseDto dto = mapper.map(sc, SpecialCaseDto.class);
 		
-		Assert.assertEquals(sc.isChecked(), Boolean.valueOf(dto.isChecked()));
+		Assert.assertEquals(sc.isChecked(), dto.isChecked());
 		//Assert.assertEquals(sc.totalCost.doubleValue(), dto.getTotalCost(), 0.01d);
 	}
 	
@@ -229,12 +228,12 @@ public class IntrospectorResolverTestCase {
         }
 	}
 	
-	public static interface Address {
-        public String getStreet();
-        public String getCity();
-        public String getSubnational();
-        public String getPostalCode();
-        public String getCountry();
+	public interface Address {
+        String getStreet();
+        String getCity();
+        String getSubnational();
+        String getPostalCode();
+        String getCountry();
     }
 	
 	public static class PostalAddress implements Address {

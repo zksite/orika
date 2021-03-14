@@ -18,8 +18,6 @@
 
 package ma.glasnost.orika.test.community;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import ma.glasnost.orika.DefaultFieldMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
@@ -30,9 +28,11 @@ import ma.glasnost.orika.metadata.ClassMapBuilderFactory;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.property.PropertyResolverStrategy;
 import ma.glasnost.orika.unenhance.HibernateUnenhanceStrategy;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * MappingException on customization the default field-name mapping.
@@ -320,7 +320,7 @@ public class Issue82TestCase {
         @Override
         protected <A, B> ClassMapBuilder<A, B> newClassMapBuilder(Type<A> aType, Type<B> bType, MapperFactory mapperFactory,
                 PropertyResolverStrategy propertyResolver, DefaultFieldMapper[] defaults) {
-            return new MyClassMapBuilder<A, B>(aType, bType, mapperFactory, propertyResolver, defaults);
+            return new MyClassMapBuilder<>(aType, bType, mapperFactory, propertyResolver, defaults);
         }
     }
     

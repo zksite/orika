@@ -1,18 +1,17 @@
 package ma.glasnost.orika.test.capturefieldcontext;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Assert;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.NullFilter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.Type;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class FieldContextWithFiltersTestCase {
 
@@ -81,7 +80,7 @@ public class FieldContextWithFiltersTestCase {
         Person source = new Person();
         source.name = new Name();
         source.address = new Address();
-        source.contacts = new ArrayList<Person>();
+        source.contacts = new ArrayList<>();
         source.name.first = "Kermit";
         source.name.middle = "The";
         source.name.last = "Frog";

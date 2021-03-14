@@ -18,27 +18,25 @@
 
 package ma.glasnost.orika.test.generator;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.impl.GeneratedObjectBase;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 public class MultiOccurrenceToMultiOccurrenceTestCase {
     
@@ -68,8 +66,8 @@ public class MultiOccurrenceToMultiOccurrenceTestCase {
         MapperFacade mapper = factory.getMapperFacade();
         
         GenericDto source = new GenericDto();
-        List<String> testScores = new ArrayList<String>();
-        List<Integer> numericScores = new ArrayList<Integer>();
+        List<String> testScores = new ArrayList<>();
+        List<Integer> numericScores = new ArrayList<>();
         testScores.add("A");
         numericScores.add(90);
         testScores.add("B");
@@ -260,7 +258,7 @@ public class MultiOccurrenceToMultiOccurrenceTestCase {
     }
     
     public static class MapOfPeople {
-        public Map<Date, Person> people = new LinkedHashMap<Date, Person>();
+        public Map<Date, Person> people = new LinkedHashMap<>();
     }
     
     public static class Person {

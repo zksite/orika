@@ -34,8 +34,7 @@ import java.util.Set;
 
 abstract class TypeUtil {
     
-    @SuppressWarnings("unchecked")
-    private static final Set<Type<?>> IGNORED_TYPES = new HashSet<Type<?>>(Arrays.asList(TypeFactory.valueOf(Cloneable.class),
+    private static final Set<Type<?>> IGNORED_TYPES = new HashSet<>(Arrays.asList(TypeFactory.valueOf(Cloneable.class),
             TypeFactory.valueOf(Serializable.class), TypeFactory.valueOf(Externalizable.class)));
     
     @SuppressWarnings("serial")
@@ -148,26 +147,33 @@ abstract class TypeUtil {
     private static Type<?> getMostSpecificType(final Type<?> type0, final Type<?> type1, final Set<Type<?>> ignoredTypes) {
         if (type1 == null && type0 == null) {
             return null;
-        } else if (type0 == null && type1 != null) {
-            return type1;
-        } else if (type1 == null && type0 != null) {
-            return type0;
-        } else if (type1 == null && type0 == null) {
-            return null;
-        } else if (ignoredTypes.contains(type1) && ignoredTypes.contains(type0)) {
-            return TypeFactory.TYPE_OF_OBJECT;
-        } else if (ignoredTypes.contains(type1)) {
-            return type0;
-        } else if (ignoredTypes.contains(type0)) {
-            return type1;
-        } else if (type0.isAssignableFrom(type1)) {
-            return type1;
-        } else if (type1.isAssignableFrom(type0)) {
-            return type0;
-        } else {
-            // Types not comparable...
-            throw new IllegalArgumentException("types " + type0 + " and " + type1 + " are not comparable");
         }
+        if (type0 == null && type1 != null) {
+            return type1;
+        }
+        if (type1 == null && type0 != null) {
+            return type0;
+        }
+        if (type1 == null && type0 == null) {
+            return null;
+        }
+        if (ignoredTypes.contains(type1) && ignoredTypes.contains(type0)) {
+            return TypeFactory.TYPE_OF_OBJECT;
+        }
+        if (ignoredTypes.contains(type1)) {
+            return type0;
+        }
+        if (ignoredTypes.contains(type0)) {
+            return type1;
+        }
+        if (type0.isAssignableFrom(type1)) {
+            return type1;
+        }
+        if (type1.isAssignableFrom(type0)) {
+            return type0;
+        }
+        // Types not comparable...
+        throw new IllegalArgumentException("types " + type0 + " and " + type1 + " are not comparable");
     }
     
     /**
@@ -217,12 +223,12 @@ abstract class TypeUtil {
      */
     private static Type<?>[] convertTypeArgumentsFromAncestry(final Class<?> rawType, final Set<java.lang.reflect.Type> bounds) {
 
-        Map<TypeVariable<?>, Type<?>> typesByVariable = new LinkedHashMap<TypeVariable<?>, Type<?>>();
+        Map<TypeVariable<?>, Type<?>> typesByVariable = new LinkedHashMap<>();
         for (TypeVariable<?> var : rawType.getTypeParameters()) {
             typesByVariable.put(var, TypeFactory.limitedValueOf(var, bounds));
         }
 
-        Set<java.lang.reflect.Type> genericAncestors = new LinkedHashSet<java.lang.reflect.Type>();
+        Set<java.lang.reflect.Type> genericAncestors = new LinkedHashSet<>();
 
         genericAncestors.add(rawType.getGenericSuperclass());
         genericAncestors.add(rawType.getSuperclass());
@@ -253,11 +259,11 @@ abstract class TypeUtil {
                 Class<?> superType = (Class<?>) ancestor;
 
                 TypeVariable<?>[] variables = superType.getTypeParameters();
-                for (int i = 0; i < variables.length; ++i) {
-                    Type<?> resolvedActual = TypeFactory.limitedValueOf(variables[i], bounds);
-                    Type<?> currentActual = typesByVariable.get(variables[i]);
+                for (TypeVariable<?> variable : variables) {
+                    Type<?> resolvedActual = TypeFactory.limitedValueOf(variable, bounds);
+                    Type<?> currentActual = typesByVariable.get(variable);
                     if (currentActual != null) {
-                        typesByVariable.put(variables[i], getMostSpecificType(currentActual, resolvedActual));
+                        typesByVariable.put(variable, getMostSpecificType(currentActual, resolvedActual));
                     }
                 }
             }
@@ -313,7 +319,7 @@ abstract class TypeUtil {
      */
     private static String[] splitTypeArguments(final String nestedTypes) {
         StringBuilder string = new StringBuilder(nestedTypes.replaceAll("\\s*", ""));
-        List<String> arguments = new ArrayList<String>();
+        List<String> arguments = new ArrayList<>();
         while (string.length() > 0) {
             int nextComma = string.indexOf(",");
             int nextOpen = string.indexOf("<");

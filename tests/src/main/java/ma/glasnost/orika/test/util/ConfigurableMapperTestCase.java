@@ -24,7 +24,6 @@ import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.impl.ConfigurableMapper;
 import ma.glasnost.orika.metadata.Type;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -49,7 +48,7 @@ public class ConfigurableMapperTestCase {
         
     }
     
-    private MapperFacade mapper = new CustomConfigurableMapper();
+    private final MapperFacade mapper = new CustomConfigurableMapper();
     
     @Test
     public void testConfigurableMapper() {

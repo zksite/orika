@@ -18,15 +18,15 @@
 
 package ma.glasnost.orika.impl.generator.eclipsejdt;
 
-import java.util.StringTokenizer;
-
 import org.eclipse.jdt.internal.compiler.env.ICompilationUnit;
+
+import java.util.StringTokenizer;
 
 public class CompilationUnit implements ICompilationUnit {
     
-    private String packageName;
-    private String source;
-    private String mainTypeName;
+    private final String packageName;
+    private final String source;
+    private final String mainTypeName;
 
     /**
      * @param source the source text from which the class will be compiled

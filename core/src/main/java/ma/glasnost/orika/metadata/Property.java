@@ -18,14 +18,15 @@
 
 package ma.glasnost.orika.metadata;
 
+import ma.glasnost.orika.MapEntry;
+import ma.glasnost.orika.property.PropertyResolver;
+
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
-
-import ma.glasnost.orika.MapEntry;
-import ma.glasnost.orika.property.PropertyResolver;
 
 /**
  * Property is an immutable representation of an accessor/mutator pair (either
@@ -198,10 +199,10 @@ public class Property {
         if (!expression.equals(property.expression)) {
             return false;
         }
-        if (getter != null ? !getter.equals(property.getter) : property.getter != null) {
+        if (!Objects.equals(getter, property.getter)) {
             return false;
         }
-        if (setter != null ? !setter.equals(property.setter) : property.setter != null) {
+        if (!Objects.equals(setter, property.setter)) {
             return false;
         }
         return !(type != null && !type.equals(property.type));
@@ -484,9 +485,9 @@ public class Property {
                     
                     int nextSingle = expression.indexOf("'");
                     if (nextSingle == 1) {
-                        output.append("'" + expression.substring(0, 2));
+                        output.append("'").append(expression.substring(0, 2));
                     } else {
-                        output.append("\"" + expression.substring(0, nextSingle) + "\"");
+                        output.append("\"").append(expression.substring(0, nextSingle)).append("\"");
                     }
                     expression = expression.substring(nextSingle + 1);
                 } else if (currentDouble > 0) {
@@ -494,7 +495,7 @@ public class Property {
                     expression = expression.substring(currentDouble + 1);
                     
                     int nextDouble = expression.indexOf('"');
-                    output.append("\"" + expression.substring(0, nextDouble) + "\"");
+                    output.append("\"").append(expression.substring(0, nextDouble)).append("\"");
                     expression = expression.substring(nextDouble + 1);
                 } else {
                     output.append(expression);

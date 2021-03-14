@@ -17,12 +17,12 @@
  */
 package ma.glasnost.orika.impl.generator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.metadata.Type;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -36,7 +36,7 @@ public class UsedMapperFacadesContext {
         public boolean isReversed;
     }
     
-    private List<BoundMapperFacade<Object,Object>> usedMapperFacades = new ArrayList<BoundMapperFacade<Object,Object>>();
+    private final List<BoundMapperFacade<Object,Object>> usedMapperFacades = new ArrayList<>();
     private int usedTypeIndex = 0;
     
     /**
@@ -68,7 +68,7 @@ public class UsedMapperFacadesContext {
         }
         
         if (result.index == null) {
-            result.index = Integer.valueOf(usedTypeIndex++);
+            result.index = usedTypeIndex++;
             usedMapperFacades.add((BoundMapperFacade<Object, Object>)mapperFactory.getMapperFacade(sourceType, destinationType));
         }
         return result;

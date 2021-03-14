@@ -18,6 +18,18 @@
 
 package ma.glasnost.orika.test.converter;
 
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.converter.builtin.CloneableConverter;
+import ma.glasnost.orika.converter.builtin.PassThroughConverter;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.test.MappingUtil;
+import org.junit.Assert;
+import org.junit.Test;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -25,20 +37,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Objects;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import org.junit.Assert;
-import org.junit.Test;
-
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.converter.builtin.CloneableConverter;
-import ma.glasnost.orika.converter.builtin.PassThroughConverter;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-import ma.glasnost.orika.test.MappingUtil;
 
 public class CloneableConverterTestCase {
     
@@ -217,7 +215,7 @@ public class CloneableConverterTestCase {
     	
     	public List<SourceDateHolder> getDateHolder() {
             if (dateHolder == null) {
-            	dateHolder = new ArrayList<SourceDateHolder>();
+            	dateHolder = new ArrayList<>();
             }
             return this.dateHolder;
         }    	
@@ -242,7 +240,7 @@ public class CloneableConverterTestCase {
     }
     
     public static class ComplexDest {
-    	private List<DestDateHolder> meaningfulDate = new ArrayList<DestDateHolder>();
+    	private List<DestDateHolder> meaningfulDate = new ArrayList<>();
 
 		public List<DestDateHolder> getMeaningfulDate() {
 			return meaningfulDate;

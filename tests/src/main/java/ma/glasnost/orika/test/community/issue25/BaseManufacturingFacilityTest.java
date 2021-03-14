@@ -17,18 +17,17 @@
  */
 package ma.glasnost.orika.test.community.issue25;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import ma.glasnost.orika.test.community.issue25.modelA.Address;
 import ma.glasnost.orika.test.community.issue25.modelA.ManufacturingFacility;
 import ma.glasnost.orika.test.community.issue25.modelB.AddressDTO;
 import ma.glasnost.orika.test.community.issue25.modelB.ManufacturingFacilityDTS;
-
 import org.junit.After;
 import org.junit.Before;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public abstract class BaseManufacturingFacilityTest {
     
@@ -47,7 +46,7 @@ public abstract class BaseManufacturingFacilityTest {
     }
     
     public Map<String, Object> getManufacturingFacility(Long aIdNumber, String aDescription){
-        Map<String, Object> vReturnMap = new HashMap<String, Object>();
+        Map<String, Object> vReturnMap = new HashMap<>();
         
         ManufacturingFacility vManufacturingFacility = new ManufacturingFacility();
         vManufacturingFacility.setDescription(aDescription);
@@ -77,7 +76,7 @@ public abstract class BaseManufacturingFacilityTest {
         vAnschrift.setPostalcode(postalcode);
 
         if(manufacturingFacility.getAddresses()==null)
-            manufacturingFacility.setAddresses(new ArrayList<Address>());
+            manufacturingFacility.setAddresses(new ArrayList<>());
         List<Address> anschriften = manufacturingFacility.getAddresses();
         anschriften.add(vAnschrift);
 
@@ -90,7 +89,7 @@ public abstract class BaseManufacturingFacilityTest {
         vAnschriftDTO.setStreet(street);
         
         if(manufacturingFacilityDTS.getAddressL()==null){
-            manufacturingFacilityDTS.setAddressL(new ArrayList<AddressDTO>());
+            manufacturingFacilityDTS.setAddressL(new ArrayList<>());
         }
         List<AddressDTO> anschriftenDTO = manufacturingFacilityDTS.getAddressL();
         anschriftenDTO.add(vAnschriftDTO);

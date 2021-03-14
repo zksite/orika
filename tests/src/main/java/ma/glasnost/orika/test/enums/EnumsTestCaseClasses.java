@@ -21,11 +21,11 @@ package ma.glasnost.orika.test.enums;
 
 public interface EnumsTestCaseClasses {
 
-	public enum PublicationFormat {
-		HARDBACK, SOFTBACK, EBOOK;
+	enum PublicationFormat {
+		HARDBACK, SOFTBACK, EBOOK
 	}
 	
-	public enum PublicationFormatDTO {
+	enum PublicationFormatDTO {
 		HARDBACK, SOFTBACK, EBOOK;
 		
 		@Override
@@ -34,26 +34,26 @@ public interface EnumsTestCaseClasses {
 		}
 	}
 	
-	public enum PublicationFormatDTOAltCase {
-		hardBack, softBack, eBook;
+	enum PublicationFormatDTOAltCase {
+		hardBack, softBack, eBook
 	}
 	
-	public enum PublicationFormatDTOAlternate {
-		PUB_HARDBACK, PUB_SOFTBACK, PUB_EBOOK;
+	enum PublicationFormatDTOAlternate {
+		PUB_HARDBACK, PUB_SOFTBACK, PUB_EBOOK
 	}
 	
-	public interface Book {
+	interface Book {
 		
-		public String getTitle();
+		String getTitle();
 
-		public void setTitle(String title);
+		void setTitle(String title);
 
-		public PublicationFormat getFormat();
+		PublicationFormat getFormat();
 		
-		public void setFormat(PublicationFormat format);
+		void setFormat(PublicationFormat format);
 	}
 	
-	public class BookImpl implements Book {
+	class BookImpl implements Book {
 
 		private String title;
 		private PublicationFormat format;
@@ -76,7 +76,7 @@ public interface EnumsTestCaseClasses {
 	}
 
 
-	public class BookDTOWithSameEnum {
+	class BookDTOWithSameEnum {
 
 		private String title;
 		private PublicationFormat format;
@@ -98,7 +98,7 @@ public interface EnumsTestCaseClasses {
 		}
 	}
 	
-	public class BookDTOWithParallelEnum {
+	class BookDTOWithParallelEnum {
 
 		private String title;
 		private PublicationFormatDTO format;
@@ -120,7 +120,7 @@ public interface EnumsTestCaseClasses {
 		}
 	}
 	
-	public class BookDTOWithAltCaseEnum {
+	class BookDTOWithAltCaseEnum {
 
 		private String title;
 		private PublicationFormatDTOAltCase format;
@@ -142,7 +142,7 @@ public interface EnumsTestCaseClasses {
 		}
 	}
 	
-	public class BookDTOWithAlternateEnum {
+	class BookDTOWithAlternateEnum {
 
 		private String title;
 		private PublicationFormatDTOAlternate format;

@@ -18,9 +18,6 @@
 
 package ma.glasnost.orika.test.community.issue42;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
@@ -28,6 +25,8 @@ import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class InheritanceTestcase {
     
@@ -60,7 +59,7 @@ public class InheritanceTestcase {
         MapperFacade mapperFacade = mapperFactory.getMapperFacade();
         
         Customer customer = new Customer();
-        customer.setId(new Long(1234));
+        customer.setId(1234L);
         customer.setName("Customer Name");
         customer.setEmail("test@test.org");
         

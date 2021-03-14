@@ -17,15 +17,14 @@
  */
 package ma.glasnost.orika.test.community.issue25;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.test.community.issue25.modelA.Address;
 import ma.glasnost.orika.test.community.issue25.modelB.AddressDTO;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 public class AddressMergingMapper extends
 		CustomMapper<List<Address>, List<AddressDTO>> {
@@ -44,7 +43,7 @@ public class AddressMergingMapper extends
 			List<Address> srcAddress,
 			List<AddressDTO> dstAddressesDTO,
 			MappingContext context) {
-		Set<Long> savedIdNumbers = new HashSet<Long>(
+		Set<Long> savedIdNumbers = new HashSet<>(
 				srcAddress.size());
 		for (Address currentAddress : srcAddress) {
 			AddressDTO foundAddressDTO = findEntity(dstAddressesDTO,
@@ -57,14 +56,8 @@ public class AddressMergingMapper extends
 			}
 			savedIdNumbers.add(currentAddress.getIdNumber());
 		}
-		for (Iterator<AddressDTO> iterator = dstAddressesDTO.iterator(); iterator
-				.hasNext();) {
-			AddressDTO vCurrentAnschriftDTO = iterator.next();
-			if (!savedIdNumbers.contains(vCurrentAnschriftDTO
-					.getIdNumber())) {
-				iterator.remove();
-			}
-		}
+		dstAddressesDTO.removeIf(vCurrentAnschriftDTO -> !savedIdNumbers.contains(vCurrentAnschriftDTO
+				.getIdNumber()));
 		return dstAddressesDTO;
 	}
 

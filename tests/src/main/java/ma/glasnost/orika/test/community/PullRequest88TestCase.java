@@ -13,7 +13,10 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.util.Arrays.asList;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.hasEntry;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
 
 /**
@@ -41,7 +44,7 @@ public class PullRequest88TestCase {
 
     @Test
     public void testSetToMap() throws Exception {
-        Set<A> set = new HashSet<A>(asList(new A("a"), new A("b")));
+        Set<A> set = new HashSet<>(asList(new A("a"), new A("b")));
         Map<String, String> map = mapper.map(set, SET, MAP);
         assertThat(map.keySet(), is(not(empty())));
         assertThat(map, hasEntry("a", "a"));

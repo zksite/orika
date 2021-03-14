@@ -29,7 +29,7 @@ import ma.glasnost.orika.metadata.Type;
 public class CopyByReferenceStrategy implements MappingStrategy {
     
     private static class Singleton {
-        private static CopyByReferenceStrategy INSTANCE = new CopyByReferenceStrategy();
+        private static final CopyByReferenceStrategy INSTANCE = new CopyByReferenceStrategy();
     }
     
     /**

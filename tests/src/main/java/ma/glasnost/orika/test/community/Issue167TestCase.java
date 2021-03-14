@@ -1,16 +1,5 @@
 package ma.glasnost.orika.test.community;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
-
-import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
-
-import org.junit.Test;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -18,6 +7,16 @@ import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeFactory;
 import ma.glasnost.orika.property.IntrospectorPropertyResolver;
 import ma.glasnost.orika.property.PropertyResolver;
+import org.junit.Test;
+
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.collection.IsCollectionWithSize.hasSize;
 
 /**
  * DefaultMapperFactory.classMap got in infinity loop when using F-bounded polymorphism.
@@ -72,16 +71,16 @@ public class Issue167TestCase {
     }
     
     @SuppressWarnings("unused")
-    public static interface BaseInterface<R> {
+    public interface BaseInterface<R> {
         // test generic interface.
     }
 
-    public static interface ChildInterface extends BaseInterface<ChildInterface> {
+    public interface ChildInterface extends BaseInterface<ChildInterface> {
         Set<Foo> getSet();
     }
     
     public static class ChildInterfaceImpl implements ChildInterface {
-        private Set<Foo> set = new HashSet<Issue167TestCase.Foo>();
+        private final Set<Foo> set = new HashSet<>();
         
         public Set<Foo> getSet() {
             return set;
@@ -89,7 +88,7 @@ public class Issue167TestCase {
     }
     
     public static class Foo {
-        private String name;
+        private final String name;
         
         public Foo(String name) {
             super();

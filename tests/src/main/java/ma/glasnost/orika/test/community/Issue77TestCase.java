@@ -18,18 +18,17 @@
 
 package ma.glasnost.orika.test.community;
 
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-
-import org.junit.Test;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 /**
  * A sub type is not being mapped to the configured mapping type.
@@ -49,7 +48,7 @@ public class Issue77TestCase {
     }
 
     public static class Container1 {
-        private List<A1>    elements    = new ArrayList<A1>();
+        private List<A1>    elements    = new ArrayList<>();
         private A1          singleElement;
 
         public List<A1> getElements() {
@@ -78,7 +77,7 @@ public class Issue77TestCase {
     }
 
     public static class Container2 {
-        private List<A2>    elements    = new ArrayList<A2>();
+        private List<A2>    elements    = new ArrayList<>();
         private A2          singleElement;
 
         public List<A2> getElements() {

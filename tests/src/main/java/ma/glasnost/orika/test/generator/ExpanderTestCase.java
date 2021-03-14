@@ -18,13 +18,6 @@
 
 package ma.glasnost.orika.test.generator;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -32,6 +25,12 @@ import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
 import ma.glasnost.orika.metadata.ScoringClassMapBuilder;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeBuilder;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * This test case demonstrates two things together:
@@ -53,7 +52,7 @@ public class ExpanderTestCase {
     public static class Year {
         public int yearNumber;
         public String yearAnimal;
-        public List<Month> months = new ArrayList<Month>();
+        public List<Month> months = new ArrayList<>();
         @Override
 		public String toString() {
 			return "Year [yearNumber=" + yearNumber + ", yearAnimal=" + yearAnimal + ", months=" + months + "]";
@@ -76,7 +75,7 @@ public class ExpanderTestCase {
     public static class Month {
         public int monthNumber;
         public String monthName;
-        public List<Day> days = new ArrayList<Day>();
+        public List<Day> days = new ArrayList<>();
         @Override
 		public String toString() {
 			return "Month [monthNumber=" + monthNumber + ", monthName=" + monthName + ", days=" + days + "]";
@@ -163,7 +162,7 @@ public class ExpanderTestCase {
         MapperFacade mapper = mapperFactory.getMapperFacade();
         
         
-        List<FlatData> flatData = new ArrayList<FlatData>();
+        List<FlatData> flatData = new ArrayList<>();
         FlatData item = new FlatData();
         item.dayNumber = 1;
         item.dayOfWeek = "Monday";

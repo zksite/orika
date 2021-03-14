@@ -17,20 +17,18 @@
  */
 package ma.glasnost.orika.test.community;
 
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.test.MappingUtil;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.junit.Assert;
-
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.test.MappingUtil;
-
-import org.junit.Test;
 
 /**
  * Orika fails to map classes with lists which do not return internal references.
@@ -50,12 +48,12 @@ public class Issue69TestCase {
         MapperFacade mapper = factory.getMapperFacade();
         
         Source s = new Source();
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
         map.put("Kofi", "Annan");
         map.put("Julius", "Ceasar");
         s.setMap(map);
         
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
         list.add("apple");
         list.add("banana");
         s.setList(list);

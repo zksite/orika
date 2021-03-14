@@ -35,7 +35,7 @@ public class GuavaOptionalTestCase {
     private MapperFacade getMapperFacade() {
         final MapperFactory mapperFactory = MappingUtil.getMapperFactory(true);
         mapperFactory.getConverterFactory()
-                .registerConverter(new GuavaOptionalConverter<String, String>(TypeFactory.valueOf(String.class), TypeFactory.valueOf(String.class)));
+                .registerConverter(new GuavaOptionalConverter<>(TypeFactory.valueOf(String.class), TypeFactory.valueOf(String.class)));
         return mapperFactory.getMapperFacade();
     }
 

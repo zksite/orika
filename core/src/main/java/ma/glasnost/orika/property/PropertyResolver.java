@@ -17,8 +17,18 @@
  */
 package ma.glasnost.orika.property;
 
-import static java.lang.reflect.Modifier.isFinal;
-import static java.lang.reflect.Modifier.isStatic;
+import ma.glasnost.orika.MapEntry;
+import ma.glasnost.orika.MappingException;
+import ma.glasnost.orika.PropertyNotFoundException;
+import ma.glasnost.orika.constructor.ConstructorParameterResolver;
+import ma.glasnost.orika.metadata.ArrayElementProperty;
+import ma.glasnost.orika.metadata.ListElementProperty;
+import ma.glasnost.orika.metadata.MapKeyProperty;
+import ma.glasnost.orika.metadata.NestedElementProperty;
+import ma.glasnost.orika.metadata.NestedProperty;
+import ma.glasnost.orika.metadata.Property;
+import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.metadata.TypeFactory;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -37,18 +47,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import ma.glasnost.orika.MapEntry;
-import ma.glasnost.orika.MappingException;
-import ma.glasnost.orika.PropertyNotFoundException;
-import ma.glasnost.orika.constructor.ConstructorParameterResolver;
-import ma.glasnost.orika.metadata.ArrayElementProperty;
-import ma.glasnost.orika.metadata.ListElementProperty;
-import ma.glasnost.orika.metadata.MapKeyProperty;
-import ma.glasnost.orika.metadata.NestedElementProperty;
-import ma.glasnost.orika.metadata.NestedProperty;
-import ma.glasnost.orika.metadata.Property;
-import ma.glasnost.orika.metadata.Type;
-import ma.glasnost.orika.metadata.TypeFactory;
+import static java.lang.reflect.Modifier.isFinal;
+import static java.lang.reflect.Modifier.isStatic;
 
 /**
  * PropertyResolver defines the core functionality for resolving properties;
@@ -71,8 +71,8 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
     
     private final boolean includePublicFields;
     
-    private final Map<java.lang.reflect.Type, Map<String, Property>> propertiesCache = new ConcurrentHashMap<java.lang.reflect.Type, Map<String, Property>>();
-    private final Map<java.lang.reflect.Type, Map<String, Property>> inlinePropertiesCache = new ConcurrentHashMap<java.lang.reflect.Type, Map<String, Property>>();
+    private final Map<java.lang.reflect.Type, Map<String, Property>> propertiesCache = new ConcurrentHashMap<>();
+    private final Map<java.lang.reflect.Type, Map<String, Property>> inlinePropertiesCache = new ConcurrentHashMap<>();
     
     private final ConstructorParameterResolver constructorParamResolver = 
             new ConstructorParameterResolver();
@@ -102,7 +102,7 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
                 properties = propertiesCache.get(theType);
                 if (properties == null) {
                     
-                    properties = new LinkedHashMap<String, Property>();
+                    properties = new LinkedHashMap<>();
                     Type<?> referenceType;
                     
                     if (theType instanceof Type) {
@@ -120,10 +120,10 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
                      * definitions from an ancestor should not override those
                      * already defined.
                      */
-                    LinkedList<Class<? extends Object>> types = new LinkedList<Class<? extends Object>>();
-                    types.addFirst((Class<? extends Object>) referenceType.getRawType());
+                    LinkedList<Class<?>> types = new LinkedList<>();
+                    types.addFirst(referenceType.getRawType());
                     while (!types.isEmpty()) {
-                        Class<? extends Object> type = types.removeFirst();
+                        Class<?> type = types.removeFirst();
                         
                         collectProperties(type, referenceType, properties);
                         
@@ -131,7 +131,7 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
                             types.add(type.getSuperclass());
                         }
                         
-                        List<? extends Class<? extends Object>> interfaces = Arrays.<Class<? extends Object>> asList(type.getInterfaces());
+                        List<? extends Class<?>> interfaces = Arrays.asList(type.getInterfaces());
                         types.addAll(interfaces);
                     }
                     
@@ -479,7 +479,7 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
         
         Property property = null;
         java.lang.reflect.Type propertyType = type;
-        final List<Property> path = new ArrayList<Property>();
+        final List<Property> path = new ArrayList<>();
         final StringBuilder expression = new StringBuilder();
         Property container = owner;
         if (p.indexOf('.') != -1) {
@@ -504,7 +504,7 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
                 i++;
                 if (i < ps.length) {
                     path.add(property);
-                    expression.append(property.getExpression() + ".");
+                    expression.append(property.getExpression()).append(".");
                 } else {
                     expression.append(property.getExpression());
                 }
@@ -605,7 +605,7 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
         } else if (owningProperty.isCollection()) {
             elementType = owningProperty.getType().getNestedType(0);
             try {
-                int index = Integer.valueOf(elementPropertyExpression.replaceAll("[\\[\\]]", ""));
+                int index = Integer.parseInt(elementPropertyExpression.replaceAll("[\\[\\]]", ""));
                 elementProperty = new ListElementProperty(index, elementType, null); 
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("'" + p + "' is not a valid element property for " + type);
@@ -613,7 +613,7 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
         } else if (owningProperty.isArray()) {
             elementType = owningProperty.getType().getComponentType();
             try {
-                int index = Integer.valueOf(elementPropertyExpression);
+                int index = Integer.parseInt(elementPropertyExpression);
                 elementProperty = new ArrayElementProperty(index, elementType, null); 
             } catch (NumberFormatException e) {
                 throw new IllegalArgumentException("'" + p + "' is not a valid element property for " + type);
@@ -644,9 +644,7 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
     public boolean existsProperty(java.lang.reflect.Type type, String expr) {
         try {
             return getProperty(type, expr) != null;
-        } catch (PropertyNotFoundException e) {
-            return false;
-        } catch (IllegalArgumentException e) {
+        } catch (PropertyNotFoundException | IllegalArgumentException e) {
             return false;
         }
     }
@@ -699,7 +697,7 @@ public abstract class PropertyResolver implements PropertyResolverStrategy {
                     property = resolveInlineProperty(type, expr);
                     synchronized (type) {
                         if (inlinePoperties == null) {
-                            inlinePoperties = new HashMap<String, Property>(1);
+                            inlinePoperties = new HashMap<>(1);
                             inlinePropertiesCache.put(type, inlinePoperties);
                         }
                         inlinePoperties.put(property.getName(), property);

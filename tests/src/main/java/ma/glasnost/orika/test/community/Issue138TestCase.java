@@ -1,14 +1,13 @@
 package ma.glasnost.orika.test.community;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.ArrayList;
-
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Test;
+
+import java.util.ArrayList;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Mapping of Lists are not functioning correctly with fieldAToB.
@@ -33,7 +32,7 @@ public class Issue138TestCase {
         otto1.setFirstname("Otto");
         otto1.setLastname("McAllen");
         
-        ArrayList<Phone> phones = new ArrayList<Issue138TestCase.Phone>();
+        ArrayList<Phone> phones = new ArrayList<>();
         phones.add(new Phone((long) 15468));
         phones.add(new Phone((long) 99999));
         otto1.setPhones(phones);
@@ -48,7 +47,7 @@ public class Issue138TestCase {
         Person2 otto3 = new Person2();
         otto3.setForename("FreshOtto");
         otto3.setBackname("McFresh");
-        ArrayList<Long> phoneNumbers = new ArrayList<Long>();
+        ArrayList<Long> phoneNumbers = new ArrayList<>();
         phoneNumbers.add((long)11111);
         phoneNumbers.add((long)22222);
         otto3.setPhoneNumbers(phoneNumbers);
@@ -75,7 +74,7 @@ public class Issue138TestCase {
         otto1.setFirstname("Otto");
         otto1.setLastname("McAllen");
         
-        ArrayList<Phone> phones = new ArrayList<Issue138TestCase.Phone>();
+        ArrayList<Phone> phones = new ArrayList<>();
         phones.add(new Phone((long) 15468));
         phones.add(new Phone((long) 99999));
         otto1.setPhones(phones);
@@ -90,7 +89,7 @@ public class Issue138TestCase {
         Person2 otto3 = new Person2();
         otto3.setForename("FreshOtto");
         otto3.setBackname("McFresh");
-        ArrayList<Long> phoneNumbers = new ArrayList<Long>();
+        ArrayList<Long> phoneNumbers = new ArrayList<>();
         phoneNumbers.add((long)11111);
         phoneNumbers.add((long)22222);
         otto3.setPhoneNumbers(phoneNumbers);
@@ -99,7 +98,7 @@ public class Issue138TestCase {
         
         assertEquals(otto3.getForename(), otto4.getFirstname());
         assertEquals(otto3.getBackname(), otto4.getLastname());
-        phoneNumbers = new ArrayList<Long>();
+        phoneNumbers = new ArrayList<>();
         for (Phone phone: otto4.getPhones()) {
         	phoneNumbers.add(phone.getNumber());
         }

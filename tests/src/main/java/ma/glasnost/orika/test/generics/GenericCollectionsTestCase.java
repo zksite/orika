@@ -18,11 +18,6 @@
 
 package ma.glasnost.orika.test.generics;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -30,9 +25,13 @@ import ma.glasnost.orika.metadata.ClassMap;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeBuilder;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 
 public class GenericCollectionsTestCase {
     
@@ -63,7 +62,7 @@ public class GenericCollectionsTestCase {
     
     /* Task class for some Layer 1 */
     public static class TaskLayer1<P extends Person> {
-        private List<P> workers = new ArrayList<P>();
+        private List<P> workers = new ArrayList<>();
         
         public List<P> getWorkers() {
             return workers;
@@ -76,7 +75,7 @@ public class GenericCollectionsTestCase {
     
     /* Task class for some Layer 2 (mapped from TaskLayer1) */
     public static class TaskLayer2<P extends Person> {
-        private List<P> workers = new ArrayList<P>();
+        private List<P> workers = new ArrayList<>();
         
         public List<P> getWorkers() {
             return workers;
@@ -108,7 +107,7 @@ public class GenericCollectionsTestCase {
         
         Employee e = new Employee();
         e.setName("Name");
-        TaskLayer1<Employee> t1 = new TaskLayer1<Employee>();
+        TaskLayer1<Employee> t1 = new TaskLayer1<>();
         t1.setWorkers(Arrays.asList(e));
         
        
@@ -129,7 +128,7 @@ public class GenericCollectionsTestCase {
         
         Employee e = new Employee();
         e.setName("Name");
-        TaskLayer1<Employee> t1 = new TaskLayer1<Employee>();
+        TaskLayer1<Employee> t1 = new TaskLayer1<>();
         t1.setWorkers(Arrays.asList(e));
         
         Type<TaskLayer1<Employee>> sourceType = new TypeBuilder<TaskLayer1<Employee>>(){}.build();

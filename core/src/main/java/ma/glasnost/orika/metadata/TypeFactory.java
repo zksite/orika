@@ -23,7 +23,10 @@ import java.lang.ref.WeakReference;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.TypeVariable;
 import java.lang.reflect.WildcardType;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -46,7 +49,7 @@ public abstract class TypeFactory {
      * Use a weak-valued concurrent map to avoid keeping static references to
      * Types (classes) which may belong to descendant class-loaders
      */
-    private static final ConcurrentHashMap<TypeKey, WeakReference<Type<?>>> typeCache = new ConcurrentHashMap<TypeKey, WeakReference<Type<?>>>();
+    private static final ConcurrentHashMap<TypeKey, WeakReference<Type<?>>> typeCache = new ConcurrentHashMap<>();
 
     /**
      * The Type instance which represents the Object class
@@ -66,7 +69,7 @@ public abstract class TypeFactory {
             ParameterizedType genericSuper = (ParameterizedType) rawType.getGenericSuperclass();
             return valueOf(genericSuper);
         } else {
-            return intern(rawType, new java.lang.reflect.Type[0], new HashSet<java.lang.reflect.Type>());
+            return intern(rawType, new java.lang.reflect.Type[0], new HashSet<>());
         }
     }
 
@@ -97,7 +100,7 @@ public abstract class TypeFactory {
         if (rawType == null) {
             return null;
         } else {
-            return intern(rawType, actualTypeArguments, new HashSet<java.lang.reflect.Type>());
+            return intern(rawType, actualTypeArguments, new HashSet<>());
         }
     }
 
@@ -134,7 +137,7 @@ public abstract class TypeFactory {
     public static <T> Type<T> valueOf(final TypeVariable<?> var) {
 
         if (var.getBounds().length > 0) {
-            Set<Type<?>> bounds = new HashSet<Type<?>>(var.getBounds().length);
+            Set<Type<?>> bounds = new HashSet<>(var.getBounds().length);
             for (int i = 0, len = var.getBounds().length; i < len; ++i) {
                 java.lang.reflect.Type bound = var.getBounds()[i];
                 if (isBoundCycleGenerics(var, bound)) {
@@ -169,7 +172,7 @@ public abstract class TypeFactory {
     @SuppressWarnings("unchecked")
     public static <T> Type<T> valueOf(final WildcardType var) {
 
-        Set<Type<?>> bounds = new HashSet<Type<?>>(var.getUpperBounds().length + var.getLowerBounds().length);
+        Set<Type<?>> bounds = new HashSet<>(var.getUpperBounds().length + var.getLowerBounds().length);
         for (int i = 0, len = var.getUpperBounds().length; i < len; ++i) {
             bounds.add(valueOf(var.getUpperBounds()[i]));
         }
@@ -217,7 +220,7 @@ public abstract class TypeFactory {
             return null;
         } else {
             java.lang.reflect.Type[] actualTypeArguments = TypeUtil.resolveActualTypeArguments(type, referenceType);
-            return intern((Class<T>) type.getRawType(), actualTypeArguments, new HashSet<java.lang.reflect.Type>());
+            return intern((Class<T>) type.getRawType(), actualTypeArguments, new HashSet<>());
         }
     }
 
@@ -332,7 +335,7 @@ public abstract class TypeFactory {
     static <T> Type<T> limitedValueOf(final TypeVariable<?> var, final Set<java.lang.reflect.Type> recursiveBounds) {
 
         if (var.getBounds().length > 0) {
-            Set<Type<?>> bounds = new HashSet<Type<?>>(var.getBounds().length);
+            Set<Type<?>> bounds = new HashSet<>(var.getBounds().length);
             for (int i = 0, len = var.getBounds().length; i < len; ++i) {
                 bounds.add(limitedValueOf(var.getBounds()[i], recursiveBounds));
             }
@@ -354,7 +357,7 @@ public abstract class TypeFactory {
     @SuppressWarnings("unchecked")
     private static <T> Type<T> limitedValueOf(final WildcardType var, final Set<java.lang.reflect.Type> recursiveBounds) {
 
-        Set<Type<?>> bounds = new HashSet<Type<?>>(var.getUpperBounds().length + var.getLowerBounds().length);
+        Set<Type<?>> bounds = new HashSet<>(var.getUpperBounds().length + var.getLowerBounds().length);
         for (int i = 0, len = var.getUpperBounds().length; i < len; ++i) {
             bounds.add(limitedValueOf(var.getUpperBounds()[i], recursiveBounds));
         }
@@ -403,9 +406,7 @@ public abstract class TypeFactory {
      */
     private static Type<?> refineBounds(Set<Type<?>> bounds) {
         Type<?> currentMostSpecific = null;
-        Iterator<Type<?>> currentBoundIter = bounds.iterator();
-        while (currentBoundIter.hasNext()) {
-            Type<?> currentBound = currentBoundIter.next();
+        for (Type<?> currentBound : bounds) {
             if (currentMostSpecific == null) {
                 currentMostSpecific = currentBound;
             } else {
@@ -449,7 +450,7 @@ public abstract class TypeFactory {
                 }
                 if (typeResult == null) {
                     typeResult = createType(key, rawType, convertedArguments);
-                    mapped = new WeakReference<Type<?>>(typeResult);
+                    mapped = new WeakReference<>(typeResult);
                     WeakReference<Type<?>> existing = typeCache.putIfAbsent(key, mapped);
                     if (existing != null) {
                         if (existing.get() == null) {
@@ -476,12 +477,12 @@ public abstract class TypeFactory {
     private static <T> Type<T> createType(TypeKey key, Class<T> rawType, Type<?>[] typeArguments) {
         Map<String, Type<?>> typesByVariable = null;
         if (typeArguments.length > 0) {
-            typesByVariable = new HashMap<String, Type<?>>(typeArguments.length);
+            typesByVariable = new HashMap<>(typeArguments.length);
             for (int i = 0, len = typeArguments.length; i < len; ++i) {
                 typesByVariable.put(rawType.getTypeParameters()[i].getName(), typeArguments[i]);
             }
         }
-        return new Type<T>(key, rawType, typesByVariable, typeArguments);
+        return new Type<>(key, rawType, typesByVariable, typeArguments);
     }
 
 }

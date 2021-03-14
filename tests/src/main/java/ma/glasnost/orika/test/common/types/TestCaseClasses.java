@@ -24,15 +24,15 @@ import java.util.Objects;
 
 public interface TestCaseClasses {
 
-    public class PrimitiveHolder {
-    	private short shortValue;
-    	private int intValue;
-    	private long longValue;
-    	private float floatValue;
-    	private double doubleValue;
-    	private char charValue;
-    	private boolean booleanValue;
-    	private byte byteValue;
+    class PrimitiveHolder {
+    	private final short shortValue;
+    	private final int intValue;
+    	private final long longValue;
+    	private final float floatValue;
+    	private final double doubleValue;
+    	private final char charValue;
+    	private final boolean booleanValue;
+    	private final byte byteValue;
 		
     	public PrimitiveHolder(short shortValue, int intValue, long longValue,
 				float floatValue, double doubleValue, char charValue, boolean booleanValue, byte byteValue) {
@@ -108,7 +108,7 @@ public interface TestCaseClasses {
 		}
     }	
     
-    public class PrimitiveHolderDTO {
+    class PrimitiveHolderDTO {
     	private short shortValue;
     	private int intValue;
     	private long longValue;
@@ -193,15 +193,15 @@ public interface TestCaseClasses {
 		}
     }
     
-    public class PrimitiveWrapperHolder {
-    	private Short shortValue;
-    	private Integer intValue;
-    	private Long longValue;
-    	private Float floatValue;
-    	private Double doubleValue;
-    	private Character charValue;
-    	private Boolean booleanValue;
-    	private Byte byteValue;
+    class PrimitiveWrapperHolder {
+    	private final Short shortValue;
+    	private final Integer intValue;
+    	private final Long longValue;
+    	private final Float floatValue;
+    	private final Double doubleValue;
+    	private final Character charValue;
+    	private final Boolean booleanValue;
+    	private final Byte byteValue;
 		
     	public PrimitiveWrapperHolder(Short shortValue, Integer intValue,
 				Long longValue, Float floatValue, Double doubleValue,
@@ -278,7 +278,7 @@ public interface TestCaseClasses {
 		}
     }
     
-    public class PrimitiveWrapperHolderDTO {
+    class PrimitiveWrapperHolderDTO {
     	private Short shortValue;
     	private Integer intValue;
     	private Long longValue;
@@ -364,26 +364,26 @@ public interface TestCaseClasses {
 		}
     }
  
-	public interface Book {
+	interface Book {
 		
-		public String getTitle();
-		public Author getAuthor();
+		String getTitle();
+		Author getAuthor();
 
 	}
 	
-	public interface Author {
+	interface Author {
 
-		public String getName();
+		String getName();
 		
 	}
 	
-	public interface Library {
+	interface Library {
 		
-		public String getTitle();
-		public List<Book> getBooks();
+		String getTitle();
+		List<Book> getBooks();
 	}
 	
-	public class BookImpl implements Book {
+	class BookImpl implements Book {
 
 		private final String title;
 		private final Author author;
@@ -421,7 +421,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class AuthorImpl implements Author {
+	class AuthorImpl implements Author {
 
 		private final String name;
 
@@ -453,7 +453,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class AuthorNested {
+	class AuthorNested {
 		
 		private final Name name;
 		
@@ -485,7 +485,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class Name {
+	class Name {
 		private final String firstName;
 		private final String lastName;
 		
@@ -525,10 +525,10 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class LibraryNested {
+	class LibraryNested {
 		
-		private String title;
-		private List<BookNested> books;
+		private final String title;
+		private final List<BookNested> books;
 		
 		
 		public LibraryNested(String title, List<BookNested> books) {
@@ -564,9 +564,9 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class BookNested {
-		private String title;
-		private AuthorNested author;
+	class BookNested {
+		private final String title;
+		private final AuthorNested author;
 		
 		public BookNested(String title, AuthorNested author) {
 			super();
@@ -602,7 +602,7 @@ public interface TestCaseClasses {
 		
 	}
 	
-	public class LibraryImpl implements Library {
+	class LibraryImpl implements Library {
 		
 		private final String title;
 		private List<Book> books;
@@ -619,7 +619,7 @@ public interface TestCaseClasses {
 
 		public List<Book> getBooks() {
 			if (books==null) {
-				books = new ArrayList<Book>();
+				books = new ArrayList<>();
 			}
 			return books;
 		}
@@ -647,7 +647,7 @@ public interface TestCaseClasses {
 
 	
 	
-	public class AuthorDTO {
+	class AuthorDTO {
 		
 		private String name;
 		private String additionalValue;
@@ -688,7 +688,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class BookDTO {
+	class BookDTO {
 
 		private String title;
 		private AuthorDTO author;
@@ -739,7 +739,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class LibraryDTO {
+	class LibraryDTO {
 		
 		private String title;
 		private List<BookDTO> books;
@@ -763,7 +763,7 @@ public interface TestCaseClasses {
 
 		public List<BookDTO> getBooks() {
 			if (books==null) {
-				books = new ArrayList<BookDTO>();
+				books = new ArrayList<>();
 			}
 			return books;
 		}
@@ -790,7 +790,7 @@ public interface TestCaseClasses {
 	}
 
 	
-	public class AuthorMyDTO {
+	class AuthorMyDTO {
 	
 		private String name;
 		private String additionalValue;
@@ -831,7 +831,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class BookMyDTO {
+	class BookMyDTO {
 
 		private String title;
 		private AuthorMyDTO author;
@@ -882,7 +882,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class LibraryMyDTO {
+	class LibraryMyDTO {
 		
 		private String title;
 		private List<BookMyDTO> books;
@@ -906,7 +906,7 @@ public interface TestCaseClasses {
 
 		public List<BookMyDTO> getMyBooks() {
 			if (books==null) {
-				books = new ArrayList<BookMyDTO>();
+				books = new ArrayList<>();
 			}
 			return books;
 		}

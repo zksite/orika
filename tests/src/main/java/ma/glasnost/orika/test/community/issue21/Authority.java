@@ -17,8 +17,6 @@
  */
 package ma.glasnost.orika.test.community.issue21;
 
-import ma.glasnost.orika.test.community.issue21.BaseEntity;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
@@ -41,7 +39,7 @@ public class Authority extends BaseEntity {
 
   public Authority(String name) {
     this.name = name;
-    children = new HashSet<Authority>();
+    children = new HashSet<>();
   }
 
   @Column(unique = true)

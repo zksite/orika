@@ -17,18 +17,17 @@
  */
 package ma.glasnost.orika.test.community;
 
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.is;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.metadata.ClassMapBuilder;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-import ma.glasnost.orika.metadata.ClassMapBuilder;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
 
 /**
  * NoSuchElementException mapping empty lists.
@@ -46,7 +45,7 @@ public class Issue18TestCase {
 		
 		MapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
 		mapperFactory.registerClassMap(ClassMapBuilder.map(Object.class,Object.class).byDefault().toClassMap());
-		List<Object> listA = new ArrayList<Object>();
+		List<Object> listA = new ArrayList<>();
 		List<Object> listB = mapperFactory.getMapperFacade().mapAsList(listA, Object.class);
 		
 		Assert.assertNotNull(listB);

@@ -25,6 +25,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * DateToStringConverter provides custom conversion from String values to and
@@ -41,7 +42,7 @@ public class DateToStringConverter extends BidirectionalConverter<Date, String> 
     
     private final String pattern;
     private final Locale locale;
-    private final ThreadLocal<SimpleDateFormat> dateFormats = new ThreadLocal<SimpleDateFormat>();
+    private final ThreadLocal<SimpleDateFormat> dateFormats = new ThreadLocal<>();
     
     /**
      * @return a SimpleDateFormat instance safe for use in the current thread
@@ -97,8 +98,8 @@ public class DateToStringConverter extends BidirectionalConverter<Date, String> 
 
         DateToStringConverter that = (DateToStringConverter) o;
 
-        if (pattern != null ? !pattern.equals(that.pattern) : that.pattern != null) return false;
-        return locale != null ? locale.equals(that.locale) : that.locale == null;
+        if (!Objects.equals(pattern, that.pattern)) return false;
+        return Objects.equals(locale, that.locale);
 
     }
 

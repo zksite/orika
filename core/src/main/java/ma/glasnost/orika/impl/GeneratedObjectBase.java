@@ -18,13 +18,6 @@
 
 package ma.glasnost.orika.impl;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.Converter;
 import ma.glasnost.orika.Filter;
@@ -32,6 +25,13 @@ import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.MappingStrategy;
 import ma.glasnost.orika.metadata.Type;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 public abstract class GeneratedObjectBase {
     
@@ -82,7 +82,7 @@ public abstract class GeneratedObjectBase {
     }
     
     protected static <T> List<T> asList(Iterable<T> iterable) {
-        ArrayList<T> ts = new ArrayList<T>();
+        ArrayList<T> ts = new ArrayList<>();
         for (T i : iterable) {
             ts.add(i);
         }
@@ -90,15 +90,11 @@ public abstract class GeneratedObjectBase {
     }
     
     protected static List<Object> asList(Object[] iterable) {
-        ArrayList<Object> ts = new ArrayList<Object>();
-        for (Object i : iterable) {
-            ts.add(i);
-        }
-        return ts;
+        return new ArrayList<>(Arrays.asList(iterable));
     }
     
     protected static List<Object> asList(byte[] iterable) {
-        ArrayList<Object> ts = new ArrayList<Object>();
+        ArrayList<Object> ts = new ArrayList<>();
         for (Object i : iterable) {
             ts.add(i);
         }
@@ -106,7 +102,7 @@ public abstract class GeneratedObjectBase {
     }
     
     protected static List<Object> asList(int[] iterable) {
-        ArrayList<Object> ts = new ArrayList<Object>();
+        ArrayList<Object> ts = new ArrayList<>();
         for (Object i : iterable) {
             ts.add(i);
         }
@@ -114,7 +110,7 @@ public abstract class GeneratedObjectBase {
     }
     
     protected static List<Object> asList(char[] iterable) {
-        ArrayList<Object> ts = new ArrayList<Object>();
+        ArrayList<Object> ts = new ArrayList<>();
         for (Object i : iterable) {
             ts.add(i);
         }
@@ -122,7 +118,7 @@ public abstract class GeneratedObjectBase {
     }
     
     protected static List<Object> asList(long[] iterable) {
-        ArrayList<Object> ts = new ArrayList<Object>();
+        ArrayList<Object> ts = new ArrayList<>();
         for (Object i : iterable) {
             ts.add(i);
         }
@@ -130,7 +126,7 @@ public abstract class GeneratedObjectBase {
     }
     
     protected static List<Object> asList(float[] iterable) {
-        ArrayList<Object> ts = new ArrayList<Object>();
+        ArrayList<Object> ts = new ArrayList<>();
         for (Object i : iterable) {
             ts.add(i);
         }
@@ -138,7 +134,7 @@ public abstract class GeneratedObjectBase {
     }
     
     protected static List<Object> asList(double[] iterable) {
-        ArrayList<Object> ts = new ArrayList<Object>();
+        ArrayList<Object> ts = new ArrayList<>();
         for (Object i : iterable) {
             ts.add(i);
         }
@@ -146,7 +142,7 @@ public abstract class GeneratedObjectBase {
     }
     
     protected static List<Object> asList(boolean[] iterable) {
-        ArrayList<Object> ts = new ArrayList<Object>();
+        ArrayList<Object> ts = new ArrayList<>();
         for (Object i : iterable) {
             ts.add(i);
         }
@@ -154,7 +150,7 @@ public abstract class GeneratedObjectBase {
     }
     
     protected static List<Object> asList(short[] iterable) {
-        ArrayList<Object> ts = new ArrayList<Object>();
+        ArrayList<Object> ts = new ArrayList<>();
         for (Object i : iterable) {
             ts.add(i);
         }
@@ -306,9 +302,8 @@ public abstract class GeneratedObjectBase {
     public static boolean[] booleanArray(Collection<Boolean> collection) {
         boolean[] primitives = new boolean[collection.size()];
         int index = -1;
-        Iterator<Boolean> iter = collection.iterator();
-        while (iter.hasNext()) {
-            primitives[++index] = iter.next();
+        for (Boolean aBoolean : collection) {
+            primitives[++index] = aBoolean;
         }
         return primitives;
     }
@@ -316,9 +311,8 @@ public abstract class GeneratedObjectBase {
     public static byte[] byteArray(Collection<Byte> collection) {
         byte[] primitives = new byte[collection.size()];
         int index = -1;
-        Iterator<Byte> iter = collection.iterator();
-        while (iter.hasNext()) {
-            primitives[++index] = iter.next().byteValue();
+        for (Byte aByte : collection) {
+            primitives[++index] = aByte;
         }
         return primitives;
     }
@@ -326,9 +320,8 @@ public abstract class GeneratedObjectBase {
     public static char[] charArray(Collection<Character> collection) {
         char[] primitives = new char[collection.size()];
         int index = -1;
-        Iterator<Character> iter = collection.iterator();
-        while (iter.hasNext()) {
-            primitives[++index] = iter.next().charValue();
+        for (Character character : collection) {
+            primitives[++index] = character;
         }
         return primitives;
     }
@@ -336,9 +329,8 @@ public abstract class GeneratedObjectBase {
     public static short[] shortArray(Collection<Short> collection) {
         short[] primitives = new short[collection.size()];
         int index = -1;
-        Iterator<Short> iter = collection.iterator();
-        while (iter.hasNext()) {
-            primitives[++index] = iter.next().shortValue();
+        for (Short aShort : collection) {
+            primitives[++index] = aShort;
         }
         return primitives;
     }
@@ -346,9 +338,8 @@ public abstract class GeneratedObjectBase {
     public static int[] intArray(Collection<Integer> collection) {
         int[] primitives = new int[collection.size()];
         int index = -1;
-        Iterator<Integer> iter = collection.iterator();
-        while (iter.hasNext()) {
-            primitives[++index] = iter.next().intValue();
+        for (Integer integer : collection) {
+            primitives[++index] = integer;
         }
         return primitives;
     }
@@ -356,9 +347,8 @@ public abstract class GeneratedObjectBase {
     public static long[] longArray(Collection<Long> collection) {
         long[] primitives = new long[collection.size()];
         int index = -1;
-        Iterator<Long> iter = collection.iterator();
-        while (iter.hasNext()) {
-            primitives[++index] = iter.next().longValue();
+        for (Long aLong : collection) {
+            primitives[++index] = aLong;
         }
         return primitives;
     }
@@ -366,9 +356,8 @@ public abstract class GeneratedObjectBase {
     public static float[] floatArray(Collection<Float> collection) {
         float[] primitives = new float[collection.size()];
         int index = -1;
-        Iterator<Float> iter = collection.iterator();
-        while (iter.hasNext()) {
-            primitives[++index] = iter.next().floatValue();
+        for (Float aFloat : collection) {
+            primitives[++index] = aFloat;
         }
         return primitives;
     }
@@ -376,9 +365,8 @@ public abstract class GeneratedObjectBase {
     public static double[] doubleArray(Collection<Double> collection) {
         double[] primitives = new double[collection.size()];
         int index = -1;
-        Iterator<Double> iter = collection.iterator();
-        while (iter.hasNext()) {
-            primitives[++index] = iter.next().doubleValue();
+        for (Double aDouble : collection) {
+            primitives[++index] = aDouble;
         }
         return primitives;
     }
@@ -390,7 +378,7 @@ public abstract class GeneratedObjectBase {
      * @param array the array to receive the elements of the list
      */
     public static void listToArray(List<?> list, Object[] array) {
-        list.toArray((Object[]) array);
+        list.toArray(array);
     }
     
     /**
@@ -418,15 +406,13 @@ public abstract class GeneratedObjectBase {
         try {
             Map<K, V> map = (Map<K, V>) mapClass.newInstance();
             for (Map.Entry<K, V> entry: (List<Map.Entry<K, V>>)entries) {
-                ((Map<K,V>)map).put(entry.getKey(), entry.getValue());
+                map.put(entry.getKey(), entry.getValue());
             }
             return map;
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
-        
+
     }
     
     /**
@@ -438,7 +424,7 @@ public abstract class GeneratedObjectBase {
     @SuppressWarnings("unchecked")
     public static <K,V> void listToMap(List<?> entries, Map<K, V> map) {
         for (Map.Entry<K, V> entry: (List<Map.Entry<K, V>>)entries) {
-            ((Map<K,V>)map).put(entry.getKey(), entry.getValue());
+            map.put(entry.getKey(), entry.getValue());
         }
     }
 }

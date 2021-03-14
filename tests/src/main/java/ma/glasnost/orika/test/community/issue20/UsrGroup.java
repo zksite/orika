@@ -17,12 +17,11 @@
  */
 package ma.glasnost.orika.test.community.issue20;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Dmitriy Khomyakov
@@ -40,7 +39,7 @@ public class UsrGroup extends BaseEntity {
 
   public UsrGroup(String name) {
     this.name = name;
-    users = new HashSet<User>();
+    users = new HashSet<>();
   }
 
   public String getName() {

@@ -1,12 +1,12 @@
 package ma.glasnost.orika.test.objectfactory;
 
-import java.lang.reflect.Constructor;
-
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.ObjectFactory;
 
+import java.lang.reflect.Constructor;
+
 public class CustomFactory<T> implements ObjectFactory<T> {
-	private Class<T> type;
+	private final Class<T> type;
 
 	public CustomFactory(Class<T> type) {
 		this.type = type;

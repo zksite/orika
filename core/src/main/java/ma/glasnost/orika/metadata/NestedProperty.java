@@ -18,11 +18,11 @@
 
 package ma.glasnost.orika.metadata;
 
+import ma.glasnost.orika.property.PropertyResolver;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import ma.glasnost.orika.property.PropertyResolver;
 
 /**
  * NestedProperty represents a property which is accessed by
@@ -47,7 +47,7 @@ public class NestedProperty extends Property {
     }
     
     private static Property[] collapse(Property[] primaryPath, Property[] path) {
-        List<Property> collapsed = new ArrayList<Property>();
+        List<Property> collapsed = new ArrayList<>();
         collapsed.addAll(Arrays.asList(path));
         collapsed.addAll(Arrays.asList(primaryPath));
         int i = 0;
@@ -112,7 +112,7 @@ public class NestedProperty extends Property {
      */
     static class Builder extends Property.Builder {
 
-        private Property.Builder parent;
+        private final Property.Builder parent;
         
         /**
          * @param parent

@@ -17,14 +17,13 @@
  */
 package ma.glasnost.orika.test.community;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
-
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Orika maps enum to enum, but not List&lt;enum&gt; to List&lt;enum&gt;.
@@ -42,7 +41,7 @@ public class Issue71TestCase {
             final MapperFacade mapper = mapperFactory.getMapperFacade();
 
             final A a = new A();
-            final List<MyEnum> myEnumList = new ArrayList<MyEnum>();
+            final List<MyEnum> myEnumList = new ArrayList<>();
             myEnumList.add(MyEnum.foo);
             a.setMyEnum(myEnumList);
             mapper.map(a, A2.class);

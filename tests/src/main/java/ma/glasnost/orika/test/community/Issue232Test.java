@@ -26,7 +26,7 @@ public class Issue232Test {
     @Test
     public void test_map_to_map_with_filter() {
         FirstClassWithMap firstMap = new FirstClassWithMap();
-        firstMap.setMap(new HashMap<String, String>());
+        firstMap.setMap(new HashMap<>());
         firstMap.getMap().put("A", "1");
 
         SecondClassWithMap transformed = mapperFactory.getMapperFacade().map(firstMap, SecondClassWithMap.class);

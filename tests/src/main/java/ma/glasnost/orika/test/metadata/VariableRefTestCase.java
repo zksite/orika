@@ -18,26 +18,25 @@
 
 package ma.glasnost.orika.test.metadata;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import ma.glasnost.orika.impl.UtilityResolver;
+import ma.glasnost.orika.metadata.Property;
 import org.junit.Assert;
 import org.junit.Test;
 
-import ma.glasnost.orika.impl.UtilityResolver;
-import ma.glasnost.orika.metadata.Property;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VariableRefTestCase {
     
     
     public static class Year {
         public int yearNumber;
-        public List<Month> months = new ArrayList<Month>();
+        public List<Month> months = new ArrayList<>();
     }
     
     public static class Month {
         public int monthNumber;
-        public List<Day> days = new ArrayList<Day>();
+        public List<Day> days = new ArrayList<>();
     }
     
     public static class Day {

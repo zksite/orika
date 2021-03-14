@@ -18,11 +18,11 @@
 
 package ma.glasnost.orika.impl.generator;
 
+import ma.glasnost.orika.Filter;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import ma.glasnost.orika.Filter;
 
 /**
  * 
@@ -31,7 +31,7 @@ import ma.glasnost.orika.Filter;
  */
 public class UsedFiltersContext {
     
-    private Map<Filter<Object, Object>,Integer> usedFilters = new HashMap<Filter<Object, Object>,Integer>();
+    private final Map<Filter<Object, Object>,Integer> usedFilters = new HashMap<>();
     private int usedTypeIndex = 0;
     
     /**
@@ -46,7 +46,7 @@ public class UsedFiltersContext {
         }
         Integer index = usedFilters.get(filter);
         if (index == null) {
-            index = Integer.valueOf(usedTypeIndex++);
+            index = usedTypeIndex++;
             usedFilters.put((Filter<Object, Object>)filter, index);
         }
         return index;

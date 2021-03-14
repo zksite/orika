@@ -32,7 +32,7 @@ public class ToStringConverter extends BuiltinCustomConverter<Object, Object> {
         return destinationType.isString();
     }
     
-    public Object convert(Object source, Type<? extends Object> destinationType, MappingContext context) {
+    public Object convert(Object source, Type<?> destinationType, MappingContext context) {
         return "" + source;
     }
 }

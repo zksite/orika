@@ -1,14 +1,9 @@
 package ma.glasnost.orika.test.unenhance.inheritance2;
 
-import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.unenhance.HibernateUnenhanceStrategy;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
@@ -20,6 +15,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author Sergey Vasilyev
@@ -45,7 +44,7 @@ public class HibernateProxyTestCase {
     public void setup() {
         RoomEntity room = new RoomEntity();
         
-        Set<PersonEntity> tenants = new HashSet<PersonEntity>();
+        Set<PersonEntity> tenants = new HashSet<>();
         
         OwnerEntity john = new OwnerEntity();
         john.setName("John");

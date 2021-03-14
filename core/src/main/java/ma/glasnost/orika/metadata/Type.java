@@ -31,7 +31,17 @@ import java.net.Inet6Address;
 import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URL;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Currency;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -61,7 +71,7 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
     private final Class<T> rawType;
     private final Type<?>[] actualTypeArguments;
     private final boolean isParameterized;
-    private Map<String, Type<?>> typesByVariable;
+    private final Map<String, Type<?>> typesByVariable;
     private volatile Type<?> superType;
     private volatile Type<?>[] interfaces;
     private Type<?> componentType;
@@ -73,7 +83,7 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
     private static final Set<Class<?>> IMMUTABLE_TYPES;
     
     static {
-        Set<Class<?>> tmpPrimitiveWrapperTypes = new HashSet<Class<?>>();
+        Set<Class<?>> tmpPrimitiveWrapperTypes = new HashSet<>();
         tmpPrimitiveWrapperTypes.add(Byte.class);
         tmpPrimitiveWrapperTypes.add(Short.class);
         tmpPrimitiveWrapperTypes.add(Integer.class);
@@ -84,7 +94,7 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
         tmpPrimitiveWrapperTypes.add(Double.class);
         PRIMITIVE_WRAPPER_TYPES = Collections.unmodifiableSet(tmpPrimitiveWrapperTypes);
         
-        Set<Class<?>> tmpPrimitiveTypes = new HashSet<Class<?>>();
+        Set<Class<?>> tmpPrimitiveTypes = new HashSet<>();
         tmpPrimitiveTypes.add(Byte.TYPE);
         tmpPrimitiveTypes.add(Short.TYPE);
         tmpPrimitiveTypes.add(Integer.TYPE);
@@ -94,7 +104,7 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
         tmpPrimitiveTypes.add(Float.TYPE);
         tmpPrimitiveTypes.add(Double.TYPE);
         
-        Set<Class<?>> tmpImmutableJdk6Types = new HashSet<Class<?>>();
+        Set<Class<?>> tmpImmutableJdk6Types = new HashSet<>();
         tmpImmutableJdk6Types.add(String.class);
         tmpImmutableJdk6Types.add(BigDecimal.class);
         tmpImmutableJdk6Types.add(BigInteger.class);
@@ -108,7 +118,7 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
         tmpImmutableJdk6Types.add(InetSocketAddress.class);
         tmpImmutableJdk6Types.add(Currency.class);
         
-        Set<Class<?>> tmpImmutableJdk8Types = new HashSet<Class<?>>();
+        Set<Class<?>> tmpImmutableJdk8Types = new HashSet<>();
         // TemporalAccessor
         addClassIfExists(tmpImmutableJdk8Types, "java.time.Instant");
         addClassIfExists(tmpImmutableJdk8Types, "java.time.LocalDate");
@@ -130,7 +140,7 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
         addClassIfExists(tmpImmutableJdk8Types, "java.time.Duration");
         addClassIfExists(tmpImmutableJdk8Types, "java.time.Period");
         
-        Set<Class<?>> tmpImmutableTypes = new HashSet<Class<?>>();
+        Set<Class<?>> tmpImmutableTypes = new HashSet<>();
         tmpImmutableTypes.addAll(tmpPrimitiveWrapperTypes);
         tmpImmutableTypes.addAll(tmpPrimitiveTypes);
         tmpImmutableTypes.addAll(tmpImmutableJdk6Types);
@@ -192,7 +202,7 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
         } else if (ancestor == null) {
             resolvedType = TypeFactory.TYPE_OF_OBJECT;
         } else {
-            throw new IllegalStateException("super-type of " + this.toString() + " is neither Class, nor ParameterizedType, but "
+            throw new IllegalStateException("super-type of " + this + " is neither Class, nor ParameterizedType, but "
                     + ancestor);
         }
         return resolvedType;
@@ -471,7 +481,7 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
     private Type<?> findInterface(final Class<?> theInterface) {
         
         Type<?> theInterfaceType = null;
-        LinkedList<Type<?>> types = new LinkedList<Type<?>>();
+        LinkedList<Type<?>> types = new LinkedList<>();
         types.add(this);
         while (theInterfaceType == null && !types.isEmpty()) {
             
@@ -515,9 +525,7 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
         try {
             rawType.getMethod("valueOf", String.class);
             return true;
-        } catch (NoSuchMethodException e) {
-            return false;
-        } catch (SecurityException e) {
+        } catch (NoSuchMethodException | SecurityException e) {
             return false;
         }
     }
@@ -533,7 +541,7 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
         if (actualTypeArguments.length > 0) {
             stringValue.append("<");
             for (java.lang.reflect.Type arg : actualTypeArguments) {
-                stringValue.append("" + arg + ", ");
+                stringValue.append("").append(arg).append(", ");
             }
             stringValue.setLength(stringValue.length() - 2);
             stringValue.append(">");
@@ -548,7 +556,7 @@ public final class Type<T> implements ParameterizedType, Comparable<Type<?>> {
         if (actualTypeArguments.length > 0) {
             stringValue.append("<");
             for (java.lang.reflect.Type arg : actualTypeArguments) {
-                stringValue.append("" + arg + ", ");
+                stringValue.append("").append(arg).append(", ");
             }
             stringValue.setLength(stringValue.length() - 2);
             stringValue.append(">");

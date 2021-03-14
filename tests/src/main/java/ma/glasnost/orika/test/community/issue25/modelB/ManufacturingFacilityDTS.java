@@ -38,7 +38,7 @@ public  class ManufacturingFacilityDTS implements Serializable {
 		this.manufacturingfacility = manufacturingfacility;
 	}
 	public List<AddressDTO> getAddressL() {
-		return (addressL == null ? addressL = new ArrayList<AddressDTO>() : addressL);
+		return (addressL == null ? addressL = new ArrayList<>() : addressL);
 	}
 	public void setAddressL(List<AddressDTO> addressL) {
 		this.addressL = addressL;

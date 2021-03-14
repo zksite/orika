@@ -17,27 +17,25 @@
  */
 package ma.glasnost.orika.test.perf;
 
-import java.io.File;
-import java.lang.ref.SoftReference;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.List;
-
 import ma.glasnost.orika.DefaultFieldMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingException;
 import ma.glasnost.orika.impl.generator.EclipseJdtCompiler;
-import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.test.MappingUtil;
 import ma.glasnost.orika.test.MavenProjectUtil;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.Author;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.Book;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.Library;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.LibraryMyDTO;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.File;
+import java.lang.ref.SoftReference;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
@@ -110,7 +108,7 @@ public class ClassLoaderLeakageTestCase {
 		Library lib = createLibrary(hiddenLibraryType);
 		lib.getBooks().add(book);
 
-		SoftReference<ClassLoader> ref = new SoftReference<ClassLoader>(
+		SoftReference<ClassLoader> ref = new SoftReference<>(
 				childLoader);
 
 		book = null;
@@ -148,20 +146,15 @@ public class ClassLoaderLeakageTestCase {
 		/**
 		 * This sample hint converts "myProperty" to "property", and vis-versa.
 		 */
-		new DefaultFieldMapper() {
-
-			public String suggestMappedField(String fromProperty,
-					Type<?> fromPropertyType) {
-				if (fromProperty.startsWith("my")) {
-					return fromProperty.substring(2, 3).toLowerCase()
-							+ fromProperty.substring(3);
-				} else {
-					return "my" + fromProperty.substring(0, 1).toUpperCase()
-							+ fromProperty.substring(1);
-				}
-			}
-
-		};
+				(fromProperty, fromPropertyType) -> {
+					if (fromProperty.startsWith("my")) {
+						return fromProperty.substring(2, 3).toLowerCase()
+								+ fromProperty.substring(3);
+					} else {
+						return "my" + fromProperty.substring(0, 1).toUpperCase()
+								+ fromProperty.substring(1);
+					}
+				};
 		factory.registerDefaultFieldMapper(fieldDefault);
 
 		MapperFacade mapper = factory.getMapperFacade();
@@ -224,7 +217,7 @@ public class ClassLoaderLeakageTestCase {
 
 			// Now, set the soft reference before our hard references go out of
 			// scope
-			childLoaderRef = new SoftReference<ClassLoader>(childLoader);
+			childLoaderRef = new SoftReference<>(childLoader);
 
 			book = null;
 			lib = null;
@@ -310,7 +303,7 @@ public class ClassLoaderLeakageTestCase {
 
 			// Now, set the soft reference before our hard references go out of
 			// scope
-			childLoaderRef = new SoftReference<ClassLoader>(childLoader);
+			childLoaderRef = new SoftReference<>(childLoader);
 
 			runnerType = null;
 			childLoader = null;
@@ -336,8 +329,8 @@ public class ClassLoaderLeakageTestCase {
 	 */
 	private synchronized void forceClearSoftAndWeakReferences() {
 
-		SoftReference<Object> checkReference = new SoftReference<Object>(new Object());
-		List<byte[]> byteBucket = new ArrayList<byte[]>();
+		SoftReference<Object> checkReference = new SoftReference<>(new Object());
+		List<byte[]> byteBucket = new ArrayList<>();
 		try {
 			for (int i = 0; i < Integer.MAX_VALUE; ++i) {
 				int available = (int) Math.min((long) Integer.MAX_VALUE, Runtime.getRuntime().maxMemory());

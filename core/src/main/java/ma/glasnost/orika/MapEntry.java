@@ -106,12 +106,12 @@ public class MapEntry<K, V> implements Map.Entry<K, V> {
     }
     
     public static <K, V> Set<MapEntry<K, V>> entrySet(Map<K, V> map) {
-        return new MapEntrySet<K, V>(map.entrySet());
+        return new MapEntrySet<>(map.entrySet());
     }
     
     private static class MapEntrySet<K, V> implements Set<MapEntry<K, V>> {
 
-        private Set<Map.Entry<K, V>> delegate;
+        private final Set<Map.Entry<K, V>> delegate;
         
         private MapEntrySet(Set<Map.Entry<K, V>> delegate) {
             this.delegate = delegate;
@@ -130,7 +130,7 @@ public class MapEntry<K, V> implements Map.Entry<K, V> {
         }
 
         public Iterator<MapEntry<K, V>> iterator() {
-            return new MapEntryIterator<K, V>(delegate.iterator());
+            return new MapEntryIterator<>(delegate.iterator());
         }
 
         public Object[] toArray() {
@@ -174,7 +174,7 @@ public class MapEntry<K, V> implements Map.Entry<K, V> {
     
     private static class MapEntryIterator<K, V> implements Iterator<MapEntry<K, V>> {
 
-        private Iterator<Map.Entry<K, V>> delegate;
+        private final Iterator<Map.Entry<K, V>> delegate;
         
         private MapEntryIterator(Iterator<Map.Entry<K, V>> delegate) {
             this.delegate = delegate;
@@ -185,7 +185,7 @@ public class MapEntry<K, V> implements Map.Entry<K, V> {
         }
 
         public MapEntry<K, V> next() {
-            return new MapEntry<K, V>(delegate.next());
+            return new MapEntry<>(delegate.next());
         }
 
         public void remove() {

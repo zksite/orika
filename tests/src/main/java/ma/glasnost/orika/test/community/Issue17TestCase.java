@@ -17,13 +17,6 @@
  */
 package ma.glasnost.orika.test.community;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
-
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
@@ -32,9 +25,15 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 
 /**
  * Mapping for Collection&lt;String&gt; --&gt; String[] is not working.
@@ -145,7 +144,7 @@ public class Issue17TestCase {
             
             @Override
             public Integer convertFrom(String source, Type<Integer> destinationType, MappingContext context) {
-                return source != null ? Integer.valueOf(source) : 0;
+                return source != null ? Integer.parseInt(source) : 0;
             }
         });
         
@@ -202,7 +201,7 @@ public class Issue17TestCase {
             
             @Override
             public Integer convertFrom(String source, Type<Integer> destinationType, MappingContext context) {
-                return source != null ? Integer.valueOf(source) : 0;
+                return source != null ? Integer.parseInt(source) : 0;
             }
         });
         

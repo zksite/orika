@@ -51,7 +51,7 @@ public class ClassMapBuilderForArrays<A, B> extends ClassMapBuilderForLists<A,B>
 				PropertyResolverStrategy propertyResolver,
 				DefaultFieldMapper[] defaults) {
 			
-			return new ClassMapBuilderForArrays<A,B>(aType, bType, mapperFactory, propertyResolver, defaults);
+			return new ClassMapBuilderForArrays<>(aType, bType, mapperFactory, propertyResolver, defaults);
 		}
 	}
 	
@@ -78,7 +78,7 @@ public class ClassMapBuilderForArrays<A, B> extends ClassMapBuilderForLists<A,B>
     }
      
     protected Property resolveCustomProperty(String expr, Type<?> propertyType) {
-        int index = Integer.valueOf(expr.replaceAll("[\\[\\]]", ""));
+        int index = Integer.parseInt(expr.replaceAll("[\\[\\]]", ""));
         return new ArrayElementProperty(index, propertyType.getComponentType(), null);
     }
 }

@@ -17,9 +17,10 @@
  */
 package ma.glasnost.orika.test.community.issue25.modelA;
 
-import java.util.List;
-
 import ma.glasnost.orika.test.community.issue25.modelB.ManufacturingFacilityDTS;
+
+import java.util.List;
+import java.util.Objects;
 
 
 public class ManufacturingFacility {
@@ -62,12 +63,9 @@ public class ManufacturingFacility {
            if (other == null) return false;
            if (getClass() != other.getClass()) return false;
            ManufacturingFacility betriebsstaette = (ManufacturingFacility)other;
-           
-           boolean areAttributesEqual = (description == betriebsstaette.description || 
-               (description != null && description.equals(betriebsstaette.description)));
-           areAttributesEqual &= (addresses == betriebsstaette.addresses) || 
-               (addresses != null && addresses.equals(betriebsstaette.addresses));
-           return areAttributesEqual;
+
+        return Objects.equals(description, betriebsstaette.description) &&
+                Objects.equals(addresses, betriebsstaette.addresses);
     }
 
 	@Override    

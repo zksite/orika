@@ -49,22 +49,22 @@ public class MappingException extends RuntimeException {
 		
 		StringBuilder message = new StringBuilder();
 		if (sourceClass != null) {
-			message.append("\nsourceClass = " + sourceClass);
+			message.append("\nsourceClass = ").append(sourceClass);
 		}
 		if (sourceType != null) {
-			message.append("\nsourceType = " + sourceType.toFullyQualifiedString());
+			message.append("\nsourceType = ").append(sourceType.toFullyQualifiedString());
 		}
 		if (sourceProperty != null) {
-			message.append("\nsourceProperty = " + sourceProperty);
+			message.append("\nsourceProperty = ").append(sourceProperty);
 		}
 		if (destinationType != null) {
-			message.append("\ndestinationType = " + destinationType.toFullyQualifiedString());
+			message.append("\ndestinationType = ").append(destinationType.toFullyQualifiedString());
 		}
 		if (destinationProperty != null) {
-			message.append("\ndestinationProperty = " + destinationProperty);
+			message.append("\ndestinationProperty = ").append(destinationProperty);
 		}
 		if (mappingStrategy != null) {
-			message.append("\nresolvedStrategy = " + mappingStrategy);
+			message.append("\nresolvedStrategy = ").append(mappingStrategy);
 		}
 		if (message.length() > 0) {
 			message.insert(0, "While attempting the following mapping:");

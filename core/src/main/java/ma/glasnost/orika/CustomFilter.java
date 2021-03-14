@@ -58,7 +58,7 @@ public abstract class CustomFilter<A, B> implements Filter<A, B> {
         java.lang.reflect.Type genericSuperclass = getClass().getGenericSuperclass();
         if (genericSuperclass != null && genericSuperclass instanceof ParameterizedType) {
             final ParameterizedType superType = (ParameterizedType) genericSuperclass;
-            return new MappedTypePairHolder<A, B>(
+            return new MappedTypePairHolder<>(
                     (Type<A>) TypeFactory.valueOf(superType.getActualTypeArguments()[0]),
                     (Type<B>) TypeFactory.valueOf(superType.getActualTypeArguments()[1]));
         } else {

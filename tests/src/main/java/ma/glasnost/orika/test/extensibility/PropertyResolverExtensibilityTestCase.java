@@ -17,18 +17,17 @@
  */
 package ma.glasnost.orika.test.extensibility;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Assert;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingException;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.Property;
 import ma.glasnost.orika.property.IntrospectorPropertyResolver;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * @author matt.deboer@gmail.com
@@ -113,7 +112,7 @@ public class PropertyResolverExtensibilityTestCase {
     
     public static class Element {
         
-        Map<String, Object> attributes = new HashMap<String, Object>();
+        Map<String, Object> attributes = new HashMap<>();
         
         public Object getAttribute(String name) {
             return attributes.get(name);

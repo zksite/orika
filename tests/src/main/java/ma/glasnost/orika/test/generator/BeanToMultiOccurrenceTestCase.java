@@ -18,25 +18,23 @@
 
 package ma.glasnost.orika.test.generator;
 
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.GeneratedObjectBase;
+import ma.glasnost.orika.test.MappingUtil;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.xml.datatype.DatatypeConfigurationException;
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.GeneratedObjectBase;
-import ma.glasnost.orika.test.MappingUtil;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
 
 public class BeanToMultiOccurrenceTestCase {
     
@@ -66,8 +64,8 @@ public class BeanToMultiOccurrenceTestCase {
         MapperFacade mapper = factory.getMapperFacade();
         
         GenericDto source = new GenericDto();
-        List<String> testScores = new ArrayList<String>();
-        List<Integer> numericScores = new ArrayList<Integer>();
+        List<String> testScores = new ArrayList<>();
+        List<Integer> numericScores = new ArrayList<>();
         testScores.add("A");
         numericScores.add(90);
         testScores.add("B");
@@ -155,7 +153,7 @@ public class BeanToMultiOccurrenceTestCase {
                 .byDefault());
         
         GroupOfStudents source = new GroupOfStudents();
-        source.names = new ArrayList<String>();
+        source.names = new ArrayList<>();
         source.names.add("Bob");
         source.names.add("Jim");
         source.names.add("Sally");
@@ -251,7 +249,7 @@ public class BeanToMultiOccurrenceTestCase {
     }
     
     public static class MapOfPeople {
-        public Map<Date, Person> people = new LinkedHashMap<Date, Person>();
+        public Map<Date, Person> people = new LinkedHashMap<>();
     }
     
     public static class Person {
@@ -260,7 +258,7 @@ public class BeanToMultiOccurrenceTestCase {
     }
     
     public static class MapOfStudents {
-        public Map<Person, Grade> students = new LinkedHashMap<Person, Grade>();
+        public Map<Person, Grade> students = new LinkedHashMap<>();
     }
     
     public static class Grade {

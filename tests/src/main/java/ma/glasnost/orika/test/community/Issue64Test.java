@@ -120,7 +120,7 @@ public class Issue64Test {
 
     public static class Child {
         private String nestedSingle;
-        private List<String> nestedList = new ArrayList<String>();
+        private List<String> nestedList = new ArrayList<>();
 
         public String getNestedSingle() {
             return nestedSingle;

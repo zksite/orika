@@ -19,9 +19,17 @@
 package ma.glasnost.orika.impl;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Sets;
-import ma.glasnost.orika.*;
+import ma.glasnost.orika.Converter;
+import ma.glasnost.orika.MapEntry;
+import ma.glasnost.orika.Mapper;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.MappingContext;
+import ma.glasnost.orika.MappingContextFactory;
+import ma.glasnost.orika.MappingException;
+import ma.glasnost.orika.MappingStrategy;
 import ma.glasnost.orika.MappingStrategy.Key;
+import ma.glasnost.orika.ObjectFactory;
 import ma.glasnost.orika.StateReporter.Reportable;
 import ma.glasnost.orika.converter.ConverterFactory;
 import ma.glasnost.orika.impl.mapping.strategy.MappingStrategyRecorder;
@@ -34,8 +42,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 import static ma.glasnost.orika.StateReporter.DIVIDER;
@@ -293,12 +308,8 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
         } else if (resolvedSourceType.isPrimitiveWrapper()
                 && resolvedSourceType.getRawType().equals(ClassUtil.getWrapperType(destinationType.getRawType()))) {
             return true;
-        } else if (resolvedSourceType.isPrimitive()
-                && destinationType.getRawType().equals(ClassUtil.getWrapperType(resolvedSourceType.getRawType()))) {
-            return true;
-        } else {
-            return false;
-        }
+        } else return resolvedSourceType.isPrimitive()
+                && destinationType.getRawType().equals(ClassUtil.getWrapperType(resolvedSourceType.getRawType()));
     }
     
     public <S, D> void map(final S sourceObject, final D destinationObject, final Type<S> sourceType, final Type<D> destinationType,
@@ -459,7 +470,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
         }
         
         int i = 0;
-        ElementStrategyContext<S, D> elementContext = new ElementStrategyContext<S, D>(context, sourceType, destinationType);
+        ElementStrategyContext<S, D> elementContext = new ElementStrategyContext<>(context, sourceType, destinationType);
         for (final S item : source) {
             if (item != null) {
                 destination[i++] = mapElement(item, elementContext);
@@ -477,7 +488,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
         }
         
         int i = 0;
-        ElementStrategyContext<S, D> elementContext = new ElementStrategyContext<S, D>(context, sourceType, destinationType);
+        ElementStrategyContext<S, D> elementContext = new ElementStrategyContext<>(context, sourceType, destinationType);
         for (final S item : source) {
             if (item != null) {
                 destination[i++] = mapElement(item, elementContext);
@@ -497,7 +508,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
     }
     
     public <S, D> List<D> mapAsList(final S[] source, final Type<S> sourceType, final Type<D> destinationType, final MappingContext context) {
-        final List<D> destination = new ArrayList<D>(source.length);
+        final List<D> destination = new ArrayList<>(source.length);
         for (final S s : source) {
             destination.add(map(s, sourceType, destinationType, context));
         }
@@ -514,7 +525,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
     }
     
     public <S, D> Set<D> mapAsSet(final S[] source, final Type<S> sourceType, final Type<D> destinationType, final MappingContext context) {
-        final Set<D> destination = new HashSet<D>(source.length);
+        final Set<D> destination = new HashSet<>(source.length);
         for (final S s : source) {
             destination.add(map(s, sourceType, destinationType, context));
         }
@@ -621,7 +632,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
         if (source == null) {
             return null;
         }
-        ElementStrategyContext<S, D> elementContext = new ElementStrategyContext<S, D>(context, sourceType, destinationType);
+        ElementStrategyContext<S, D> elementContext = new ElementStrategyContext<>(context, sourceType, destinationType);
         for (final S item : source) {
             if (item != null) {
                 destination.add(mapElement(item, elementContext));
@@ -771,10 +782,10 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
             this.destinationType = destinationType;
         }
         
-        private MappingContext mappingContext;
+        private final MappingContext mappingContext;
         private MappingStrategy strategy;
-        private Type<S> sourceType;
-        private Type<D> destinationType;
+        private final Type<S> sourceType;
+        private final Type<D> destinationType;
         private Class<?> sourceClass;
     }
     
@@ -812,7 +823,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
         // mapperFactory.lookupConcreteDestinationType(sourceType,
         // destinationType, context);
         
-        Map<Dk, Dv> destination = new LinkedHashMap<Dk, Dv>(source.size());
+        Map<Dk, Dv> destination = new LinkedHashMap<>(source.size());
         
         /*
          * Resolve the strategy used for the key and value; only re-resolve a
@@ -820,10 +831,10 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
          * us to process a homogeneous key/value typed map as quickly as
          * possible
          */
-        ElementStrategyContext<Sk, Dk> keyContext = new ElementStrategyContext<Sk, Dk>(context, sourceType.<Sk> getNestedType(0),
-                destinationType.<Dk> getNestedType(0));
-        ElementStrategyContext<Sv, Dv> valContext = new ElementStrategyContext<Sv, Dv>(context, sourceType.<Sv> getNestedType(1),
-                destinationType.<Dv> getNestedType(1));
+        ElementStrategyContext<Sk, Dk> keyContext = new ElementStrategyContext<>(context, sourceType.getNestedType(0),
+                destinationType.getNestedType(0));
+        ElementStrategyContext<Sv, Dv> valContext = new ElementStrategyContext<>(context, sourceType.getNestedType(1),
+                destinationType.getNestedType(1));
         
         for (Entry<Sk, Sv> entry : source.entrySet()) {
             Dk key;
@@ -862,7 +873,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
         Map<Dk, Dv> destination = source instanceof Collection<?> ? new HashMap<>(Iterables.size(source)) : new HashMap<>();
         
         Type<?> entryType = TypeFactory.valueOf(Entry.class, destinationType.getNestedType(0), destinationType.getNestedType(1));
-        ElementStrategyContext<S, Entry<Dk, Dv>> elementContext = new ElementStrategyContext<S, Entry<Dk, Dv>>(context, sourceType,
+        ElementStrategyContext<S, Entry<Dk, Dv>> elementContext = new ElementStrategyContext<>(context, sourceType,
                 (Type<Entry<Dk, Dv>>) entryType);
         
         for (S element : source)
@@ -886,9 +897,9 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
     public <S, Dk, Dv> Map<Dk, Dv> mapAsMap(final S[] source, final Type<S> sourceType, final Type<? extends Map<Dk, Dv>> destinationType,
             final MappingContext context) {
         
-        Map<Dk, Dv> destination = new HashMap<Dk, Dv>(source.length);
+        Map<Dk, Dv> destination = new HashMap<>(source.length);
         Type<MapEntry<Dk, Dv>> entryType = MapEntry.concreteEntryType(destinationType);
-        ElementStrategyContext<S, MapEntry<Dk, Dv>> elementContext = new ElementStrategyContext<S, MapEntry<Dk, Dv>>(context, sourceType,
+        ElementStrategyContext<S, MapEntry<Dk, Dv>> elementContext = new ElementStrategyContext<>(context, sourceType,
                 entryType);
         
         for (S element : source) {
@@ -917,7 +928,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
          * Use map as collection to map the entry set to a list; requires an
          * existing mapping for Map.Entry to to type D.
          */
-        List<D> destination = new ArrayList<D>(source.size());
+        List<D> destination = new ArrayList<>(source.size());
         
         Type<MapEntry<Sk, Sv>> entryType = MapEntry.concreteEntryType(sourceType);
         
@@ -939,7 +950,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
          * Use map as collection to map the entry set to a list; requires an
          * existing mapping for Map.Entry to to type D.
          */
-        Set<D> destination = new HashSet<D>(source.size());
+        Set<D> destination = new HashSet<>(source.size());
         Type<Entry<Sk, Sv>> entryType = resolveTypeOf(source.entrySet(), sourceType).getNestedType(0);
         return (Set<D>) mapAsCollection(source.entrySet(), entryType, destinationType, destination, context);
     }
@@ -1082,9 +1093,7 @@ public class MapperFacadeImpl implements MapperFacade, Reportable {
             Method iterator = object.getClass().getMethod("iterator");
             Type<Iterable<T>> type = TypeFactory.valueOf(iterator.getGenericReturnType());
             return type.getNestedType(0);
-        } catch (SecurityException e) {
-            throw new IllegalStateException(e);
-        } catch (NoSuchMethodException e) {
+        } catch (SecurityException | NoSuchMethodException e) {
             throw new IllegalStateException(e);
         }
     }

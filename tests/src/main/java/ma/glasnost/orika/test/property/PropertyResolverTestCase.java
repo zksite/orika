@@ -18,17 +18,6 @@
 
 package ma.glasnost.orika.test.property;
 
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -45,9 +34,19 @@ import ma.glasnost.orika.test.property.TestCaseClasses.A;
 import ma.glasnost.orika.test.property.TestCaseClasses.B;
 import ma.glasnost.orika.test.property.TestCaseClasses.Name;
 import ma.glasnost.orika.test.property.TestCaseClasses.Student;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class PropertyResolverTestCase {
 
@@ -87,7 +86,7 @@ public class PropertyResolverTestCase {
         
     }
     
-    private TestResolverStrategy propertyResolver = new TestResolverStrategy();
+    private final TestResolverStrategy propertyResolver = new TestResolverStrategy();
     
 	@Test
 	public void testNestedProperty() {
@@ -137,7 +136,7 @@ public class PropertyResolverTestCase {
 		MapperFacade mapper = MappingUtil.getMapperFactory().getMapperFacade();
 		SpecialCaseDto dto = mapper.map(sc, SpecialCaseDto.class);
 		
-		Assert.assertEquals(sc.isChecked(), Boolean.valueOf(dto.isChecked()));
+		Assert.assertEquals(sc.isChecked(), dto.isChecked());
 		//Assert.assertEquals(sc.totalCost.doubleValue(), dto.getTotalCost(), 0.01d);
 	}
 	
@@ -365,7 +364,7 @@ public class PropertyResolverTestCase {
         
         Element person = new Element();
         Element employment = new Element();
-        List<String> jobTitles = new ArrayList<String>();
+        List<String> jobTitles = new ArrayList<>();
         jobTitles.add("manager");
         jobTitles.add("executive");
         employment.setAttribute("jobTitle", jobTitles);
@@ -416,7 +415,7 @@ public class PropertyResolverTestCase {
         
         Element person = new Element();
         Element employment = new Element();
-        List<String> jobTitles = new ArrayList<String>();
+        List<String> jobTitles = new ArrayList<>();
         jobTitles.add("manager");
         jobTitles.add("executive");
         employment.setAttribute("jobTitle", jobTitles);
@@ -477,7 +476,7 @@ public class PropertyResolverTestCase {
         
         Element person = new Element();
         Element employment = new Element();
-        List<String> jobTitles = new ArrayList<String>();
+        List<String> jobTitles = new ArrayList<>();
         jobTitles.add("manager");
         jobTitles.add("executive");
         employment.setAttribute("jobTitle", jobTitles);
@@ -541,7 +540,7 @@ public class PropertyResolverTestCase {
         
         Element person = new Element();
         Element employment = new Element();
-        List<String> jobTitles = new ArrayList<String>();
+        List<String> jobTitles = new ArrayList<>();
         jobTitles.add("manager");
         jobTitles.add("executive");
         employment.setAttribute("job's Title", jobTitles);
@@ -586,7 +585,7 @@ public class PropertyResolverTestCase {
     
     public static abstract class AbstractOrderedMap<K, T> implements Iterable<T>, Serializable {
 
-        protected final Map<K, T> resultSet = new LinkedHashMap<K, T>();
+        protected final Map<K, T> resultSet = new LinkedHashMap<>();
 
         protected AbstractOrderedMap(Map<K, T> map) {
             resultSet.putAll(map);
@@ -636,7 +635,7 @@ public class PropertyResolverTestCase {
     
     public static class Element {
         
-        Map<String,Object> attributes = new HashMap<String,Object>();
+        Map<String,Object> attributes = new HashMap<>();
         
         public Object getAttribute(String name) {
             return attributes.get(name);
@@ -767,12 +766,12 @@ public class PropertyResolverTestCase {
         }
 	}
 	
-	public static interface Address {
-        public String getStreet();
-        public String getCity();
-        public String getSubnational();
-        public String getPostalCode();
-        public String getCountry();
+	public interface Address {
+        String getStreet();
+        String getCity();
+        String getSubnational();
+        String getPostalCode();
+        String getCountry();
     }
 	
 	public static class PostalAddress implements Address {

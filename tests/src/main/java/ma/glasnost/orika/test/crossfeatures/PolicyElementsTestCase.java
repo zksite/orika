@@ -18,12 +18,6 @@
 
 package ma.glasnost.orika.test.crossfeatures;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.Type;
@@ -42,6 +36,11 @@ import ma.glasnost.orika.test.crossfeatures.PolicyElementsTestCaseClasses.Policy
 import ma.glasnost.orika.test.crossfeatures.PolicyElementsTestCaseClasses.ProductElement;
 import ma.glasnost.orika.test.crossfeatures.PolicyElementsTestCaseClasses.ProductElementDTO;
 import ma.glasnost.orika.unenhance.UnenhanceStrategy;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class PolicyElementsTestCase {
     
@@ -51,7 +50,7 @@ public class PolicyElementsTestCase {
         configureMapperFactory(factory);
         
         Policy policy = new Policy();
-        Set<PolicyElement> elements = new HashSet<PolicyElement>();
+        Set<PolicyElement> elements = new HashSet<>();
         elements.add(new CustomerElement());
         elements.add(new ProductElement());
         elements.add(new OtherElement());
@@ -94,7 +93,7 @@ public class PolicyElementsTestCase {
         configureMapperFactory(factory);
         
         Policy policy = new Policy();
-        Set<PolicyElement> elements = new HashSet<PolicyElement>();
+        Set<PolicyElement> elements = new HashSet<>();
         CustomerElement target = new CustomerElement();
         target.setName("Adil");
         elements.add(new PolicyElementProxy(target));

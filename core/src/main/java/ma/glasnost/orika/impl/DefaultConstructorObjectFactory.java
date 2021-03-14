@@ -17,11 +17,11 @@
  */
 package ma.glasnost.orika.impl;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.ObjectFactory;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
 /**
  * DefaultConstructorObjectFactory is used for types which should be instantiated
@@ -33,7 +33,7 @@ import ma.glasnost.orika.ObjectFactory;
 public class DefaultConstructorObjectFactory<T> implements ObjectFactory<T> {
 
     private final String description;
-    private Constructor<T> constructor;
+    private final Constructor<T> constructor;
     
     public DefaultConstructorObjectFactory(Class<T> type) {
         this.constructor = getDefaultConstructor(type);
@@ -58,11 +58,7 @@ public class DefaultConstructorObjectFactory<T> implements ObjectFactory<T> {
     public T create(Object source, MappingContext mappingContext) {
         try {
             return constructor.newInstance();
-        } catch (InstantiationException e) {
-            throw new IllegalStateException(e);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        } catch (InvocationTargetException e) {
+        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
             throw new IllegalStateException(e);
         }
     }

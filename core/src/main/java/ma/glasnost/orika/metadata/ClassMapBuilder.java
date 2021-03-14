@@ -18,9 +18,16 @@
 
 package ma.glasnost.orika.metadata;
 
-import static ma.glasnost.orika.impl.Specifications.aManyToOneElementMap;
-import static ma.glasnost.orika.impl.Specifications.aMultiOccurrenceElementMap;
-import static ma.glasnost.orika.impl.Specifications.aOneToManyElementMap;
+import ma.glasnost.orika.DefaultFieldMapper;
+import ma.glasnost.orika.MappedTypePair;
+import ma.glasnost.orika.Mapper;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.MappingException;
+import ma.glasnost.orika.impl.UtilityResolver;
+import ma.glasnost.orika.property.PropertyResolver;
+import ma.glasnost.orika.property.PropertyResolverStrategy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
@@ -31,17 +38,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import ma.glasnost.orika.DefaultFieldMapper;
-import ma.glasnost.orika.MappedTypePair;
-import ma.glasnost.orika.Mapper;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.MappingException;
-import ma.glasnost.orika.impl.UtilityResolver;
-import ma.glasnost.orika.property.PropertyResolver;
-import ma.glasnost.orika.property.PropertyResolverStrategy;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import static ma.glasnost.orika.impl.Specifications.aManyToOneElementMap;
+import static ma.glasnost.orika.impl.Specifications.aMultiOccurrenceElementMap;
+import static ma.glasnost.orika.impl.Specifications.aOneToManyElementMap;
 
 /**
  * ClassMapBuilder provides a fluent API which can be used to define a mapping
@@ -67,7 +66,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
         protected <A, B> ClassMapBuilder<A, B> newClassMapBuilder(Type<A> aType, Type<B> bType, MapperFactory mapperFactory,
                 PropertyResolverStrategy propertyResolver, DefaultFieldMapper[] defaults) {
             
-            return new ClassMapBuilder<A, B>(aType, bType, mapperFactory, propertyResolver, defaults);
+            return new ClassMapBuilder<>(aType, bType, mapperFactory, propertyResolver, defaults);
         }
     }
     
@@ -122,13 +121,13 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
         
         aProperties = propertyResolver.getProperties(aType);
         bProperties = propertyResolver.getProperties(bType);
-        propertiesCacheA = new LinkedHashSet<String>();
-        propertiesCacheB = new LinkedHashSet<String>();
+        propertiesCacheA = new LinkedHashSet<>();
+        propertiesCacheB = new LinkedHashSet<>();
         
         this.aType = aType;
         this.bType = bType;
-        this.fieldsMapping = new LinkedHashSet<FieldMap>();
-        this.usedMappers = new LinkedHashSet<MapperKey>();
+        this.fieldsMapping = new LinkedHashSet<>();
+        this.usedMappers = new LinkedHashSet<>();
         
     }
     
@@ -146,8 +145,8 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
         
         PropertyResolverStrategy propertyResolver = getPropertyResolver();
         
-        Map<String, Property> properties = new HashMap<String, Property>();
-        LinkedHashMap<String, Property> toProcess = new LinkedHashMap<String, Property>(propertyResolver.getProperties(type));
+        Map<String, Property> properties = new HashMap<>();
+        LinkedHashMap<String, Property> toProcess = new LinkedHashMap<>(propertyResolver.getProperties(type));
         
         if (type.isMap() || type.isList() || type.isArray()) {
             Property selfReferenceProperty = new Property.Builder().name("")
@@ -229,7 +228,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
         if (defaultPropertyResolver == null || defaultPropertyResolver.get() == null) {
             synchronized (ClassMapBuilder.class) {
                 if (defaultPropertyResolver == null || defaultPropertyResolver.get() == null) {
-                    defaultPropertyResolver = new WeakReference<PropertyResolverStrategy>(
+                    defaultPropertyResolver = new WeakReference<>(
                             UtilityResolver.getDefaultPropertyResolverStrategy());
                 }
             }
@@ -326,7 +325,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
     public FieldMapBuilder<A, B> fieldMap(String fieldNameA, String fieldNameB, boolean byDefault) {
         
         try {
-            final FieldMapBuilder<A, B> fieldMapBuilder = new FieldMapBuilder<A, B>(this, fieldNameA, fieldNameB, byDefault,
+            final FieldMapBuilder<A, B> fieldMapBuilder = new FieldMapBuilder<>(this, fieldNameA, fieldNameB, byDefault,
                     sourcesMappedOnNull, destinationsMappedOnNull, destinationValueRetrievedOnMapping);
             
             return fieldMapBuilder;
@@ -349,7 +348,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      * @return
      */
     public FieldMapBuilder<A, B> fieldMap(Property fieldA, Property fieldB, boolean byDefault) {
-        return new FieldMapBuilder<A, B>(this, fieldA, fieldB, byDefault, sourcesMappedOnNull, destinationsMappedOnNull, destinationValueRetrievedOnMapping);
+        return new FieldMapBuilder<>(this, fieldA, fieldB, byDefault, sourcesMappedOnNull, destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
     /**
@@ -361,7 +360,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      * @return
      */
     public FieldMapBuilder<A, B> fieldMap(String fieldNameA, Property fieldB, boolean byDefault) {
-        return new FieldMapBuilder<A, B>(this, resolvePropertyForA(fieldNameA), fieldB, byDefault, sourcesMappedOnNull,
+        return new FieldMapBuilder<>(this, resolvePropertyForA(fieldNameA), fieldB, byDefault, sourcesMappedOnNull,
                 destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
@@ -374,7 +373,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      * @return
      */
     public FieldMapBuilder<A, B> fieldMap(Property fieldA, String fieldNameB, boolean byDefault) {
-        return new FieldMapBuilder<A, B>(this, fieldA, resolvePropertyForB(fieldNameB), byDefault, sourcesMappedOnNull,
+        return new FieldMapBuilder<>(this, fieldA, resolvePropertyForB(fieldNameB), byDefault, sourcesMappedOnNull,
                 destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
@@ -387,7 +386,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      * @return
      */
     public FieldMapBuilder<A, B> fieldMap(Property.Builder fieldA, Property.Builder fieldB, boolean byDefault) {
-        return new FieldMapBuilder<A, B>(this, fieldA.build((PropertyResolver) propertyResolver),
+        return new FieldMapBuilder<>(this, fieldA.build((PropertyResolver) propertyResolver),
                 fieldB.build((PropertyResolver) propertyResolver), byDefault, sourcesMappedOnNull, destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
@@ -400,7 +399,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      * @return
      */
     public FieldMapBuilder<A, B> fieldMap(String fieldNameA, Property.Builder fieldB, boolean byDefault) {
-        return new FieldMapBuilder<A, B>(this, resolvePropertyForA(fieldNameA), fieldB.build((PropertyResolver) propertyResolver),
+        return new FieldMapBuilder<>(this, resolvePropertyForA(fieldNameA), fieldB.build((PropertyResolver) propertyResolver),
                 byDefault, sourcesMappedOnNull, destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
@@ -413,7 +412,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      * @return
      */
     public FieldMapBuilder<A, B> fieldMap(Property.Builder fieldA, String fieldNameB, boolean byDefault) {
-        return new FieldMapBuilder<A, B>(this, fieldA.build((PropertyResolver) propertyResolver), resolvePropertyForB(fieldNameB),
+        return new FieldMapBuilder<>(this, fieldA.build((PropertyResolver) propertyResolver), resolvePropertyForB(fieldNameB),
                 byDefault, sourcesMappedOnNull, destinationsMappedOnNull, destinationValueRetrievedOnMapping);
     }
     
@@ -507,7 +506,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      */
     @Deprecated
     public final ClassMapBuilder<A, B> customize(ma.glasnost.orika.MapperBase<A, B> legacyCustomizedMapper) {
-        customize(new ma.glasnost.orika.MapperBase.MapperBaseAdapter<A, B>(legacyCustomizedMapper));
+        customize(new ma.glasnost.orika.MapperBase.MapperBaseAdapter<>(legacyCustomizedMapper));
         return this;
     }
     
@@ -711,7 +710,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
             LOGGER.debug("ClassMap created:\n\t" + describeClassMap());
         }
         
-        return new ClassMap<A, B>(aType, bType, fieldsMapping, customizedMapper, usedMappers, constructorA, constructorB,
+        return new ClassMap<>(aType, bType, fieldsMapping, customizedMapper, usedMappers, constructorA, constructorB,
                 sourcesMappedOnNull, destinationsMappedOnNull, favorsExtension);
     }
     
@@ -790,10 +789,10 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      */
     protected String describeClassMap() {
         StringBuilder output = new StringBuilder();
-        output.append(getClass().getSimpleName() + ".map(" + aType + ", " + bType + ")");
+        output.append(getClass().getSimpleName()).append(".map(").append(aType).append(", ").append(bType).append(")");
         for (FieldMap f : fieldsMapping) {
             if (f.isExcluded()) {
-                output.append("\n\t .exclude('" + f.getSourceName() + "')");
+                output.append("\n\t .exclude('").append(f.getSourceName()).append("')");
             } else {
                 String dir = "";
                 if (f.getDirection() == MappingDirection.A_TO_B) {
@@ -801,14 +800,14 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
                 } else if (f.getDirection() == MappingDirection.B_TO_A) {
                     dir = "BToA";
                 }
-                output.append("\n\t .field" + dir + "( " + f.getSource() + ", " + f.getDestination() + " )");
+                output.append("\n\t .field").append(dir).append("( ").append(f.getSource()).append(", ").append(f.getDestination()).append(" )");
             }
         }
         if (constructorA != null) {
-            output.append("\n\t .constructorA(" + Arrays.toString(constructorA) + ")");
+            output.append("\n\t .constructorA(").append(Arrays.toString(constructorA)).append(")");
         }
         if (constructorB != null) {
-            output.append("\n\t .constructorB(" + Arrays.toString(constructorB) + ")");
+            output.append("\n\t .constructorB(").append(Arrays.toString(constructorB)).append(")");
         }
         return output.toString();
     }
@@ -825,7 +824,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      *             instead
      */
     public static final <A, B> ClassMapBuilder<A, B> map(Class<A> aType, Class<B> bType) {
-        return new ClassMapBuilder<A, B>(TypeFactory.<A> valueOf(aType), TypeFactory.<B> valueOf(bType));
+        return new ClassMapBuilder<>(TypeFactory.valueOf(aType), TypeFactory.valueOf(bType));
     }
     
     /**
@@ -837,7 +836,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      *             instead
      */
     public static final <A, B> ClassMapBuilder<A, B> map(Type<A> aType, Type<B> bType) {
-        return new ClassMapBuilder<A, B>(aType, bType);
+        return new ClassMapBuilder<>(aType, bType);
     }
     
     /**
@@ -849,7 +848,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      *             instead
      */
     public static final <A, B> ClassMapBuilder<A, B> map(Class<A> aType, Type<B> bType) {
-        return new ClassMapBuilder<A, B>(TypeFactory.<A> valueOf(aType), bType);
+        return new ClassMapBuilder<>(TypeFactory.valueOf(aType), bType);
     }
     
     /**
@@ -861,7 +860,7 @@ public class ClassMapBuilder<A, B> implements MappedTypePair<A, B> {
      *             instead
      */
     public static final <A, B> ClassMapBuilder<A, B> map(Type<A> aType, Class<B> bType) {
-        return new ClassMapBuilder<A, B>(aType, TypeFactory.<B> valueOf(bType));
+        return new ClassMapBuilder<>(aType, TypeFactory.valueOf(bType));
     }
     
     /**

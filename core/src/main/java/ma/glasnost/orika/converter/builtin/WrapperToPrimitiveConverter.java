@@ -47,24 +47,24 @@ public class WrapperToPrimitiveConverter extends CustomConverter<Object, Object>
      * @see ma.glasnost.orika.Converter#convert(java.lang.Object,
      * ma.glasnost.orika.metadata.Type)
      */
-    public Object convert(Object source, Type<? extends Object> destinationType, MappingContext context) {
+    public Object convert(Object source, Type<?> destinationType, MappingContext context) {
         
         if (Character.TYPE == destinationType.getRawType()) {
-            return ((Character) source).charValue();
+            return (Character) source;
         } else if (Byte.TYPE == destinationType.getRawType()) {
-            return ((Byte) source).byteValue();
+            return (Byte) source;
         } else if (Short.TYPE == destinationType.getRawType()) {
-            return ((Short) source).shortValue();
+            return (Short) source;
         } else if (Integer.TYPE == destinationType.getRawType()) {
-            return ((Integer) source).intValue();
+            return (Integer) source;
         } else if (Long.TYPE == destinationType.getRawType()) {
-            return ((Long) source).longValue();
+            return (Long) source;
         } else if (Float.TYPE == destinationType.getRawType()) {
-            return ((Float) source).floatValue();
+            return (Float) source;
         } else if (Double.TYPE == destinationType.getRawType()) {
-            return ((Double) source).doubleValue();
+            return (Double) source;
         } else if (Boolean.TYPE == destinationType.getRawType()) {
-            return ((Boolean) source).booleanValue();
+            return (Boolean) source;
         }
         return null;
     }

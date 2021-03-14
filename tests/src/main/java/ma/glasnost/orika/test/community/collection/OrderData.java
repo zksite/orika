@@ -43,7 +43,7 @@ public class OrderData {
     
     public void add(PositionData data) {
         if (positions == null) {
-            positions = new ArrayList<PositionData>();
+            positions = new ArrayList<>();
         }
         positions.add(data);
     }

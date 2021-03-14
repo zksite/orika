@@ -17,8 +17,15 @@
  */
 package ma.glasnost.orika.impl.generator;
 
-import static java.lang.String.format;
-import static ma.glasnost.orika.impl.util.StringUtil.toValidVariableName;
+import ma.glasnost.orika.Converter;
+import ma.glasnost.orika.Filter;
+import ma.glasnost.orika.MapEntry;
+import ma.glasnost.orika.PropertyNotFoundException;
+import ma.glasnost.orika.impl.util.ClassUtil;
+import ma.glasnost.orika.metadata.NestedProperty;
+import ma.glasnost.orika.metadata.Property;
+import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.property.PropertyResolverStrategy;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,15 +36,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-import ma.glasnost.orika.Converter;
-import ma.glasnost.orika.Filter;
-import ma.glasnost.orika.MapEntry;
-import ma.glasnost.orika.PropertyNotFoundException;
-import ma.glasnost.orika.impl.util.ClassUtil;
-import ma.glasnost.orika.metadata.NestedProperty;
-import ma.glasnost.orika.metadata.Property;
-import ma.glasnost.orika.metadata.Type;
-import ma.glasnost.orika.property.PropertyResolverStrategy;
+import static java.lang.String.format;
+import static ma.glasnost.orika.impl.util.StringUtil.toValidVariableName;
 
 /**
  * VariableRef represents a reference to a given variable or property; it
@@ -52,7 +52,7 @@ import ma.glasnost.orika.property.PropertyResolverStrategy;
  */
 public class VariableRef {
 
-    private static final Set<Class<?>> OPTIONAL_CLASSES = Collections.newSetFromMap(new ConcurrentHashMap<Class<?>, Boolean>());
+    private static final Set<Class<?>> OPTIONAL_CLASSES = Collections.newSetFromMap(new ConcurrentHashMap<>());
     static {
         try {
             OPTIONAL_CLASSES.add(Class.forName("java.util.Optional"));
@@ -69,7 +69,7 @@ public class VariableRef {
     protected String name;
     private Property property;
     private VariableRef owner;
-    private Type<?> type;
+    private final Type<?> type;
     private boolean declared;
     private Converter<?, ?> converter;
     private Filter<?, ?> filter;
@@ -618,7 +618,7 @@ public class VariableRef {
             List<VariableRef> path;
             if (propPath.length > 1) {
                 
-                path = new ArrayList<VariableRef>(propPath.length);
+                path = new ArrayList<>(propPath.length);
                 path.add(new VariableRef(propPath[0], name));
                 for (int i = 1; i < propPath.length; ++i) {
                     Property[] nestedPath = new Property[i];

@@ -235,23 +235,23 @@ public class MappingStrategyRecorder {
         }
         StringBuilder details = new StringBuilder();
         details.append("MappingStrategy resolved and cached:")
-                .append("\n\tInputs:[ sourceClass: " + key.getRawSourceType().getCanonicalName())
-                .append(", sourceType: " + key.getSourceType())
-                .append(", destinationType: " + key.getDestinationType())
-                .append("]\n\tResolved:[ strategy: " + resolvedStrategy.getClass().getSimpleName())
-                .append(", sourceType: " + getResolvedSourceType())
-                .append(", destinationType: " + getResolvedDestinationType());
+                .append("\n\tInputs:[ sourceClass: ").append(key.getRawSourceType().getCanonicalName())
+                .append(", sourceType: ").append(key.getSourceType())
+                .append(", destinationType: ").append(key.getDestinationType())
+                .append("]\n\tResolved:[ strategy: ").append(resolvedStrategy.getClass().getSimpleName())
+                .append(", sourceType: ").append(getResolvedSourceType())
+                .append(", destinationType: ").append(getResolvedDestinationType());
         if (isCopyByReference()) {
             details.append(", copyByReference?: true");
         }
         
         if (getResolvedConverter() != null) {
-            details.append(", converter: " + getResolvedConverter());
+            details.append(", converter: ").append(getResolvedConverter());
         }
         
         if (getResolvedMapper() != null) {
-            details.append(", mapper: " + getResolvedMapper());
-            details.append(", mapReverse?: " + mapReverse);
+            details.append(", mapper: ").append(getResolvedMapper());
+            details.append(", mapReverse?: ").append(mapReverse);
         }
         details.append("]");
         

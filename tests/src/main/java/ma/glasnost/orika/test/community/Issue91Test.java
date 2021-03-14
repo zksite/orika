@@ -43,7 +43,7 @@ public class Issue91Test {
 
     public static class A {
 
-        private List<B> list  = new ArrayList<B>();
+        private List<B> list  = new ArrayList<>();
 
         public List<B> getList() {
             return list;

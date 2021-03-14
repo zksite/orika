@@ -1,13 +1,13 @@
 package ma.glasnost.orika.test.objectfactory;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
 import ma.glasnost.orika.metadata.TypeFactory;
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class MultipleObjectFactoryTest {
 	public static class Base {
@@ -24,9 +24,9 @@ public class MultipleObjectFactoryTest {
 		MapperFactory factory = new DefaultMapperFactory.Builder().compilerStrategy(new EclipseJdtCompilerStrategy())
 				.build();
 
-		factory.registerObjectFactory(new CustomFactory<Sub1>(Sub1.class), TypeFactory.<Sub1>valueOf(Sub1.class));
-		factory.registerObjectFactory(new CustomFactory<Sub2>(Sub2.class), TypeFactory.<Sub2>valueOf(Sub2.class));
-		factory.registerObjectFactory(new CustomFactory<Base>(Base.class), TypeFactory.<Base>valueOf(Base.class));
+		factory.registerObjectFactory(new CustomFactory<>(Sub1.class), TypeFactory.valueOf(Sub1.class));
+		factory.registerObjectFactory(new CustomFactory<>(Sub2.class), TypeFactory.valueOf(Sub2.class));
+		factory.registerObjectFactory(new CustomFactory<>(Base.class), TypeFactory.valueOf(Base.class));
 
 		MapperFacade mapperFacade = factory.getMapperFacade();
 		Base mapped = mapperFacade.map(new Object(), Base.class);

@@ -17,16 +17,15 @@
  */
 package ma.glasnost.orika.test.generator;
 
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-
-import org.junit.Assert;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-
-import org.junit.Test;
 
 /**
  * @author matt.deboer@gmail.com
@@ -36,7 +35,7 @@ public class MapNullsTestCase {
     
     public enum Position {
         FIRST,
-        LAST;
+        LAST
     }
     
     public static class Container {

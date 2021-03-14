@@ -1,14 +1,13 @@
 package ma.glasnost.orika.test.community.issue137;
 
-import java.util.HashSet;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
 import ma.glasnost.orika.metadata.TypeFactory;
-
 import org.junit.Test;
+
+import java.util.HashSet;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,13 +23,13 @@ public class LevelTest {
 
         MapperFactory factory = new DefaultMapperFactory.Builder().compilerStrategy(new EclipseJdtCompilerStrategy()).build();
 
-        factory.registerObjectFactory( new CustomFactory<LevelOne>(), TypeFactory.<LevelOne>valueOf( LevelOne.class ) );
-        factory.registerObjectFactory( new CustomFactory<LevelTwo>(), TypeFactory.<LevelTwo>valueOf( LevelTwo.class ) );
-        factory.registerObjectFactory( new CustomFactory<LevelThree>(), TypeFactory.<LevelThree>valueOf( LevelThree.class ) );
+        factory.registerObjectFactory(new CustomFactory<>(), TypeFactory.<LevelOne>valueOf( LevelOne.class ) );
+        factory.registerObjectFactory(new CustomFactory<>(), TypeFactory.<LevelTwo>valueOf( LevelTwo.class ) );
+        factory.registerObjectFactory(new CustomFactory<>(), TypeFactory.<LevelThree>valueOf( LevelThree.class ) );
 
         LevelOne levelOne = new LevelOne();
 
-        levelOne.setLevelTwos( new HashSet<LevelTwo>() );
+        levelOne.setLevelTwos(new HashSet<>() );
 
         for( int i=0; i < 2; i++ ){
             LevelTwo two = new LevelTwo();

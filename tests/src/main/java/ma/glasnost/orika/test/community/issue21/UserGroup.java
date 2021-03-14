@@ -17,8 +17,6 @@
  */
 package ma.glasnost.orika.test.community.issue21;
 
-import ma.glasnost.orika.test.community.issue21.BaseEntity;
-
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -41,7 +39,7 @@ public class UserGroup extends BaseEntity {
 
 	public UserGroup(String name) {
 		this.name = name;
-		users = new HashSet<User>();
+		users = new HashSet<>();
 	}
 
 	public String getName() {

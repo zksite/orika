@@ -18,10 +18,6 @@
 
 package ma.glasnost.orika.test.converter;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
@@ -30,9 +26,12 @@ import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeBuilder;
 import ma.glasnost.orika.metadata.TypeFactory;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class ConverterInheritanceTestCase {
     
@@ -62,7 +61,7 @@ public class ConverterInheritanceTestCase {
         private final List<Person> people;
         
         public PersonGroup(Collection<Person> people) {
-            this.people = new ArrayList<Person>(people);
+            this.people = new ArrayList<>(people);
         }
         
         public List<Person> getPeople() {
@@ -77,7 +76,7 @@ public class ConverterInheritanceTestCase {
      */
     @Test(expected = MappingException.class)
     public void testConverterInheritanceRaw() {
-        ArrayList<Person> people = new ArrayList<Person>();
+        ArrayList<Person> people = new ArrayList<>();
         Person person = new Person();
         person.setName("A");
         people.add(person);
@@ -96,7 +95,7 @@ public class ConverterInheritanceTestCase {
     
     @Test
     public void testConverterInheritanceGenerics() {
-        ArrayList<Person> people = new ArrayList<Person>();
+        ArrayList<Person> people = new ArrayList<>();
         Person person = new Person();
         person.setName("A");
         people.add(person);

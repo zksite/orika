@@ -18,13 +18,13 @@
 
 package ma.glasnost.orika.converter.builtin;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeFactory;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * PassThroughConverter allows configuration of a number of specific types which
@@ -40,7 +40,7 @@ import ma.glasnost.orika.metadata.TypeFactory;
  */
 public class PassThroughConverter extends CustomConverter<Object, Object> {
     
-    private final Set<Type<?>> passThroughTypes = new HashSet<Type<?>>();
+    private final Set<Type<?>> passThroughTypes = new HashSet<>();
     private final String description;
     
     /**
@@ -83,7 +83,7 @@ public class PassThroughConverter extends CustomConverter<Object, Object> {
         return shouldPassThrough(sourceType) && sourceType.equals(destinationType);
     }
     
-    public Object convert(Object source, Type<? extends Object> destinationType, MappingContext context) {
+    public Object convert(Object source, Type<?> destinationType, MappingContext context) {
         return source;
     }
     

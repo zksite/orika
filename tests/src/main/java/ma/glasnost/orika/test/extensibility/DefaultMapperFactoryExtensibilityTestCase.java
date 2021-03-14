@@ -17,23 +17,21 @@
  */
 package ma.glasnost.orika.test.extensibility;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Arrays;
-
-import org.junit.Assert;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.Author;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.AuthorDTO;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.AuthorImpl;
-
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory; 
+import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Arrays;
 
 /**
  * This test verifies (demonstrates) the capability of DefaultMapperFactory
@@ -111,7 +109,7 @@ public class DefaultMapperFactoryExtensibilityTestCase {
 		 */
 		private static class TracingMapperFacade implements InvocationHandler {
 	
-			private MapperFacade delegate;
+			private final MapperFacade delegate;
 			
 			public static MapperFacade proxyFor(MapperFacade delegate) {
 				return (MapperFacade) Proxy.newProxyInstance(

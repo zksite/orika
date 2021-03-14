@@ -17,8 +17,13 @@
  */
 package ma.glasnost.orika.converter;
 
-import static ma.glasnost.orika.StateReporter.DIVIDER;
-import static ma.glasnost.orika.StateReporter.humanReadableSizeInMemory;
+import ma.glasnost.orika.Converter;
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.StateReporter.Reportable;
+import ma.glasnost.orika.impl.util.ClassUtil;
+import ma.glasnost.orika.metadata.ConverterKey;
+import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.metadata.TypeFactory;
 
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -28,13 +33,8 @@ import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-import ma.glasnost.orika.Converter;
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.StateReporter.Reportable;
-import ma.glasnost.orika.impl.util.ClassUtil;
-import ma.glasnost.orika.metadata.ConverterKey;
-import ma.glasnost.orika.metadata.Type;
-import ma.glasnost.orika.metadata.TypeFactory;
+import static ma.glasnost.orika.StateReporter.DIVIDER;
+import static ma.glasnost.orika.StateReporter.humanReadableSizeInMemory;
 
 /**
  * DefaultConverterFactory is the base implementation of ConverterFactory
@@ -56,8 +56,8 @@ public class DefaultConverterFactory implements ConverterFactory, Reportable {
     public DefaultConverterFactory(Map<ConverterKey, Converter<Object, Object>> converterCache, Set<Converter<Object, Object>> converters) {
         super();
         this.converterCache = converterCache;
-        this.converters = new CopyOnWriteArrayList<Converter<Object, Object>>();
-        this.convertersMap = new ConcurrentHashMap<String, Converter<Object, Object>>();
+        this.converters = new CopyOnWriteArrayList<>();
+        this.convertersMap = new ConcurrentHashMap<>();
     }
     
     /**
@@ -67,12 +67,12 @@ public class DefaultConverterFactory implements ConverterFactory, Reportable {
      */
     public DefaultConverterFactory() {
     	this(new ConcurrentHashMap<>(),
-        new LinkedHashSet<Converter<Object, Object>>());
+                new LinkedHashSet<>());
     }
     
     public synchronized void setMapperFacade(MapperFacade mapperFacade) {
         this.mapperFacade = mapperFacade;
-        Set<Converter<Object, Object>> orderedConverters = new LinkedHashSet<Converter<Object, Object>>();
+        Set<Converter<Object, Object>> orderedConverters = new LinkedHashSet<>();
         for (Converter<Object, Object> converter : converters) {
             converter.setMapperFacade(mapperFacade);
             orderedConverters.add(converter);

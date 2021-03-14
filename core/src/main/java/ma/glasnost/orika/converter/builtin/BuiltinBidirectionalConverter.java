@@ -20,6 +20,8 @@ package ma.glasnost.orika.converter.builtin;
 import ma.glasnost.orika.converter.BidirectionalConverter;
 import ma.glasnost.orika.metadata.TypeFactory;
 
+import java.util.Objects;
+
 /**
  * BidirectionalConverter which describes itself as builtin
  *
@@ -62,7 +64,7 @@ abstract class BuiltinBidirectionalConverter<C, D> extends BidirectionalConverte
 
 		BuiltinBidirectionalConverter<?, ?> that = (BuiltinBidirectionalConverter<?, ?>) o;
 
-		return description != null ? description.equals(that.description) : that.description == null;
+		return Objects.equals(description, that.description);
 	}
 
 	private static class Reversed<D, C> extends BidirectionalConverter.Reversed<D, C> {

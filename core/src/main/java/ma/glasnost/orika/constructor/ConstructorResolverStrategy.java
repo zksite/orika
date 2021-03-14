@@ -17,13 +17,13 @@
  */
 package ma.glasnost.orika.constructor;
 
-import java.lang.reflect.Constructor;
-import java.util.ArrayList;
-import java.util.List;
-
 import ma.glasnost.orika.metadata.ClassMap;
 import ma.glasnost.orika.metadata.FieldMap;
 import ma.glasnost.orika.metadata.Type;
+
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ConstructorResolverStrategy defines a contract for resolving
@@ -82,7 +82,7 @@ public interface ConstructorResolverStrategy {
 		}
 		public List<FieldMap> getMappedFields() {
 			if (mappedFields == null) {
-				mappedFields = new ArrayList<FieldMap>();
+				mappedFields = new ArrayList<>();
 			}
 			return mappedFields;
 		}

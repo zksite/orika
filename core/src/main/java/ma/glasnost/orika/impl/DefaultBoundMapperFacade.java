@@ -17,8 +17,6 @@
  */
 package ma.glasnost.orika.impl;
 
-import java.util.concurrent.ConcurrentHashMap;
-
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
@@ -29,6 +27,8 @@ import ma.glasnost.orika.ObjectFactory;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeFactory;
 import ma.glasnost.orika.unenhance.UnenhanceStrategy;
+
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * DefaultBoundMapperFacade is the base implementation of BoundMapperFacade
@@ -235,7 +235,7 @@ class DefaultBoundMapperFacade<A, B> implements BoundMapperFacade<A, B> {
         private final boolean inPlace;
         private final MapperFacade mapperFacade;
         private final UnenhanceStrategy unenhanceStrategy;
-        protected final ConcurrentHashMap<Class<?>, MappingStrategy> strategies = new ConcurrentHashMap<Class<?>, MappingStrategy>(2);
+        protected final ConcurrentHashMap<Class<?>, MappingStrategy> strategies = new ConcurrentHashMap<>(2);
         
         private volatile Class<?> idClass;
         private volatile MappingStrategy defaultStrategy;

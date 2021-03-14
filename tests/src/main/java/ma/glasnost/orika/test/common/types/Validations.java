@@ -18,11 +18,6 @@
 
 package ma.glasnost.orika.test.common.types;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
 import ma.glasnost.orika.test.common.types.TestCaseClasses.Author;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.AuthorDTO;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.AuthorNested;
@@ -36,6 +31,11 @@ import ma.glasnost.orika.test.common.types.TestCaseClasses.PrimitiveHolder;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.PrimitiveHolderDTO;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.PrimitiveWrapperHolder;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.PrimitiveWrapperHolderDTO;
+
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class Validations {
 	// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -66,10 +66,10 @@ public class Validations {
     	assertEquals(wrappers.getShortValue().shortValue(), primitives.getShortValue());
     	assertEquals(wrappers.getIntValue().intValue(), primitives.getIntValue());
     	assertEquals(wrappers.getLongValue().longValue(), primitives.getLongValue());
-    	assertEquals(wrappers.getFloatValue().floatValue(), primitives.getFloatValue(), 1.0f);
-    	assertEquals(wrappers.getDoubleValue().doubleValue(), primitives.getDoubleValue(), 1.0d);
+    	assertEquals(wrappers.getFloatValue(), primitives.getFloatValue(), 1.0f);
+    	assertEquals(wrappers.getDoubleValue(), primitives.getDoubleValue(), 1.0d);
     	assertEquals(wrappers.getCharValue().charValue(), primitives.getCharValue());
-    	assertEquals(wrappers.getBooleanValue().booleanValue(), primitives.isBooleanValue());
+    	assertEquals(wrappers.getBooleanValue(), primitives.isBooleanValue());
     }
     
     

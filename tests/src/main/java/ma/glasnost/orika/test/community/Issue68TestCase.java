@@ -17,20 +17,19 @@
  */
 package ma.glasnost.orika.test.community;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.is;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.MappingContext;
+import ma.glasnost.orika.ObjectFactory;
+import ma.glasnost.orika.impl.ConfigurableMapper;
+import org.junit.Test;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.MappingContext;
-import ma.glasnost.orika.ObjectFactory;
-import ma.glasnost.orika.impl.ConfigurableMapper;
-
-import org.junit.Test;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.is;
 
 
 /**
@@ -91,7 +90,7 @@ public class Issue68TestCase {
 		}
 	}
 
-	public static interface ProjectProxy {
+	public interface ProjectProxy {
 
 		void setProjectItems(Set<ProjectItemProxy> projectItems);
 
@@ -140,7 +139,7 @@ public class Issue68TestCase {
 		}
 	}
 
-	public static interface ProjectItemProxy {
+	public interface ProjectItemProxy {
 
 		void setInvoiceItems(Set<InvoiceItemProxy> invoiceItems);
 
@@ -188,7 +187,7 @@ public class Issue68TestCase {
 		}
 	}
 
-	public static interface InvoiceItemProxy {
+	public interface InvoiceItemProxy {
 
 		ma.glasnost.orika.test.community.Issue68TestCase.ProjectProxy getProject();
 
@@ -255,7 +254,7 @@ public class Issue68TestCase {
 
 		private ProjectVO project;
 
-		private Set<InvoiceItemVO> invoiceItems = new HashSet<InvoiceItemVO>();
+		private final Set<InvoiceItemVO> invoiceItems = new HashSet<InvoiceItemVO>();
 
 		public String getName() {
 			return name;
@@ -286,7 +285,7 @@ public class Issue68TestCase {
 
 		private ProjectVO project;
 
-		private Set<ProjectItemVO> projectItems = new HashSet<ProjectItemVO>();
+		private final Set<ProjectItemVO> projectItems = new HashSet<ProjectItemVO>();
 
 		public ProjectVO getProject() {
 			return project;
@@ -309,16 +308,14 @@ public class Issue68TestCase {
 			Class<T> targetType) {
 		if (sourceSet == null)
 			return null;
-		Set<T> set = new HashSet<T>();
-		set.addAll(sourceSet);
+		Set<T> set = new HashSet<T>(sourceSet);
 		return set;
 	}
 
 	public static <T, E> Set<T> castSet(Set<E> sourceSet, Class<T> clazz) {
 		if (sourceSet == null)
 			return null;
-		Set<T> set = new HashSet<T>();
-		set.addAll((Collection<? extends T>) sourceSet);
+		Set<T> set = new HashSet<T>((Collection<? extends T>) sourceSet);
 		return set;
 	}
 }

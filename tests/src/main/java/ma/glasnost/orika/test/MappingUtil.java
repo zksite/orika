@@ -21,7 +21,6 @@ package ma.glasnost.orika.test;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,7 +52,7 @@ public abstract class MappingUtil {
      */
     public static MapperFactory getMapperFactory(boolean debugMode) {
         if (debugMode) {
-            if (Boolean.valueOf(System.getProperty(DISABLE_DEBUG_MODE))) {
+            if (Boolean.parseBoolean(System.getProperty(DISABLE_DEBUG_MODE))) {
                 LOGGER.warn("Debug mode was requested via MappingUtil when it was explicitly disabled");
                 return getMapperFactory();
             } else {

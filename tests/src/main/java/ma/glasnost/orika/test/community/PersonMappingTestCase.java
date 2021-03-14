@@ -1,12 +1,11 @@
 package ma.glasnost.orika.test.community;
 
-import java.util.List;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
-
 import org.junit.Test;
+
+import java.util.List;
 
 /**
  * There doesn't appear to be a way to do this mapping using default behavior...
@@ -265,7 +264,7 @@ public class PersonMappingTestCase {
             StringBuffer buffer = new StringBuffer();
             for (PersonBase person : this.persons)
             {
-                buffer.append(person.toString()+"\n");
+                buffer.append(person.toString()).append("\n");
             }
             return buffer.toString();
         }

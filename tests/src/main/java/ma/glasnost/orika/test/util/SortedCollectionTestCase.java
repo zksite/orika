@@ -17,19 +17,18 @@
  */
 package ma.glasnost.orika.test.util;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
-
 import ma.glasnost.orika.metadata.MapperKey;
 import ma.glasnost.orika.metadata.TypeFactory;
 import ma.glasnost.orika.util.Ordering;
 import ma.glasnost.orika.util.Ordering.OrderingRelation;
 import ma.glasnost.orika.util.SortedCollection;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author matt.deboer@gmail.com
@@ -133,16 +132,14 @@ public class SortedCollectionTestCase {
 				return relations[val1][val2];
 			}
 		};
-		SortedCollection<Integer> sorted = new SortedCollection<Integer>(
-				Arrays.asList(3, 1, 0, 2), testOrdering);
-		Assert.assertEquals(Arrays.asList(0, 1, 2, 3), new ArrayList<Integer>(
-				sorted));
+        SortedCollection<Integer> sorted = new SortedCollection<>(Arrays.asList(3, 1, 0, 2), testOrdering);
+        Assert.assertEquals(Arrays.asList(0, 1, 2, 3), new ArrayList<>(sorted));
     }
     
     @Test
     public void testOrdering2() {
         
-        Set<MapperKey> set = new HashSet<MapperKey>();
+        Set<MapperKey> set = new HashSet<>();
         
         set.add(new MapperKey(TypeFactory.valueOf(A1.class), TypeFactory.valueOf(B1.class)));
         set.add(new MapperKey(TypeFactory.valueOf(A2.class), TypeFactory.valueOf(B2.class)));
@@ -214,15 +211,13 @@ public class SortedCollectionTestCase {
         set.add(new MapperKey(TypeFactory.valueOf(C4.class), TypeFactory.valueOf(D2.class)));
         set.add(new MapperKey(TypeFactory.valueOf(C5.class), TypeFactory.valueOf(D1.class)));
         
-        SortedCollection<MapperKey> queue = new SortedCollection<MapperKey>(Ordering.MAPPER_KEY);
-        
-        for (MapperKey key : set) {
-            queue.add(key);
-        }
+        SortedCollection<MapperKey> queue = new SortedCollection<>(Ordering.MAPPER_KEY);
+
+        queue.addAll(set);
         
         Assert.assertEquals(set.size(), queue.size());
         
-        Set<MapperKey> seen = new HashSet<MapperKey>();
+        Set<MapperKey> seen = new HashSet<>();
         for (MapperKey key : queue) {
             for (MapperKey seenKey : seen) {
                 if ((seenKey.getAType().isAssignableFrom(key.getAType()) && seenKey.getBType().isAssignableFrom(key.getBType()))
@@ -237,7 +232,7 @@ public class SortedCollectionTestCase {
     @Test
     public void testOrdering3() {
         
-        Set<MapperKey> set = new HashSet<MapperKey>();
+        Set<MapperKey> set = new HashSet<>();
         
         set.add(new MapperKey(TypeFactory.valueOf(A1.class), TypeFactory.valueOf(B1.class)));
         set.add(new MapperKey(TypeFactory.valueOf(A2.class), TypeFactory.valueOf(B2.class)));
@@ -276,15 +271,13 @@ public class SortedCollectionTestCase {
         set.add(new MapperKey(TypeFactory.valueOf(C5.class), TypeFactory.valueOf(D5.class)));
         
         
-        SortedCollection<MapperKey> queue = new SortedCollection<MapperKey>(Ordering.MAPPER_KEY);
-        
-        for (MapperKey key : set) {
-            queue.add(key);
-        }
+        SortedCollection<MapperKey> queue = new SortedCollection<>(Ordering.MAPPER_KEY);
+
+        queue.addAll(set);
         
         Assert.assertEquals(set.size(), queue.size());
         
-        Set<MapperKey> seen = new HashSet<MapperKey>();
+        Set<MapperKey> seen = new HashSet<>();
         for (MapperKey key : queue) {
             for (MapperKey seenKey : seen) {
                 if ((seenKey.getAType().isAssignableFrom(key.getAType()) && seenKey.getBType().isAssignableFrom(key.getBType()))

@@ -18,10 +18,6 @@
 
 package ma.glasnost.orika.test.generics;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.util.Map;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.UtilityResolver;
@@ -31,9 +27,12 @@ import ma.glasnost.orika.metadata.TypeBuilder;
 import ma.glasnost.orika.metadata.TypeFactory;
 import ma.glasnost.orika.property.PropertyResolverStrategy;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.util.Map;
 
 public class GenericsTestCase {
     
@@ -57,7 +56,7 @@ public class GenericsTestCase {
         entity.setId(42L);
         
         new EntityGeneric<String>().setId("Hello");
-        EntityGeneric<Long> sourceObject = new EntityGeneric<Long>();
+        EntityGeneric<Long> sourceObject = new EntityGeneric<>();
         sourceObject.setId(42L);
         EntityLong clone = mapperFacade.map(sourceObject, EntityLong.class);
         
@@ -87,9 +86,9 @@ public class GenericsTestCase {
         
         MapperFacade mapperFacade = factory.getMapperFacade();
         
-        EntityGeneric<NestedKey<Long>> sourceObject = new EntityGeneric<NestedKey<Long>>();
+        EntityGeneric<NestedKey<Long>> sourceObject = new EntityGeneric<>();
         
-        NestedKey<Long> key = new NestedKey<Long>();
+        NestedKey<Long> key = new NestedKey<>();
         key.setKey(42L);
         sourceObject.setId(key);
         Type<EntityLong> _Entity_Long = TypeFactory.valueOf(EntityLong.class);
@@ -121,10 +120,10 @@ public class GenericsTestCase {
         
         MapperFactory factory = MappingUtil.getMapperFactory();
         
-        TestEntry<Holder<Long>, Holder<String>> fromObject = new TestEntry<Holder<Long>, Holder<String>>();
-        fromObject.setKey(new Holder<Long>());
-        fromObject.getKey().setHeld(Long.valueOf(42L));
-        fromObject.setValue(new Holder<String>());
+        TestEntry<Holder<Long>, Holder<String>> fromObject = new TestEntry<>();
+        fromObject.setKey(new Holder<>());
+        fromObject.getKey().setHeld(42L);
+        fromObject.setValue(new Holder<>());
         fromObject.getValue().setHeld("What is the meaning of life?");
         
         factory.registerClassMap(
@@ -159,16 +158,16 @@ public class GenericsTestCase {
         MapperFactory factory = MappingUtil.getMapperFactory();
         
         // Construct our elaborate 'fromObject'
-        Entry<Container<Holder<Long>>, Envelope<Container<String>>> fromObject = 
-                new Entry<Container<Holder<Long>>, Envelope<Container<String>>>();
-        Container<Holder<Long>> container = new Container<Holder<Long>>();
-        Holder<Long> holder = new Holder<Long>();
-        holder.setHeld(Long.valueOf(42L));
+        Entry<Container<Holder<Long>>, Envelope<Container<String>>> fromObject =
+                new Entry<>();
+        Container<Holder<Long>> container = new Container<>();
+        Holder<Long> holder = new Holder<>();
+        holder.setHeld(42L);
         container.setContained(holder);
         fromObject.setKey(container);
         
-        Envelope<Container<String>> envelope = new Envelope<Container<String>>();
-        Container<String> container2 = new Container<String>();
+        Envelope<Container<String>> envelope = new Envelope<>();
+        Container<String> container2 = new Container<>();
         container2.setContained("What is the meaning of life?");
         envelope.setContents(container2);
         fromObject.setValue(envelope);
@@ -207,10 +206,10 @@ public class GenericsTestCase {
         
         MapperFactory factory = MappingUtil.getMapperFactory();
         
-        TestEntry<Holder<Long>, Holder<String>> fromObject = new TestEntry<Holder<Long>, Holder<String>>();
-        fromObject.setKey(new Holder<Long>());
-        fromObject.getKey().setHeld(Long.valueOf(42L));
-        fromObject.setValue(new Holder<String>());
+        TestEntry<Holder<Long>, Holder<String>> fromObject = new TestEntry<>();
+        fromObject.setKey(new Holder<>());
+        fromObject.getKey().setHeld(42L);
+        fromObject.setValue(new Holder<>());
         fromObject.getValue().setHeld("What is the meaning of life?");
         
         /*
@@ -429,10 +428,10 @@ public class GenericsTestCase {
         }
     }
     
-    public static interface Entity<T extends Serializable> {
-        public T getId();
+    public interface Entity<T extends Serializable> {
+        T getId();
         
-        public void
+        void
         
         setId(T id);
     }
@@ -493,7 +492,7 @@ public class GenericsTestCase {
     
     public static abstract class RecursiveType<R extends RecursiveType<R>> implements Comparable<R>{
         
-        private Type<R> recursiveType;
+        private final Type<R> recursiveType;
         
         public RecursiveType() {
             ParameterizedType superType = (ParameterizedType)getClass().getGenericSuperclass();

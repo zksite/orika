@@ -1,18 +1,17 @@
 package ma.glasnost.orika.test.boundmapperfacade;
 
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.test.MappingUtil;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.SortedMap;
 import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.test.MappingUtil;
 
 /**
  * @author: jad7 jad7kii@gmail.com
@@ -72,8 +71,8 @@ public class SortedMapSetTestCase {
             this.stringStringSortedMap = stringStringSortedMap;
         }
 
-        private SortedSet<Integer> integerSortedSet;
-        private SortedMap<String, String> stringStringSortedMap;
+        private final SortedSet<Integer> integerSortedSet;
+        private final SortedMap<String, String> stringStringSortedMap;
 
         public SortedSet<Integer> getIntegerSortedSet() {
             return integerSortedSet;
@@ -89,8 +88,8 @@ public class SortedMapSetTestCase {
         //System.setProperty(MappingUtil.DISABLE_DEBUG_MODE, "false");
         mapperFactory = MappingUtil.getMapperFactory(true);
         a = new A();
-        SortedSet<Integer> sortedSet = new TreeSet<Integer>(Arrays.asList(5,7,3,4,1));
-        SortedMap<String, String> sortedMap = new TreeMap<String, String>();
+        SortedSet<Integer> sortedSet = new TreeSet<>(Arrays.asList(5, 7, 3, 4, 1));
+        SortedMap<String, String> sortedMap = new TreeMap<>();
         sortedMap.put("a", "a");
         sortedMap.put("e", "e");
         sortedMap.put("b", "b");

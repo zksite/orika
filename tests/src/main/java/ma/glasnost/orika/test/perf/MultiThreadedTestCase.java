@@ -17,24 +17,6 @@
  */
 package ma.glasnost.orika.test.perf;
 
-import java.io.File;
-import java.io.UnsupportedEncodingException;
-import java.lang.ref.SoftReference;
-import java.net.URLDecoder;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicInteger;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
@@ -51,10 +33,26 @@ import ma.glasnost.orika.test.common.types.TestCaseClasses.BookImpl;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.Library;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.LibraryDTO;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.LibraryImpl;
-
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
+
+import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.lang.ref.SoftReference;
+import java.net.URLDecoder;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author matt.deboer@gmail.com
@@ -73,12 +71,12 @@ public class MultiThreadedTestCase {
     @Rule
     public ConcurrentRule concurrentRule = new ConcurrentRule();
     
-    private volatile Set<Class<?>> classes = getNonAnonymousClasses();
+    private final Set<Class<?>> classes = getNonAnonymousClasses();
     
     private final MapperFacade mapper = MappingUtil.getMapperFactory().getMapperFacade();
     
     private static Set<Class<?>> getNonAnonymousClasses() {
-        Set<Class<?>> classes = new HashSet<Class<?>>();
+        Set<Class<?>> classes = new HashSet<>();
         File classFolder;
         try {
             classFolder = new File(URLDecoder.decode(MultiThreadedTestCase.class.getResource("/").getFile(), "UTF-8"));
@@ -95,8 +93,8 @@ public class MultiThreadedTestCase {
     }
     
     private final AtomicInteger threadIndex = new AtomicInteger(0);
-    private Type<?>[] typeResults = new Type<?>[15];
-    private CountDownLatch finishLine = new CountDownLatch(15);
+    private final Type<?>[] typeResults = new Type<?>[15];
+    private final CountDownLatch finishLine = new CountDownLatch(15);
     
     @Test
     @Concurrent(15)
@@ -127,7 +125,7 @@ public class MultiThreadedTestCase {
         
         int i = myIndex.getAndIncrement();
         int c = 0;
-        Map<Type<?>, Class<?>> types = new HashMap<Type<?>, Class<?>>();
+        Map<Type<?>, Class<?>> types = new HashMap<>();
         for (Class<?> aClass : classes) {
             
             /*
@@ -211,7 +209,7 @@ public class MultiThreadedTestCase {
         testGenerateObjectFactories();
     }
     
-    private MapperFactory factory = new DefaultMapperFactory.Builder().build();
+    private final MapperFactory factory = new DefaultMapperFactory.Builder().build();
     
     @Test
     @Concurrent(50)
@@ -375,8 +373,8 @@ public class MultiThreadedTestCase {
     	
     	if (IS_IBM_JDK) {
     		synchronized(this) {
-	    		SoftReference<Object> checkReference = new SoftReference<Object>(new Object());
-		        List<byte[]> byteBucket = new ArrayList<byte[]>();
+	    		SoftReference<Object> checkReference = new SoftReference<>(new Object());
+		        List<byte[]> byteBucket = new ArrayList<>();
 		        try {
 		            for (int i = 0; i < Integer.MAX_VALUE; ++i) {
 		                int available = (int) Math.min((long) Integer.MAX_VALUE, Runtime.getRuntime().maxMemory());
@@ -395,8 +393,8 @@ public class MultiThreadedTestCase {
 		        }
     		}
     	} else {
-	        SoftReference<Object> checkReference = new SoftReference<Object>(new Object());
-	        List<byte[]> byteBucket = new ArrayList<byte[]>();
+	        SoftReference<Object> checkReference = new SoftReference<>(new Object());
+	        List<byte[]> byteBucket = new ArrayList<>();
 	        try {
 	            for (int i = 0; i < Integer.MAX_VALUE; ++i) {
 	                int available = (int) Math.min((long) Integer.MAX_VALUE, Runtime.getRuntime().maxMemory());

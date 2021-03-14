@@ -23,6 +23,12 @@ import com.thoughtworks.paranamer.BytecodeReadingParanamer;
 import com.thoughtworks.paranamer.CachingParanamer;
 import com.thoughtworks.paranamer.ParameterNamesNotFoundException;
 import com.thoughtworks.paranamer.Paranamer;
+import ma.glasnost.orika.metadata.ClassMap;
+import ma.glasnost.orika.metadata.FieldMap;
+import ma.glasnost.orika.metadata.MappingDirection;
+import ma.glasnost.orika.metadata.Property;
+import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.metadata.TypeFactory;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
@@ -34,13 +40,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import ma.glasnost.orika.metadata.ClassMap;
-import ma.glasnost.orika.metadata.FieldMap;
-import ma.glasnost.orika.metadata.MappingDirection;
-import ma.glasnost.orika.metadata.Property;
-import ma.glasnost.orika.metadata.Type;
-import ma.glasnost.orika.metadata.TypeFactory;
 
 import static ma.glasnost.orika.impl.Specifications.aMappingOfTheRequiredClassProperty;
 
@@ -74,9 +73,9 @@ public class SimpleConstructorResolverStrategy implements ConstructorResolverStr
         boolean foundDeclaredConstructor = false;
 
         final Constructor<T>[] constructors = (Constructor<T>[]) targetClass.getRawType().getDeclaredConstructors();
-        final TreeMap<Integer, ConstructorMapping<T>> constructorsByMatchedParams = new TreeMap<Integer, ConstructorMapping<T>>();
+        final TreeMap<Integer, ConstructorMapping<T>> constructorsByMatchedParams = new TreeMap<>();
         for (Constructor<T> constructor : constructors) {
-            final ConstructorMapping<T> constructorMapping = new ConstructorMapping<T>();
+            final ConstructorMapping<T> constructorMapping = new ConstructorMapping<>();
             constructorMapping.setDeclaredParameters(declaredParameterNames);
             final java.lang.reflect.Type[] genericParamTypes = constructor.getGenericParameterTypes();
             try {
@@ -124,7 +123,7 @@ public class SimpleConstructorResolverStrategy implements ConstructorResolverStr
              * describing some alternative options like creating a Converter or declaring their own
              * custom ObjectFactory...
              */
-            final ConstructorMapping<T> defaultMapping = new ConstructorMapping<T>();
+            final ConstructorMapping<T> defaultMapping = new ConstructorMapping<>();
             defaultMapping.setConstructor(constructors.length == 0 ? null : constructors[0]);
             return defaultMapping;
         }
@@ -148,7 +147,7 @@ public class SimpleConstructorResolverStrategy implements ConstructorResolverStr
     }
 
     private <T> void matchByDestParamTypes(ConstructorMapping<T> constructorMapping, Map<String, FieldMap> targetParameters, java.lang.reflect.Type[] genericParamTypes, boolean byDefault, TreeMap<Integer, ConstructorMapping<T>> constructorsByMatchedParams) {
-        final List<FieldMap> targetTypes = new ArrayList<FieldMap>(targetParameters.values());
+        final List<FieldMap> targetTypes = new ArrayList<>(targetParameters.values());
         int matchScore = 0;
         int exactMatches = 0;
         Type<?>[] parameterTypes = new Type[genericParamTypes.length];
@@ -190,12 +189,12 @@ public class SimpleConstructorResolverStrategy implements ConstructorResolverStr
     }
 
     private Map<String, FieldMap> getTargetParams(Set<FieldMap> fieldMaps, boolean aToB, String[] declaredParameterNames) {
-        final Map<String, FieldMap> targetParameters = new LinkedHashMap<String, FieldMap>();
+        final Map<String, FieldMap> targetParameters = new LinkedHashMap<>();
         if (declaredParameterNames != null) {
             /*
              * An override to the property names was provided
              */
-            final Set<FieldMap> fields = new HashSet<FieldMap>(fieldMaps);
+            final Set<FieldMap> fields = new HashSet<>(fieldMaps);
             for (String arg : declaredParameterNames) {
                 Iterator<FieldMap> iter = fields.iterator();
                 while (iter.hasNext()) {

@@ -18,22 +18,21 @@
 
 package ma.glasnost.orika.test.community;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Assert;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
 import ma.glasnost.orika.test.MappingUtil;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class NestedListToArrayTestCase {
 
 	
 	public static class L1 {
-	       private List<V1>        list    = new ArrayList<V1>();
+	       private List<V1> list = new ArrayList<>();
 
 	       public final List<V1> getList() {
 	               return list;
@@ -57,7 +56,7 @@ public class NestedListToArrayTestCase {
 	}
 
 	public static class R1 {
-	       private List<L1>        list    = new ArrayList<L1>();
+	       private List<L1> list = new ArrayList<>();
 
 	       public final void setList(final List<L1> list) {
 	               this.list = list;
@@ -82,8 +81,8 @@ public class NestedListToArrayTestCase {
 
 	public static class V1 {
 	       public enum V1Type {
-	               A, B;
-	       }
+	               A, B
+           }
 
 	       private V1Type  type    = V1Type.A;
 
@@ -99,8 +98,8 @@ public class NestedListToArrayTestCase {
 
 	public static class V2 {
 	       public enum V2Type {
-	               A, B;
-	       }
+	               A, B
+           }
 
 	       private V2Type  type    = V2Type.A;
 
@@ -129,9 +128,9 @@ public class NestedListToArrayTestCase {
         
         
         final R1 r1 = new R1();
-        final List<L1> list = new ArrayList<L1>();
+        final List<L1> list = new ArrayList<>();
         final L1 l1 = new L1();
-        final List<V1> v1List = new ArrayList<V1>();
+        final List<V1> v1List = new ArrayList<>();
         final V1 v1 = new V1();
         v1List.add(v1);
         l1.setList(v1List);

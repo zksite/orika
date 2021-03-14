@@ -18,21 +18,9 @@
 
 package ma.glasnost.orika.test.boundmapperfacade;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.net.URL;
-import java.net.URLStreamHandler;
-import java.text.SimpleDateFormat;
-import java.util.*;
-import java.util.concurrent.TimeUnit;
-
-import org.junit.Assert;
-import ma.glasnost.orika.DefaultFieldMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.builtin.DateToStringConverter;
-import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.test.MappingUtil;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.Author;
 import ma.glasnost.orika.test.common.types.TestCaseClasses.AuthorDTO;
@@ -59,8 +47,21 @@ import ma.glasnost.orika.test.constructor.TestCaseClasses.PersonVO2;
 import ma.glasnost.orika.test.constructor.TestCaseClasses.PersonVO3;
 import ma.glasnost.orika.test.constructor.TestCaseClasses.PrimitiveNumberHolder;
 import ma.glasnost.orika.test.constructor.TestCaseClasses.WrapperHolder;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.net.URL;
+import java.net.URLStreamHandler;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class ConstructorMappingTestCase {
     
@@ -168,18 +169,14 @@ public class ConstructorMappingTestCase {
         final SimpleDateFormat df = new SimpleDateFormat(DATE_PATTERN);
         MapperFactory factory = MappingUtil.getMapperFactory();
         
-        factory.registerDefaultFieldMapper(new DefaultFieldMapper() {
-
-        	public String suggestMappedField(String fromProperty,
-					Type<?> fromPropertyType) {
-					if ("dateOfBirth".equals(fromProperty)) {
-						return "date";
-					} else if("date".equals(fromProperty)) {
-						return "dateOfBirth";
-					}
-					return null;
+        factory.registerDefaultFieldMapper((fromProperty, fromPropertyType) -> {
+				if ("dateOfBirth".equals(fromProperty)) {
+					return "date";
+				} else if("date".equals(fromProperty)) {
+					return "dateOfBirth";
 				}
-	        });
+				return null;
+			});
 
         factory.getConverterFactory().registerConverter(new DateToStringConverter(DATE_PATTERN));
         
@@ -279,18 +276,14 @@ public class ConstructorMappingTestCase {
     	final SimpleDateFormat df = new SimpleDateFormat(DATE_PATTERN);
         MapperFactory factory = MappingUtil.getMapperFactory();
         
-        factory.registerDefaultFieldMapper(new DefaultFieldMapper() {
-
-        	public String suggestMappedField(String fromProperty,
-					Type<?> fromPropertyType) {
-					if ("dateOfBirth".equals(fromProperty)) {
-						return "date";
-					} else if("date".equals(fromProperty)) {
-						return "dateOfBirth";
-					}
-					return null;
+        factory.registerDefaultFieldMapper((fromProperty, fromPropertyType) -> {
+				if ("dateOfBirth".equals(fromProperty)) {
+					return "date";
+				} else if("date".equals(fromProperty)) {
+					return "dateOfBirth";
 				}
-	        });
+				return null;
+			});
 
         factory.getConverterFactory().registerConverter(new DateToStringConverter(DATE_PATTERN));
         
@@ -312,7 +305,7 @@ public class ConstructorMappingTestCase {
     @Test
     public void testBaseCaseWithCollectionTypes() {
     	
-    	List<Book> books = new ArrayList<Book>(4);
+    	List<Book> books = new ArrayList<>(4);
     	
     	Author author1 = new AuthorImpl("Author #1");
     	Author author2 = new AuthorImpl("Author #2");
@@ -340,7 +333,7 @@ public class ConstructorMappingTestCase {
     @Test
     public void testMappingNestedTypes() {
     	
-    	List<BookNested> books = new ArrayList<BookNested>(4);
+    	List<BookNested> books = new ArrayList<>(4);
     	
     	AuthorNested author1 = new AuthorNested(new Name("Abdelkrim","EL KHETTABI"));
     	AuthorNested author2 = new AuthorNested(new Name("Bill","Shakespeare"));
@@ -491,7 +484,7 @@ public class ConstructorMappingTestCase {
     	assertEquals(nested.getNumbers().getFloatValue(), wrapper.getFloatValue(), 1.0f);
     	assertEquals(nested.getNumbers().getDoubleValue(), wrapper.getDoubleValue(), 1.0d);
     	assertEquals(nested.getCharValue(), wrapper.getCharValue().charValue());
-    	assertEquals(nested.isBooleanValue(), wrapper.getBooleanValue().booleanValue());
+    	assertEquals(nested.isBooleanValue(), wrapper.getBooleanValue());
     	assertEquals(nested.getByteValue(), wrapper.getByteValue().byteValue());
     }
     
@@ -521,10 +514,10 @@ public class ConstructorMappingTestCase {
     	assertEquals(wrappers.getShortValue().shortValue(), primitives.getShortValue());
     	assertEquals(wrappers.getIntValue().intValue(), primitives.getIntValue());
     	assertEquals(wrappers.getLongValue().longValue(), primitives.getLongValue());
-    	assertEquals(wrappers.getFloatValue().floatValue(), primitives.getFloatValue(), 1.0f);
-    	assertEquals(wrappers.getDoubleValue().doubleValue(), primitives.getDoubleValue(), 1.0d);
+    	assertEquals(wrappers.getFloatValue(), primitives.getFloatValue(), 1.0f);
+    	assertEquals(wrappers.getDoubleValue(), primitives.getDoubleValue(), 1.0d);
     	assertEquals(wrappers.getCharValue().charValue(), primitives.getCharValue());
-    	assertEquals(wrappers.getBooleanValue().booleanValue(), primitives.isBooleanValue());
+    	assertEquals(wrappers.getBooleanValue(), primitives.isBooleanValue());
     	assertEquals(wrappers.getByteValue().byteValue(), primitives.getByteValue());
     }
     

@@ -17,20 +17,19 @@
  */
 package ma.glasnost.orika.test.community;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasSize;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Test;
-
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeBuilder;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 /**
  * MappingException: cannot determine runtime type of destination collection.
@@ -160,11 +159,11 @@ public class Issue30TestCase {
 		factory.registerClassMap(factory.classMap(iv1, iv2).byDefault()
 				.toClassMap());
 
-		List<HardDrive> hardDrives = new ArrayList<HardDrive>();
+		List<HardDrive> hardDrives = new ArrayList<>();
 		hardDrives.add(new HardDrive());
 		hardDrives.add(new HardDrive());
 
-		Inventory<HardDrive> inventory = new Inventory<HardDrive>();
+		Inventory<HardDrive> inventory = new Inventory<>();
 		inventory.setItems(hardDrives);
 
 		InventoryDTO<?> inventoryDTO = factory.getMapperFacade().map(inventory,

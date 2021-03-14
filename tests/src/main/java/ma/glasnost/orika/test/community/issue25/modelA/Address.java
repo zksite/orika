@@ -18,6 +18,8 @@
 package ma.glasnost.orika.test.community.issue25.modelA;
 
 
+import java.util.Objects;
+
 public class Address {
 
 	private Long idNumber = null;
@@ -43,7 +45,7 @@ public class Address {
     public void setPostalcode(Long postalcode) {
 		this.postalcode = postalcode;
 	}
-    
+
 	public Long getIdNumber() {
 		return idNumber;
 	}
@@ -53,26 +55,22 @@ public class Address {
 	}
 
 	@Override
-    public boolean equals(Object other){      
+    public boolean equals(Object other){
         if (other == this) return true;
         if (other == null) return false;
         if (getClass() != other.getClass()) return false;
-        
+
         Address anschrift = (Address)other;
-           
-        boolean areAttributesEqual = (street == anschrift.street || 
-                              (street != null && street.equals(anschrift.street)));
-        areAttributesEqual &= (postalcode == anschrift.postalcode || 
-                              (postalcode != null && postalcode.equals(anschrift.postalcode)));
-        areAttributesEqual &= (idNumber == anschrift.idNumber || 
-                (idNumber != null && idNumber.equals(anschrift.idNumber)));
-        return areAttributesEqual;
+
+        return Objects.equals(street, anschrift.street) &&
+                Objects.equals(postalcode, anschrift.postalcode) &&
+                Objects.equals(idNumber, anschrift.idNumber);
     }
 
-    @Override    
-    public int hashCode(){         
-       return (this.street  == null ?     10 : street.hashCode()) ^ 
-              (this.postalcode == null ? 11 : postalcode.hashCode()^ 
+    @Override
+    public int hashCode(){
+       return (this.street  == null ?     10 : street.hashCode()) ^
+              (this.postalcode == null ? 11 : postalcode.hashCode()^
               (this.idNumber == null ? 11 : idNumber.hashCode()));
     }
 }

@@ -38,7 +38,7 @@ public class FromStringConverter extends BuiltinCustomConverter<Object, Object> 
         return String.class == sourceType.getRawType() && destinationType.isConvertibleFromString();
     }
     
-    public Object convert(Object source, Type<? extends Object> destinationType, MappingContext context) {
+    public Object convert(Object source, Type<?> destinationType, MappingContext context) {
         if (destinationType.isEnum()) {
             return convertToEnum((String) source, destinationType);
         } else if (destinationType.isPrimitive()) {
@@ -49,11 +49,11 @@ public class FromStringConverter extends BuiltinCustomConverter<Object, Object> 
     }
     
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    private Object convertToEnum(String source, Type<? extends Object> destinationType) {
+    private Object convertToEnum(String source, Type<?> destinationType) {
         return Enum.valueOf((Class<Enum>) destinationType.getRawType(), source.toString());
     }
     
-    private Object convertToPrimitive(String source, Type<? extends Object> destinationType) {
+    private Object convertToPrimitive(String source, Type<?> destinationType) {
         
         if (Character.TYPE == destinationType.getRawType()) {
             return source.charAt(0);
@@ -75,10 +75,10 @@ public class FromStringConverter extends BuiltinCustomConverter<Object, Object> 
         return null;
     }
     
-    private Object convertToWrapper(String source, Type<? extends Object> destinationType) {
+    private Object convertToWrapper(String source, Type<?> destinationType) {
         
         if (Character.class == destinationType.getRawType()) {
-            return Character.valueOf(source.charAt(0));
+            return source.charAt(0);
         } else if (Byte.class == destinationType.getRawType()) {
             return Byte.valueOf(source);
         } else if (Short.class == destinationType.getRawType()) {

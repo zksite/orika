@@ -30,11 +30,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ByteCodeClassLoader extends ClassLoader {
 
-	private Map<String, byte[]> classData;
+	private final Map<String, byte[]> classData;
 
 	public ByteCodeClassLoader(ClassLoader parent) {
 		super(parent);
-		classData = new ConcurrentHashMap<String, byte[]>();
+		classData = new ConcurrentHashMap<>();
 	}
 
 	/**

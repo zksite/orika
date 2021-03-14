@@ -17,12 +17,6 @@
  */
 package ma.glasnost.orika.examples;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import org.junit.Assert;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.metadata.Property;
@@ -30,8 +24,13 @@ import ma.glasnost.orika.metadata.TypeFactory;
 import ma.glasnost.orika.property.IntrospectorPropertyResolver;
 import ma.glasnost.orika.property.PropertyResolver;
 import ma.glasnost.orika.test.MappingUtil;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author matt.deboer@gmail.com
@@ -73,7 +72,7 @@ public class Example1TestCase {
         
         MapperFacade mapper = mapperFactory.getMapperFacade();
         
-        List<Name> aliases = new ArrayList<Name>();
+        List<Name> aliases = new ArrayList<>();
         aliases.add(new Name("Joe", "Williams"));
         aliases.add(new Name("Terry", "Connor"));
         Person source = new Person(new Name("John","Doe"), new Date(), aliases);
@@ -91,14 +90,14 @@ public class Example1TestCase {
     }
     
     public static class Person {
-        private Name name;
-        private List<Name> knownAliases;
-        private Date birthDate;
+        private final Name name;
+        private final List<Name> knownAliases;
+        private final Date birthDate;
         
         public Person(Name name, Date birthDate, List<Name> knownAliases) {
             this.name = name;
             this.birthDate = (Date) birthDate.clone();
-            this.knownAliases = new ArrayList<Name>(knownAliases);
+            this.knownAliases = new ArrayList<>(knownAliases);
         }
         
         public List<Name> getKnownAliases() {
@@ -115,8 +114,8 @@ public class Example1TestCase {
     }
     
     public static class Name {
-        private String first;
-        private String last;
+        private final String first;
+        private final String last;
         
         public Name(String first, String last) {
             this.first = first;

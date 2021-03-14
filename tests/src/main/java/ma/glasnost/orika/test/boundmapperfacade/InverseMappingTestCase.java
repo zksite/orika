@@ -18,16 +18,15 @@
 
 package ma.glasnost.orika.test.boundmapperfacade;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class InverseMappingTestCase {
     
@@ -126,7 +125,7 @@ public class InverseMappingTestCase {
         BoundMapperFacade<Reader, ReaderDTO> mapper = factory.getMapperFacade(Reader.class, ReaderDTO.class);
         BoundMapperFacade<ReaderDTO,Reader> mapper2 = factory.getMapperFacade(ReaderDTO.class, Reader.class);
         
-        Set<BookDTO> bookDTOs = new HashSet<BookDTO>();
+        Set<BookDTO> bookDTOs = new HashSet<>();
         BookDTO bookDTO = new BookDTO();
         bookDTO.setTitle("The Prophet");
         bookDTOs.add(bookDTO);
@@ -419,7 +418,7 @@ public class InverseMappingTestCase {
         
         private String name;
         
-        private Set<BookDTO> books = new HashSet<BookDTO>();
+        private Set<BookDTO> books = new HashSet<>();
         
         public String getName() {
             return name;
