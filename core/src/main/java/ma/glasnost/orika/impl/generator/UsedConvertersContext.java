@@ -30,7 +30,7 @@ import java.util.Map.Entry;
  */
 public class UsedConvertersContext {
     
-    private Map<Converter,Integer> usedConverters = new HashMap<Converter,Integer>();
+    private final Map<Converter,Integer> usedConverters = new HashMap<>();
     private int usedTypeIndex = 0;
 
     public int getIndex(Converter converter) {

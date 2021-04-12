@@ -18,13 +18,13 @@
 
 package ma.glasnost.orika.impl.generator.eclipsejdt;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.eclipse.jdt.core.compiler.IProblem;
 import org.eclipse.jdt.internal.compiler.ClassFile;
 import org.eclipse.jdt.internal.compiler.CompilationResult;
 import org.eclipse.jdt.internal.compiler.ICompilerRequestor;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class CompilerRequestor implements ICompilerRequestor {
 
@@ -46,7 +46,7 @@ public class CompilerRequestor implements ICompilerRequestor {
 	public void reset() {
 		this.problems = null;
 		this.compiledClassFiles = null;
-		this.compiledClassFiles = new HashMap<String, byte[]>();
+		this.compiledClassFiles = new HashMap<>();
 	}
 
 	public void acceptResult(CompilationResult result) {
@@ -60,15 +60,14 @@ public class CompilerRequestor implements ICompilerRequestor {
 
 			ClassFile[] classFiles = result.getClassFiles();
 
-			for (int i = 0; i < classFiles.length; i++) {
-				ClassFile classFile = classFiles[i];
+			for (ClassFile classFile : classFiles) {
 				char[][] compoundName = classFile.getCompoundName();
 				StringBuilder className = new StringBuilder();
 				String sep = "";
 
-				for (int j = 0; j < compoundName.length; j++) {
+				for (char[] chars : compoundName) {
 					className.append(sep);
-					className.append(new String(compoundName[j]));
+					className.append(new String(chars));
 					sep = ".";
 				}
 

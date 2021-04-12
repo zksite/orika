@@ -18,16 +18,15 @@
 
 package ma.glasnost.orika.test.extensibility;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.Type;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PooledInstancesTestCase {
 
@@ -46,8 +45,8 @@ public class PooledInstancesTestCase {
 
 		private static class PoolingBoundMapperFacade<A, B> implements
 				BoundMapperFacade<A, B> {
-			private BoundMapperFacade<A, B> wrapped;
-			private Map<String, Pooled> pool;
+			private final BoundMapperFacade<A, B> wrapped;
+			private final Map<String, Pooled> pool;
 
 			public PoolingBoundMapperFacade(BoundMapperFacade<A, B> wrapped,
 					Map<String, Pooled> pool) {
@@ -122,7 +121,7 @@ public class PooledInstancesTestCase {
 			pool.put("C", new Pooled("C"));
 		}
 
-		private Map<String, Pooled> pool = new HashMap<String, Pooled>();
+		private final Map<String, Pooled> pool = new HashMap<String, Pooled>();
 
 		public Map<String, Pooled> getPool() {
 			return pool;

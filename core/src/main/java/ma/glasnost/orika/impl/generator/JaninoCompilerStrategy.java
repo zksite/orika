@@ -18,10 +18,7 @@
 
 package ma.glasnost.orika.impl.generator;
 
-import java.io.StringReader;
-
 import ma.glasnost.orika.MappingException;
-
 import org.codehaus.janino.ClassLoaderIClassLoader;
 import org.codehaus.janino.IClassLoader;
 import org.codehaus.janino.Java;
@@ -32,20 +29,21 @@ import org.codehaus.janino.util.ClassFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.StringReader;
+
 public class JaninoCompilerStrategy extends CompilerStrategy {
     
     private final static Logger LOG = LoggerFactory.getLogger(JaninoCompilerStrategy.class);
     
     private static final String WRITE_SOURCE_FILES_BY_DEFAULT = "false";
     private static final String WRITE_CLASS_FILES_BY_DEFAULT = "false";
-    
-    private ClassLoader parentClassLoader;
-    private ByteArrayClassLoader classLoader;
+
+    private final ByteArrayClassLoader classLoader;
     private IClassLoader iClassLoader = null;
     
     public JaninoCompilerStrategy() {
         super(WRITE_SOURCE_FILES_BY_DEFAULT, WRITE_CLASS_FILES_BY_DEFAULT);
-        parentClassLoader = Thread.currentThread().getContextClassLoader();
+        ClassLoader parentClassLoader = Thread.currentThread().getContextClassLoader();
         iClassLoader = new ClassLoaderIClassLoader(parentClassLoader);
         classLoader = new ByteArrayClassLoader(parentClassLoader);
     }

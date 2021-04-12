@@ -1,14 +1,5 @@
 package ma.glasnost.orika.test.community;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
-import static org.hamcrest.Matchers.is;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Test;
-
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
@@ -16,6 +7,14 @@ import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.ObjectFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.TypeFactory;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.is;
 
 /**
  * Support for mapping one type to many.
@@ -25,21 +24,19 @@ import ma.glasnost.orika.metadata.TypeFactory;
  */
 public class Issue176WithSuperClassesTestCase {
     
-    private static final ObjectFactory<B> OBJECT_FACTORY = new ObjectFactory<B>() {
-        public B create(Object source, MappingContext mappingContext) {
-            A a = (A) source;
-            final B b;
-            if ("1".equals(a.type)) {
-                b = new B1();
-            } else if ("2".equals(a.type)) {
-                b = new B2();
-            } else if (a.type == null || a.type.isEmpty()) {
-                b = new B();
-            } else {
-                throw new IllegalArgumentException("type not supported: " + a.type);
-            }
-            return b;
+    private static final ObjectFactory<B> OBJECT_FACTORY = (source, mappingContext) -> {
+        A a = (A) source;
+        final B b;
+        if ("1".equals(a.type)) {
+            b = new B1();
+        } else if ("2".equals(a.type)) {
+            b = new B2();
+        } else if (a.type == null || a.type.isEmpty()) {
+            b = new B();
+        } else {
+            throw new IllegalArgumentException("type not supported: " + a.type);
         }
+        return b;
     };
     
     @Test
@@ -253,7 +250,7 @@ public class Issue176WithSuperClassesTestCase {
     
     // A-Hierarchy:
     public static class ASuperContainer {
-        public List<ASuper> elelemts = new ArrayList<ASuper>();
+        public List<ASuper> elelemts = new ArrayList<>();
     }
     
     public static class ASuper {
@@ -272,7 +269,7 @@ public class Issue176WithSuperClassesTestCase {
     
     // B-Hierarchy:
     public static class BSuperContainer {
-        public List<BSuper> elelemts = new ArrayList<BSuper>();
+        public List<BSuper> elelemts = new ArrayList<>();
     }
     
     public static class BSuper {

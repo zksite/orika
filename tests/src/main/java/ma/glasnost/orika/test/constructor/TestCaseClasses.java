@@ -18,16 +18,16 @@
 
 package ma.glasnost.orika.test.constructor;
 
+import ma.glasnost.orika.test.common.types.TestCaseClasses.PrimitiveWrapperHolder;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
-import ma.glasnost.orika.test.common.types.TestCaseClasses.PrimitiveWrapperHolder;
-
 public interface TestCaseClasses {
 
-	public static class Person {
+	class Person {
         private String firstName;
         private String lastName;
         
@@ -68,7 +68,7 @@ public interface TestCaseClasses {
         
     }
     
-    public static class PersonVO {
+    class PersonVO {
         private final String firstName;
         private final String lastName;
         
@@ -99,7 +99,7 @@ public interface TestCaseClasses {
         }
     }
     
-    public static class PersonVO2 {
+    class PersonVO2 {
     	
     	private final String firstName;
         private final String lastName;
@@ -110,7 +110,7 @@ public interface TestCaseClasses {
         public PersonVO2(String firstName, String lastName, Long age, String dateOfBirth) {
             this.firstName = firstName;
             this.lastName = lastName;
-            this.age = age!=null ? age.longValue() : 0;
+            this.age = age!=null ? age : 0;
             this.dateOfBirth = dateOfBirth;
         }
         
@@ -132,7 +132,7 @@ public interface TestCaseClasses {
     }
     
     
-    public static class PersonVO3 {
+    class PersonVO3 {
     	
     	private final String firstName;
         private final String lastName;
@@ -147,7 +147,7 @@ public interface TestCaseClasses {
         public PersonVO3(String firstName, String lastName, Long age, String dateOfBirth) {
             this.firstName = firstName;
             this.lastName = lastName;
-            this.age = age!=null ? age.longValue() : 0;
+            this.age = age!=null ? age : 0;
             this.dateOfBirth = dateOfBirth;
         }
         
@@ -178,7 +178,7 @@ public interface TestCaseClasses {
         }
     }
 
-    static class PersonVO4 {
+    class PersonVO4 {
 
         private final String firstName;
         private final String lastName;
@@ -203,12 +203,12 @@ public interface TestCaseClasses {
         }
     }
 
-    public class NestedPrimitiveHolder {
+    class NestedPrimitiveHolder {
     	
-    	private char charValue;
-    	private boolean booleanValue;
-    	private byte byteValue;
-    	private PrimitiveNumberHolder numbers;
+    	private final char charValue;
+    	private final boolean booleanValue;
+    	private final byte byteValue;
+    	private final PrimitiveNumberHolder numbers;
 		
     	public NestedPrimitiveHolder(PrimitiveNumberHolder numbers, char charValue, boolean booleanValue, byte byteValue) {
 			super();
@@ -257,12 +257,12 @@ public interface TestCaseClasses {
 		}
     }
     
-    public class PrimitiveNumberHolder {
-    	private short shortValue;
-    	private int intValue;
-    	private long longValue;
-    	private float floatValue;
-    	private double doubleValue;
+    class PrimitiveNumberHolder {
+    	private final short shortValue;
+    	private final int intValue;
+    	private final long longValue;
+    	private final float floatValue;
+    	private final double doubleValue;
 		
     	public PrimitiveNumberHolder(short shortValue, int intValue, long longValue,
 				float floatValue, double doubleValue) {
@@ -318,8 +318,8 @@ public interface TestCaseClasses {
 		}
     }
     
-    public class Holder {
-    	private NestedPrimitiveHolder nested;
+    class Holder {
+    	private final NestedPrimitiveHolder nested;
 
 		public Holder(NestedPrimitiveHolder nestedHolder) {
 			super();
@@ -331,7 +331,7 @@ public interface TestCaseClasses {
 		}
     }
     
-    public class WrapperHolder {
+    class WrapperHolder {
     	private PrimitiveWrapperHolder nested;
 
 		public PrimitiveWrapperHolder getNested() {

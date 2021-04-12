@@ -34,7 +34,7 @@ package ma.glasnost.orika.cern.colt.map;
  * @author wolfgang.hoschek@cern.ch
  * @version 1.0, 09/24/99
  */
-public class PrimeFinder extends Object {
+public class PrimeFinder {
 	/**
 	 * The largest prime this class can generate; currently equal to <tt>Integer.MAX_VALUE</tt>.
 	 */
@@ -158,7 +158,7 @@ protected PrimeFinder() {}
  * from=16,   to=1000
  * from=1000, to=Integer.MAX_VALUE
  */
-protected static void main(String args[]) {
+protected static void main(String[] args) {
 	int from = Integer.parseInt(args[0]);	
 	int to = Integer.parseInt(args[1]);
 	

@@ -18,15 +18,14 @@
 
 package ma.glasnost.orika.test.unenhance;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Author {
@@ -42,7 +41,7 @@ public class Author {
 	private Set<Book> books;
 
 	public Author() {
-		this.books = new HashSet<Book>();
+		this.books = new HashSet<>();
 	}
 	
 	public Set<Book> getBooks() {

@@ -1,17 +1,15 @@
 package ma.glasnost.orika.test.community;
 
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.test.MappingUtil;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.junit.Assert;
-
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.test.MappingUtil;
-
-import org.junit.Test;
 
 /**
  * Mapping to Map&lt;String, List&lt;String&gt;&gt; only maps keys. Map&lt;String, ArrayList&lt;String&gt;&gt; works..
@@ -35,12 +33,12 @@ public class Issue128TestCase {
     
     private A createA() {
         A a = new A();
-        a.x = new HashMap<String, List<String>>();
-        a.x.put("key1", new ArrayList<String>());
+        a.x = new HashMap<>();
+        a.x.put("key1", new ArrayList<>());
         a.x.get("key1").add("value1a");
         a.x.get("key1").add("value1b");
         a.x.get("key1").add("value1c");
-        a.x.put("key2", new ArrayList<String>());
+        a.x.put("key2", new ArrayList<>());
         a.x.get("key2").add("value2a");
         a.x.get("key2").add("value2b");
         a.x.get("key2").add("value2c");

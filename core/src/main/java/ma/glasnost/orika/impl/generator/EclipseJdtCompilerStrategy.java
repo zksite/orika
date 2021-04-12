@@ -18,14 +18,14 @@
 
 package ma.glasnost.orika.impl.generator;
 
+import ma.glasnost.orika.impl.generator.Analysis.Visibility;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import ma.glasnost.orika.impl.generator.Analysis.Visibility;
 
 /**
  * Uses Eclipse JDT to format and compile the source for the specified
@@ -70,9 +70,7 @@ public class EclipseJdtCompilerStrategy extends CompilerStrategy {
     private String formatSource(String rawSource) {
         try {
             return (String) formatSource.invoke(compiler, rawSource);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalAccessException | IllegalArgumentException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
             if (e.getTargetException() instanceof RuntimeException) {
@@ -96,14 +94,9 @@ public class EclipseJdtCompilerStrategy extends CompilerStrategy {
         if (!outputSourceFile.exists() && !outputSourceFile.createNewFile()) {
             throw new IOException("Could not write source file for " + packageName + "." + className);
         }
-        
-        FileWriter fw = null;
-        try {
-            fw = new FileWriter(outputSourceFile);
+
+        try (FileWriter fw = new FileWriter(outputSourceFile)) {
             fw.append(sourceText);
-        } finally {
-            if (fw != null)
-                fw.close();
         }
         
     }
@@ -130,9 +123,7 @@ public class EclipseJdtCompilerStrategy extends CompilerStrategy {
             }
             
             assertTypeAccessible.invoke(compiler, type);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalAccessException | IllegalArgumentException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
             throw new SourceCodeGenerationException(e.getMessage(), e.getTargetException());
@@ -142,9 +133,7 @@ public class EclipseJdtCompilerStrategy extends CompilerStrategy {
     private byte[] compile(String source, String packageName, String classSimpleName) throws SourceCodeGenerationException {
         try {
             return (byte[]) compile.invoke(compiler, source, packageName, classSimpleName);
-        } catch (IllegalAccessException e) {
-            throw classCompilationException(e, packageName, classSimpleName, source);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalAccessException | IllegalArgumentException e) {
             throw classCompilationException(e, packageName, classSimpleName, source);
         } catch (InvocationTargetException e) {
             throw classCompilationException(e.getTargetException(), packageName, classSimpleName, source);
@@ -154,9 +143,7 @@ public class EclipseJdtCompilerStrategy extends CompilerStrategy {
     private Class<?> load(String className, byte[] data) throws ClassNotFoundException {
         try {
             return (Class<?>) load.invoke(compiler, className, data);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalAccessException | IllegalArgumentException e) {
             throw new RuntimeException(e);
         } catch (InvocationTargetException e) {
             if (e.getTargetException() instanceof ClassNotFoundException) {

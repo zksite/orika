@@ -18,24 +18,10 @@
 
 package ma.glasnost.orika.test.unenhance;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import java.io.File;
-import java.util.Date;
-import java.util.GregorianCalendar;
-
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.XMLGregorianCalendar;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import ma.glasnost.orika.DefaultFieldMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.generator.EclipseJdtCompiler;
-import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.test.MappingUtil;
 import ma.glasnost.orika.test.MavenProjectUtil;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.Author;
@@ -50,6 +36,17 @@ import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.Library;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.LibraryChild;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.LibraryMyDTO;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.LibraryParent;
+import org.junit.Assert;
+import org.junit.Test;
+
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
+import java.io.File;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class SuperTypeMappingTestCase {
     
@@ -173,13 +170,11 @@ public class SuperTypeMappingTestCase {
         /**
          * This sample hint converts "myProperty" to "property", and vis-versa.
          */
-        DefaultFieldMapper myDefaultFieldMapper = new DefaultFieldMapper() {
-            public String suggestMappedField(String fromProperty, Type<?> fromPropertyType) {
-                if (fromProperty.startsWith("my")) {
-                    return fromProperty.substring(2, 1).toLowerCase() + fromProperty.substring(3);
-                } else {
-                    return "my" + fromProperty.substring(0, 1).toUpperCase() + fromProperty.substring(1);
-                }
+        DefaultFieldMapper myDefaultFieldMapper = (fromProperty, fromPropertyType) -> {
+            if (fromProperty.startsWith("my")) {
+                return fromProperty.substring(2, 1).toLowerCase() + fromProperty.substring(3);
+            } else {
+                return "my" + fromProperty.substring(0, 1).toUpperCase() + fromProperty.substring(1);
             }
         };
         factory.registerDefaultFieldMapper(myDefaultFieldMapper);
@@ -291,16 +286,13 @@ public class SuperTypeMappingTestCase {
         /**
          * This sample hint converts "myProperty" to "property", and vis-versa.
          */
-        new DefaultFieldMapper() {
-            
-            public String suggestMappedField(String fromProperty, Type<?> fromPropertyType) {
-                if (fromProperty.startsWith("my")) {
-                    return fromProperty.substring(2, 3).toLowerCase() + fromProperty.substring(3);
-                } else {
-                    return "my" + fromProperty.substring(0, 1).toUpperCase() + fromProperty.substring(1);
-                }
-            }
-        };
+                (fromProperty, fromPropertyType) -> {
+                    if (fromProperty.startsWith("my")) {
+                        return fromProperty.substring(2, 3).toLowerCase() + fromProperty.substring(3);
+                    } else {
+                        return "my" + fromProperty.substring(0, 1).toUpperCase() + fromProperty.substring(1);
+                    }
+                };
         factory.registerDefaultFieldMapper(myHint);
         
         MapperFacade mapper = factory.getMapperFacade();

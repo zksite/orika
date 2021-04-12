@@ -49,13 +49,13 @@ public class FieldMapBuilder<A, B> {
     
     private boolean excluded;
     
-    private boolean byDefault;
+    private final boolean byDefault;
     
     private Boolean sourceMappedOnNull;
     
     private Boolean destinationMappedOnNull;
 
-    private Boolean destinationValueRetrievedOnMapping;
+    private final Boolean destinationValueRetrievedOnMapping;
     
     FieldMapBuilder(final ClassMapBuilder<A, B> classMapBuilder, final String a, final String b, final boolean byDefault,
             final Boolean sourceMappedOnNull, final Boolean destinationMappedOnNull, final Boolean destinationValueRetrievedOnMapping) {

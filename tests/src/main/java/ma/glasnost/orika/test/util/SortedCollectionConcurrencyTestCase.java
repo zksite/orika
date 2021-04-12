@@ -17,6 +17,18 @@
  */
 package ma.glasnost.orika.test.util;
 
+import ma.glasnost.orika.metadata.MapperKey;
+import ma.glasnost.orika.metadata.TypeFactory;
+import ma.glasnost.orika.test.ConcurrentRule;
+import ma.glasnost.orika.test.ConcurrentRule.Concurrent;
+import ma.glasnost.orika.util.Ordering;
+import ma.glasnost.orika.util.SortedCollection;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -25,19 +37,6 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import org.junit.Assert;
-import ma.glasnost.orika.metadata.MapperKey;
-import ma.glasnost.orika.metadata.TypeFactory;
-import ma.glasnost.orika.test.ConcurrentRule;
-import ma.glasnost.orika.test.ConcurrentRule.Concurrent;
-import ma.glasnost.orika.util.Ordering;
-import ma.glasnost.orika.util.SortedCollection;
-
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
 
 /**
  * This test is an attempt to trigger invalid insertion order
@@ -57,7 +56,7 @@ public class SortedCollectionConcurrencyTestCase {
     public static void setup() {
         
         
-        List<MapperKey> keys = new ArrayList<MapperKey>();
+        List<MapperKey> keys = new ArrayList<>();
         
         keys.add(new MapperKey(TypeFactory.valueOf(A1.class), TypeFactory.valueOf(B1.class)));
         keys.add(new MapperKey(TypeFactory.valueOf(A2.class), TypeFactory.valueOf(B2.class)));
@@ -130,9 +129,9 @@ public class SortedCollectionConcurrencyTestCase {
         keys.add(new MapperKey(TypeFactory.valueOf(C5.class), TypeFactory.valueOf(D1.class)));
         
         Collections.shuffle(keys);
-        mapperKeys = new ConcurrentLinkedQueue<MapperKey>(keys);
+        mapperKeys = new ConcurrentLinkedQueue<>(keys);
         initialSize = mapperKeys.size();
-        sortedCollection = new SortedCollection<MapperKey>(Ordering.MAPPER_KEY);
+        sortedCollection = new SortedCollection<>(Ordering.MAPPER_KEY);
     }
     
     @Test
@@ -150,7 +149,7 @@ public class SortedCollectionConcurrencyTestCase {
     public static void teardown() {
         Assert.assertEquals(initialSize, sortedCollection.size());
         
-        Set<MapperKey> seen = new HashSet<MapperKey>();
+        Set<MapperKey> seen = new HashSet<>();
         for (MapperKey key : sortedCollection) {
             for (MapperKey seenKey : seen) {
                 if ((seenKey.getAType().isAssignableFrom(key.getAType()) && seenKey.getBType().isAssignableFrom(key.getBType()))

@@ -21,9 +21,6 @@ package ma.glasnost.orika.test.unenhance;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.test.MappingUtil;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.BookDTO;
-
-import java.io.Serializable;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.junit.Assert;
@@ -36,13 +33,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.Serializable;
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations="classpath:HibernateProxyTestCase-context.xml")
 @Transactional
 @DirtiesContext
 public class HibernateProxyTestCase {
 
-	private MapperFacade mapper = MappingUtil.getMapperFactory().getMapperFacade();
+	private final MapperFacade mapper = MappingUtil.getMapperFactory().getMapperFacade();
 	
 	@Autowired
 	private SessionFactory sessionFactory;

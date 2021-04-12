@@ -44,7 +44,6 @@ public class MultiLayeredClassloader_IDEOnly {
 	public static ClassLoader copyThreadContextClassLoader() {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		if (cl instanceof URLClassLoader) {
-			@SuppressWarnings("resource")
 			URLClassLoader ucl = (URLClassLoader)cl;
 			return new URLClassLoader(ucl.getURLs());
 		} else {

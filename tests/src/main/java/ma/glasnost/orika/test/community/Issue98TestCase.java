@@ -18,17 +18,16 @@
 
 package ma.glasnost.orika.test.community;
 
-import static org.junit.Assert.assertEquals;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.ConfigurableMapper;
+import org.junit.Test;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.ConfigurableMapper;
-
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 /**
  * ClassCastException when mapping list of subtypes.
@@ -48,7 +47,7 @@ public class Issue98TestCase {
         CashPayment cash = new CashPayment();
         cash.setAmount(BigDecimal.ONE);
         
-        List<Payment> list = new ArrayList<Payment>();
+        List<Payment> list = new ArrayList<>();
         list.add(card);
         list.add(cash);
         List<PaymentDTO> dtos = new CustomMapper().mapAsList(list, PaymentDTO.class);
@@ -77,7 +76,7 @@ public class Issue98TestCase {
         card2.setAmount(BigDecimal.ONE);
         card2.setAuthorization("4321");
         
-        List<Payment> list = new ArrayList<Payment>();
+        List<Payment> list = new ArrayList<>();
         list.add(card);
         list.add(card2);
         List<PaymentDTO> dtos = new CustomMapper().mapAsList(list, PaymentDTO.class);

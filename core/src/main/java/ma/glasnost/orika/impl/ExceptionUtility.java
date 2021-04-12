@@ -17,11 +17,11 @@
  */
 package ma.glasnost.orika.impl;
 
-import java.util.Arrays;
-import java.util.List;
-
 import ma.glasnost.orika.MappingException;
 import ma.glasnost.orika.StateReporter;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * ExceptionUtility
@@ -35,8 +35,8 @@ public class ExceptionUtility {
             "java.","javax.","sun.", "sunw.", "com.sun.", "com.ibm.", 
             "javassist.", "com.thoughtworks.paranamer.");
     
-    private DefaultMapperFactory mapperFactory;
-    private boolean reportStateOnException;
+    private final DefaultMapperFactory mapperFactory;
+    private final boolean reportStateOnException;
     
     public ExceptionUtility(DefaultMapperFactory mapperFactory, boolean reportStateOnException) {
     	this.mapperFactory = mapperFactory;

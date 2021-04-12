@@ -48,10 +48,10 @@ public class ClassHelper {
       TypeVariable[] params = classWithParameter.getTypeParameters();
       if (params.length > 0) { // parameters have to be present
 
-         parameterClasses = new ArrayList<Class<?>>(params.length);
+         parameterClasses = new ArrayList<>(params.length);
          // to keep track of where parameters go in the class hierarchy
-         Map<TypeVariable, Class<?>> varsPrevious = new HashMap<TypeVariable, Class<?>>(3);
-         Map<TypeVariable, Class<?>> varsCurrent = new HashMap<TypeVariable, Class<?>>(3);
+         Map<TypeVariable, Class<?>> varsPrevious = new HashMap<>(3);
+         Map<TypeVariable, Class<?>> varsCurrent = new HashMap<>(3);
          Type parent = subclass;
          while ((parent = getGenericSuperType((Class) parent, classWithParameter)) != null) {
             if (parent instanceof ParameterizedType) {
@@ -67,7 +67,7 @@ public class ClassHelper {
                    * working this way finds the correct type, also when order of parameters changes in the hierarchy
                    */
                   if (t instanceof TypeVariable) {
-                     varsCurrent.put(pars[i++], (varsPrevious.containsKey(t)) ? varsPrevious.get(t) : null);
+                     varsCurrent.put(pars[i++], varsPrevious.getOrDefault(t, null));
                   } else {
                      varsCurrent.put(pars[i++], getClass(t));
                   }

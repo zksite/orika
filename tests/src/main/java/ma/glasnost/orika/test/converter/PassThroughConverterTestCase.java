@@ -18,16 +18,15 @@
 
 package ma.glasnost.orika.test.converter;
 
-import java.util.Objects;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.converter.builtin.PassThroughConverter;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeBuilder;
 import ma.glasnost.orika.test.MappingUtil;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.Objects;
 
 public class PassThroughConverterTestCase {
     
@@ -72,9 +71,9 @@ public class PassThroughConverterTestCase {
         
         B b = new B();
         b.setString("Hello");
-        Holder<B> holder = new Holder<B>();
+        Holder<B> holder = new Holder<>();
         holder.setHeld(b);
-        Wrapper<Holder<B>> wrapper = new Wrapper<Holder<B>>();
+        Wrapper<Holder<B>> wrapper = new Wrapper<>();
         wrapper.setHeld(holder);
         
         Type<Wrapper<Holder<B>>> fromType = new TypeBuilder<Wrapper<Holder<B>>>() {
@@ -103,9 +102,9 @@ public class PassThroughConverterTestCase {
         
         B b = new B();
         b.setString("Hello");
-        Holder<B> holder = new Holder<B>();
+        Holder<B> holder = new Holder<>();
         holder.setHeld(b);
-        Wrapper<Holder<B>> wrapper = new Wrapper<Holder<B>>();
+        Wrapper<Holder<B>> wrapper = new Wrapper<>();
         wrapper.setHeld(holder);
         
         Type<Wrapper<Holder<B>>> fromType = new TypeBuilder<Wrapper<Holder<B>>>() {

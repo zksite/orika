@@ -20,15 +20,16 @@ package ma.glasnost.orika.test.property;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public interface TestCaseClasses {
 
     
-    public class Student {
+    class Student {
         public Book favoriteBook;
     }
     
-	public class Book {
+	class Book {
 
 		public String title;
 		
@@ -43,7 +44,7 @@ public interface TestCaseClasses {
         }
 	}
 	
-	public class Author {
+	class Author {
 
 		private String name;
 		
@@ -57,7 +58,7 @@ public interface TestCaseClasses {
 		
 	}
 	
-	public class Library {
+	class Library {
 		
 		private String title;
 
@@ -72,7 +73,7 @@ public interface TestCaseClasses {
 		}
 	}
 
-	public class BookChild extends Book {
+	class BookChild extends Book {
 		private String additionalValue;
 		
 		public String getAdditionalValue() {
@@ -84,7 +85,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class AuthorChild extends Author {
+	class AuthorChild extends Author {
 		private String additionalValue;
 		
 		public String getAdditionalValue() {
@@ -96,7 +97,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class LibraryChild extends Library {
+	class LibraryChild extends Library {
 		private String additionalValue;
 		
 		public String getAdditionalValue() {
@@ -108,7 +109,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class AuthorDTO {
+	class AuthorDTO {
 		
 		private String name;
 		private String additionalValue;
@@ -130,7 +131,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class BookDTO {
+	class BookDTO {
 
 		private String title;
 		public AuthorDTO author;
@@ -161,7 +162,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class LibraryDTO {
+	class LibraryDTO {
 		
 		public String title;
 		private List<BookDTO> books;
@@ -177,14 +178,14 @@ public interface TestCaseClasses {
 
 		public List<BookDTO> getBooks() {
 			if (books==null) {
-				books = new ArrayList<BookDTO>();
+				books = new ArrayList<>();
 			}
 			return books;
 		}
 	}
 	
 	
-	public class AuthorMyDTO {
+	class AuthorMyDTO {
 	
 		private String name;
 		private String additionalValue;
@@ -206,7 +207,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class BookMyDTO {
+	class BookMyDTO {
 
 		private String title;
 		private AuthorMyDTO author;
@@ -229,7 +230,7 @@ public interface TestCaseClasses {
 		}
 	}
 	
-	public class LibraryMyDTO {
+	class LibraryMyDTO {
 		
 		public String myTitle;
 		private List<BookMyDTO> books;
@@ -245,13 +246,13 @@ public interface TestCaseClasses {
 
 		public List<BookMyDTO> getMyBooks() {
 			if (books==null) {
-				books = new ArrayList<BookMyDTO>();
+				books = new ArrayList<>();
 			}
 			return books;
 		}
 	}
 	
-	public static class A {
+	class A {
         private Name name;
         private Address address;
         
@@ -305,7 +306,7 @@ public interface TestCaseClasses {
         
     }
     
-    public static class B {
+    class B {
         public String givenName;
         public String sirName;
         public String street;
@@ -314,7 +315,7 @@ public interface TestCaseClasses {
         public String country;
     }
 
-    public static class C {
+    class C {
 		private final String foo;
 		private final int bar;
 
@@ -340,7 +341,7 @@ public interface TestCaseClasses {
 			C c = (C) o;
 
 			if (bar != c.bar) return false;
-			return foo != null ? foo.equals(c.foo) : c.foo == null;
+			return Objects.equals(foo, c.foo);
 
 		}
 
@@ -375,7 +376,7 @@ public interface TestCaseClasses {
 		}
 	}
 
-	public static class D {
+	class D {
 		private final String foo;
 		private final int bar;
 
@@ -401,7 +402,7 @@ public interface TestCaseClasses {
 			D d = (D) o;
 
 			if (bar != d.bar) return false;
-			return foo != null ? foo.equals(d.foo) : d.foo == null;
+			return Objects.equals(foo, d.foo);
 
 		}
 
@@ -438,7 +439,7 @@ public interface TestCaseClasses {
 
 
     
-    public static class Name {
+    class Name {
         private String firstName;
         private String lastName;
         
@@ -486,7 +487,7 @@ public interface TestCaseClasses {
         
     }
     
-    public static class Address {
+    class Address {
         public String street;
         public String city;
         public String postalCode;

@@ -21,14 +21,12 @@ package ma.glasnost.orika.test.property;
 import ma.glasnost.orika.DefaultFieldMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.test.MappingUtil;
 import ma.glasnost.orika.test.property.TestCaseClasses.Author;
 import ma.glasnost.orika.test.property.TestCaseClasses.AuthorChild;
 import ma.glasnost.orika.test.property.TestCaseClasses.Book;
 import ma.glasnost.orika.test.property.TestCaseClasses.BookChild;
 import ma.glasnost.orika.test.property.TestCaseClasses.BookMyDTO;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -62,16 +60,12 @@ public class PublicFieldMappingTestCase {
                 /**
                  * This sample hint converts "myProperty" to "property", and vis-versa.
                  */
-                new DefaultFieldMapper() {
-                    
-                    public String suggestMappedField(String fromProperty, Type<?> fromPropertyType) {
-                        if (fromProperty.startsWith("my")) {
-                            return fromProperty.substring(2, 3).toLowerCase() + fromProperty.substring(3);
-                        } else {
-                            return "my" + fromProperty.substring(0, 1).toUpperCase() + fromProperty.substring(1);
-                        }
+                (fromProperty, fromPropertyType) -> {
+                    if (fromProperty.startsWith("my")) {
+                        return fromProperty.substring(2, 3).toLowerCase() + fromProperty.substring(3);
+                    } else {
+                        return "my" + fromProperty.substring(0, 1).toUpperCase() + fromProperty.substring(1);
                     }
-                    
                 };
         MapperFactory factory = MappingUtil.getMapperFactory();
         factory.registerDefaultFieldMapper(myHint);

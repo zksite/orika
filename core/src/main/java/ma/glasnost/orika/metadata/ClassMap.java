@@ -18,13 +18,13 @@
 
 package ma.glasnost.orika.metadata;
 
+import ma.glasnost.orika.MappedTypePair;
+import ma.glasnost.orika.Mapper;
+
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
-import ma.glasnost.orika.MappedTypePair;
-import ma.glasnost.orika.Mapper;
 
 /**
  * ClassMap represents a mapping association from one type to another.
@@ -93,16 +93,15 @@ public class ClassMap<A, B> implements MappedTypePair<A, B>{
     }
     
     public ClassMap<A,B> copy(Set<FieldMap> fieldsMapping) {
-        Set<MapperKey> usedMappers = new LinkedHashSet<MapperKey>();
-        usedMappers.addAll(this.usedMappers);
+        Set<MapperKey> usedMappers = new LinkedHashSet<>(this.usedMappers);
         String[] constructorA = this.constructorA == null ? null : this.constructorA.clone();
         String[] constructorB = this.constructorB == null ? null : this.constructorB.clone();
         
-        return new ClassMap<A,B>(aType, bType, fieldsMapping, customizedMapper, usedMappers, constructorA, constructorB, sourcesMappedOnNull, destinationsMappedOnNull, favorsExtension);
+        return new ClassMap<>(aType, bType, fieldsMapping, customizedMapper, usedMappers, constructorA, constructorB, sourcesMappedOnNull, destinationsMappedOnNull, favorsExtension);
     }
     
     public ClassMap<A,B> copyWithUsedMappers(Set<MapperKey> usedMappers) {
-        return new ClassMap<A,B>(aType, bType, fieldsMapping, customizedMapper, usedMappers, constructorA, constructorB, sourcesMappedOnNull, destinationsMappedOnNull, favorsExtension);
+        return new ClassMap<>(aType, bType, fieldsMapping, customizedMapper, usedMappers, constructorA, constructorB, sourcesMappedOnNull, destinationsMappedOnNull, favorsExtension);
     }
     
     public MapperKey getMapperKey() {

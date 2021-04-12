@@ -17,14 +17,6 @@
  */
 package ma.glasnost.orika.test.community;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.junit.Assert;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
@@ -35,8 +27,16 @@ import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeBuilder;
 import ma.glasnost.orika.metadata.TypeFactory;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  * @author matt.deboer@gmail.com
@@ -47,7 +47,7 @@ public class CustomMergerTest {
     public void testMergingWithCustomMapper() {
         MapperFacade mapper = createMapperFacade();
         
-        List<Dto> dtos = new ArrayList<Dto>();
+        List<Dto> dtos = new ArrayList<>();
         
         Dto dto = new Dto();
         dto.setId(1L);
@@ -107,7 +107,7 @@ public class CustomMergerTest {
     public void testMergingWithCustomMapperForChildrenSetToSet() {
         MapperFacade mapper = createMapperFacade();
         
-        Set<ChildDto> dtos = new HashSet<ChildDto>();
+        Set<ChildDto> dtos = new HashSet<>();
         
         ChildDto dto = new ChildDto();
         dto.setId(1L);
@@ -162,7 +162,7 @@ public class CustomMergerTest {
         
         private Collection<Entity> merge(Collection<Dto> srcDtos, Collection<Entity> dstEntities, MappingContext context) {
             
-            Set<Long> ids = new HashSet<Long>(srcDtos.size());
+            Set<Long> ids = new HashSet<>(srcDtos.size());
             
             Type<Dto> sourceType = context.getResolvedSourceType().getNestedType(0);
             Type<Entity> destinationType = context.getResolvedDestinationType().getNestedType(0);
@@ -176,13 +176,8 @@ public class CustomMergerTest {
                 }
                 ids.add(memberDto.getId());
             }
-            
-            for (Iterator<Entity> iterator = dstEntities.iterator(); iterator.hasNext();) {
-                Entity dstEntity = iterator.next();
-                if (!dstEntity.isNew() && !ids.contains(dstEntity.getId())) {
-                    iterator.remove();
-                }
-            }
+
+            dstEntities.removeIf(dstEntity -> !dstEntity.isNew() && !ids.contains(dstEntity.getId()));
             
             return dstEntities;
             
@@ -289,7 +284,7 @@ public class CustomMergerTest {
             
             Entity entity = (Entity) o;
             
-            if (id != null ? !id.equals(entity.id) : entity.id != null) {
+            if (!Objects.equals(id, entity.id)) {
                 return false;
             }
             
@@ -337,7 +332,7 @@ public class CustomMergerTest {
             
             Dto dto = (Dto) o;
             
-            if (id != null ? !id.equals(dto.id) : dto.id != null) {
+            if (!Objects.equals(id, dto.id)) {
                 return false;
             }
             
@@ -363,13 +358,13 @@ public class CustomMergerTest {
             merge(srcDtos, dstEntities, srcDtoClass, dstEntityClass);
         }
         
-        private Collection merge(Collection srcDtos, Collection dstEntities, Class<? extends Dto> srcDtoClass,
+        private Collection merge(Collection<Entity> srcDtos, Collection<Entity> dstEntities, Class<? extends Dto> srcDtoClass,
                 Class<? extends Entity> dstEntityClass) {
             
-            Set<Long> ids = new HashSet<Long>(srcDtos.size());
-            for (Iterator iterator1 = srcDtos.iterator(); iterator1.hasNext();) {
-                Dto memberDto = (Dto) iterator1.next();
-                
+            Set<Long> ids = new HashSet<>(srcDtos.size());
+            for (Object srcDto : srcDtos) {
+                Dto memberDto = (Dto) srcDto;
+
                 Entity memberEntity = findEntity(dstEntities, memberDto.getId());
                 if (memberEntity == null) {
                     Entity newEntity = mapperFacade.map(memberDto, dstEntityClass);
@@ -379,21 +374,16 @@ public class CustomMergerTest {
                 }
                 ids.add(memberDto.getId());
             }
-            
-            for (Iterator<? extends Entity> iterator = dstEntities.iterator(); iterator.hasNext();) {
-                Entity dstEntity = iterator.next();
-                if (!dstEntity.isNew() && !ids.contains(dstEntity.getId())) {
-                    iterator.remove();
-                }
-            }
+
+            dstEntities.removeIf(dstEntity -> !dstEntity.isNew() && !ids.contains(dstEntity.getId()));
             
             return dstEntities;
             
         }
         
         private Entity findEntity(Collection dstEntities, Long id) {
-            for (Iterator iterator = dstEntities.iterator(); iterator.hasNext();) {
-                Entity dstEntity = (Entity) iterator.next();
+            for (Object entity : dstEntities) {
+                Entity dstEntity = (Entity) entity;
                 if (id.equals(dstEntity.getId())) {
                     return dstEntity;
                 }

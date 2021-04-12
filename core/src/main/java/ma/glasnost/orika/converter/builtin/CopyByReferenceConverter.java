@@ -42,7 +42,7 @@ public class CopyByReferenceConverter extends BuiltinCustomConverter<Object, Obj
         return (sourceType.isImmutable() && (sourceType.equals(destinationType) || sourceType.isWrapperFor(destinationType) || destinationType.isWrapperFor(sourceType)));
     }
     
-    public Object convert(Object source, Type<? extends Object> destinationType, MappingContext context) {
+    public Object convert(Object source, Type<?> destinationType, MappingContext context) {
         return source;
     }
 }

@@ -28,11 +28,11 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class ByteArrayClassLoader extends ClassLoader {
     
-    private Map<String, byte[]> classData;
+    private final Map<String, byte[]> classData;
     
     public ByteArrayClassLoader(ClassLoader parent) {
         super(parent);
-        classData = new ConcurrentHashMap<String, byte[]>();
+        classData = new ConcurrentHashMap<>();
     }
     
     /**

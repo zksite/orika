@@ -18,12 +18,6 @@
 
 package ma.glasnost.orika.impl.generator;
 
-import static java.lang.String.format;
-import static ma.glasnost.orika.impl.generator.SourceCodeContext.append;
-
-import java.util.LinkedHashSet;
-import java.util.Set;
-
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.MappingException;
@@ -33,13 +27,18 @@ import ma.glasnost.orika.metadata.FieldMap;
 import ma.glasnost.orika.metadata.MapperKey;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeFactory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
+import static java.lang.String.format;
+import static ma.glasnost.orika.impl.generator.SourceCodeContext.append;
+
 public final class MapperGenerator {
     
-    private static Logger LOGGER = LoggerFactory.getLogger(MapperGenerator.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(MapperGenerator.class);
     
     private final MapperFactory mapperFactory;
     private final CompilerStrategy compilerStrategy;
@@ -60,13 +59,13 @@ public final class MapperGenerator {
                 logDetails = new StringBuilder();
                 String srcName = TypeFactory.nameOf(classMap.getAType(), classMap.getBType());
                 String dstName = TypeFactory.nameOf(classMap.getBType(), classMap.getAType());
-                logDetails.append("Generating new mapper for (" + srcName + ", " + dstName + ")");
+                logDetails.append("Generating new mapper for (").append(srcName).append(", ").append(dstName).append(")");
             }
             
             final SourceCodeContext mapperCode = new SourceCodeContext(classMap.getMapperClassName(), GeneratedMapperBase.class, context,
                     logDetails);
             
-            Set<FieldMap> mappedFields = new LinkedHashSet<FieldMap>();
+            Set<FieldMap> mappedFields = new LinkedHashSet<>();
             mappedFields.addAll(addMapMethod(mapperCode, true, classMap, logDetails));
             mappedFields.addAll(addMapMethod(mapperCode, false, classMap, logDetails));
             
@@ -107,14 +106,12 @@ public final class MapperGenerator {
     
     private Set<FieldMap> addMapMethod(SourceCodeContext code, boolean aToB, ClassMap<?, ?> classMap, StringBuilder logDetails) {
         
-        Set<FieldMap> mappedFields = new LinkedHashSet<FieldMap>();
+        Set<FieldMap> mappedFields = new LinkedHashSet<>();
         if (logDetails != null) {
             if (aToB) {
-                logDetails.append("\n\t" + code.getClassSimpleName() + ".mapAToB(" + classMap.getAType() + ", " + classMap.getBTypeName()
-                        + ") {");
+                logDetails.append("\n\t").append(code.getClassSimpleName()).append(".mapAToB(").append(classMap.getAType()).append(", ").append(classMap.getBTypeName()).append(") {");
             } else {
-                logDetails.append("\n\t" + code.getClassSimpleName() + ".mapBToA(" + classMap.getBType() + ", " + classMap.getATypeName()
-                        + ") {");
+                logDetails.append("\n\t").append(code.getClassSimpleName()).append(".mapBToA(").append(classMap.getBType()).append(", ").append(classMap.getATypeName()).append(") {");
             }
         }
         
@@ -229,11 +226,9 @@ public final class MapperGenerator {
                 code.debugField(fieldMap, "excluding because ");
                 if (!sourceProperty.isReadable()) {
                     Type<?> sourceType = classMap.getAType().equals(destination.type()) ? classMap.getBType() : classMap.getAType();
-                    logDetails.append(sourceType + "." + fieldMap.getSource().getName() + "(" + fieldMap.getSource().getType()
-                            + ") is not readable");
+                    logDetails.append(sourceType).append(".").append(fieldMap.getSource().getName()).append("(").append(fieldMap.getSource().getType()).append(") is not readable");
                 } else {
-                    logDetails.append(destination.type() + "." + fieldMap.getDestination().getName() + "("
-                            + fieldMap.getDestination().getType() + ") is not assignable and cannot be mapped in-place");
+                    logDetails.append(destination.type()).append(".").append(fieldMap.getDestination().getName()).append("(").append(fieldMap.getDestination().getType()).append(") is not assignable and cannot be mapped in-place");
                 }
             }
             return "";

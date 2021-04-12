@@ -18,20 +18,19 @@
 
 package ma.glasnost.orika.test.community.vector;
 
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
+import org.junit.Assert;
+import org.junit.Test;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import org.junit.Assert;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
-
-import org.junit.Test;
-
 public class VectorTestCase {
-    private MapperFactory factory = new DefaultMapperFactory.Builder().compilerStrategy(new EclipseJdtCompilerStrategy()).build();
+    private final MapperFactory factory = new DefaultMapperFactory.Builder().compilerStrategy(new EclipseJdtCompilerStrategy()).build();
     
     @Test
     public void test() {
@@ -62,7 +61,7 @@ public class VectorTestCase {
     }
     
     public static class XTrade {
-        public List<XFee> fees = new ArrayList<XFee>();
+        public List<XFee> fees = new ArrayList<>();
     }
     
     public static class XFee {

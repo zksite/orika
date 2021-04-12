@@ -18,18 +18,17 @@
 
 package ma.glasnost.orika.test.community;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class MixConversionMappingTestCase {
     
@@ -47,7 +46,7 @@ public class MixConversionMappingTestCase {
                 C c = new C();
                 c.message = source.iterator().next().message + "-converted";
                 
-                Set<C> result = new HashSet<C>();
+                Set<C> result = new HashSet<>();
                 result.add(c);
                 
                 return result;
@@ -59,7 +58,7 @@ public class MixConversionMappingTestCase {
         B b = new B();
         A a = new A();
         
-        b.instanceSet = new HashSet<A>();
+        b.instanceSet = new HashSet<>();
         b.instanceSet.add(a);
         a.message = "a";
         
@@ -82,7 +81,7 @@ public class MixConversionMappingTestCase {
     
     public static class B {
         
-        public Set<A> instanceSet = new HashSet<MixConversionMappingTestCase.A>();
+        public Set<A> instanceSet = new HashSet<>();
     }
     
     public static class C {

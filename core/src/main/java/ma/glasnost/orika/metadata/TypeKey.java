@@ -32,8 +32,8 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 class TypeKey {
 
-	private static volatile Map<java.lang.reflect.Type, Integer> knownTypes = Collections.synchronizedMap(new WeakHashMap<java.lang.reflect.Type, Integer>());
-	private static AtomicInteger currentIndex = new AtomicInteger();
+	private static final Map<java.lang.reflect.Type, Integer> knownTypes = Collections.synchronizedMap(new WeakHashMap<>());
+	private static final AtomicInteger currentIndex = new AtomicInteger();
 
 	/**
 	 * Calculates an identity for a Class, Type[] pair; avoids maintaining a

@@ -18,13 +18,13 @@
 
 package ma.glasnost.orika.test.primitives;
 
-import static org.junit.Assert.assertEquals;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
 
 public class PrimitivesTestCase {
 
@@ -104,14 +104,14 @@ public class PrimitivesTestCase {
 
 		OtherWrapperAttributes destination = mapper.map(source, OtherWrapperAttributes.class);
 
-		Assert.assertEquals(source.getAge(), Integer.valueOf(destination.getAge()));
+		Assert.assertEquals(source.getAge(), destination.getAge());
 		Assert.assertEquals(source.getName(), destination.getName());
-		Assert.assertEquals(source.getSex(), Character.valueOf(destination.getSex()));
+		Assert.assertEquals(source.getSex(), destination.getSex());
 		Assert.assertEquals(source.getVip(), destination.getVip());
-		Assert.assertEquals(source.getShortValue(), Short.valueOf(destination.getShortValue()));
-		Assert.assertEquals(source.getLongValue(), Long.valueOf(destination.getLongValue()));
-		Assert.assertEquals(source.getFloatValue(), Float.valueOf(destination.getFloatValue()));
-		Assert.assertEquals(source.getDoubleValue(), Double.valueOf(destination.getDoubleValue()));
+		Assert.assertEquals(source.getShortValue(), destination.getShortValue());
+		Assert.assertEquals(source.getLongValue(), destination.getLongValue());
+		Assert.assertEquals(source.getFloatValue(), destination.getFloatValue());
+		Assert.assertEquals(source.getDoubleValue(), destination.getDoubleValue());
 
 	}
 

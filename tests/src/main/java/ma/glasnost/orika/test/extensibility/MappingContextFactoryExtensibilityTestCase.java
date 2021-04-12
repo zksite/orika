@@ -1,17 +1,5 @@
 package ma.glasnost.orika.test.extensibility;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsInAnyOrder;
-
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.junit.Assert;
-import org.junit.Test;
-
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.CustomMapper;
@@ -22,6 +10,17 @@ import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeFactory;
 import ma.glasnost.orika.test.community.issue137.CustomFactory;
+import org.junit.Assert;
+import org.junit.Test;
+
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsInAnyOrder;
 
 public class MappingContextFactoryExtensibilityTestCase {
     
@@ -233,8 +232,8 @@ public class MappingContextFactoryExtensibilityTestCase {
         }
         
         public static class Factory implements MappingContextFactory {
-            private ConcurrentHashMap<Object, Object> globalProperties = new ConcurrentHashMap<Object, Object>();
-            private ThreadLocal<MappingContext> threadLocalMappingContext = new ThreadLocal<MappingContext>();
+            private final ConcurrentHashMap<Object, Object> globalProperties = new ConcurrentHashMap<>();
+            private final ThreadLocal<MappingContext> threadLocalMappingContext = new ThreadLocal<>();
             
             @Override
             public MappingContext getContext() {
@@ -320,7 +319,7 @@ public class MappingContextFactoryExtensibilityTestCase {
     }
     
     public static final class Man extends Person implements Parent {
-        private Set<Child> children = new HashSet<Child>();
+        private Set<Child> children = new HashSet<>();
         
         public Man() {
             super();
@@ -341,7 +340,7 @@ public class MappingContextFactoryExtensibilityTestCase {
     }
     
     public static final class Woman extends Person implements Parent {
-        private Set<Child> children = new HashSet<Child>();
+        private Set<Child> children = new HashSet<>();
         
         public Woman() {
             super();
@@ -363,7 +362,7 @@ public class MappingContextFactoryExtensibilityTestCase {
         
     }
     
-    public static interface Parent {
+    public interface Parent {
         
         Set<Child> getChildren();
         

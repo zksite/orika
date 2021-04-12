@@ -17,11 +17,11 @@
  */
 package ma.glasnost.orika.impl.generator;
 
+import ma.glasnost.orika.metadata.Type;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import ma.glasnost.orika.metadata.Type;
 
 /**
  * 
@@ -30,7 +30,7 @@ import ma.glasnost.orika.metadata.Type;
  */
 public class UsedTypesContext {
     
-    private Map<Type<Object>,Integer> usedTypes = new HashMap<Type<Object>,Integer>();
+    private final Map<Type<Object>,Integer> usedTypes = new HashMap<>();
     private int usedTypeIndex = 0;
     
     @SuppressWarnings("unchecked")
@@ -40,7 +40,7 @@ public class UsedTypesContext {
         }
         Integer index = usedTypes.get(type);
         if (index == null) {
-            index = Integer.valueOf(usedTypeIndex++);
+            index = usedTypeIndex++;
             usedTypes.put((Type<Object>)type, index);
         }
         return index;

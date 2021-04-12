@@ -18,14 +18,14 @@
 
 package ma.glasnost.orika.impl.generator.eclipsejdt;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFileReader;
 import org.eclipse.jdt.internal.compiler.classfmt.ClassFormatException;
 import org.eclipse.jdt.internal.compiler.env.INameEnvironment;
 import org.eclipse.jdt.internal.compiler.env.NameEnvironmentAnswer;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 
@@ -37,7 +37,7 @@ public class NameEnvironment implements INameEnvironment {
     private static final int END_OF_STREAM = -1;
     private static final int DEFAULT_BUFFER_SIZE = 4096;
     
-	private ClassLoader classLoader;
+	private final ClassLoader classLoader;
 
 	public NameEnvironment(ClassLoader classLoader) {
 		this.classLoader = classLoader;
@@ -48,9 +48,9 @@ public class NameEnvironment implements INameEnvironment {
 
 		String sep = "";
 
-		for (int i = 0; i < compoundTypeName.length; i++) {
+		for (char[] chars : compoundTypeName) {
 			result.append(sep);
-			result.append(compoundTypeName[i]);
+			result.append(chars);
 			sep = ".";
 		}
 
@@ -62,9 +62,9 @@ public class NameEnvironment implements INameEnvironment {
 
 		String sep = "";
 
-		for (int i = 0; i < packageName.length; i++) {
-		    result.append(sep);
-			result.append(packageName[i]);
+		for (char[] chars : packageName) {
+			result.append(sep);
+			result.append(chars);
 			sep = ".";
 		}
 
@@ -109,12 +109,10 @@ public class NameEnvironment implements INameEnvironment {
 					is.close();
 				}
 			}
-		} catch (IOException e) {
-			return null;
-		} catch (ClassFormatException e) {
+		} catch (IOException | ClassFormatException e) {
 			return null;
 		}
-	}
+    }
 
 	private boolean isPackage(String result) {
 		String resourceName = "/" + result.replace('.', '/') + ".class";
@@ -128,9 +126,9 @@ public class NameEnvironment implements INameEnvironment {
 		String sep = "";
 
 		if (parentPackageName != null) {
-			for (int i = 0; i < parentPackageName.length; i++) {
+			for (char[] chars : parentPackageName) {
 				result.append(sep);
-				result.append(parentPackageName[i]);
+				result.append(chars);
 				sep = ".";
 			}
 		}

@@ -17,10 +17,6 @@
  */
 package ma.glasnost.orika.impl;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.generator.AggregateSpecification;
 import ma.glasnost.orika.impl.generator.BaseSpecification;
@@ -48,6 +44,10 @@ import ma.glasnost.orika.impl.generator.specification.StringToEnum;
 import ma.glasnost.orika.impl.generator.specification.StringToStringConvertible;
 import ma.glasnost.orika.impl.generator.specification.UnmappableEnum;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+
 /**
  * @author matt.deboer@gmail.com
  * 
@@ -59,30 +59,30 @@ public class DefaultCodeGenerationStrategy implements CodeGenerationStrategy {
     
     public DefaultCodeGenerationStrategy() {
         
-        this.specifications = new CopyOnWriteArrayList<Specification>(
+        this.specifications = new CopyOnWriteArrayList<>(
                 Arrays.asList(
                         new ConvertArrayOrCollectionToArray(),
-                        new ConvertArrayOrCollectionToCollection(), 
-                        new Convert(), 
-                        new CopyByReference(), 
+                        new ConvertArrayOrCollectionToCollection(),
+                        new Convert(),
+                        new CopyByReference(),
                         new ApplyRegisteredMapper(),
-                        new EnumToEnum(), 
-                        new StringToEnum(), 
-                        new UnmappableEnum(), 
+                        new EnumToEnum(),
+                        new StringToEnum(),
+                        new UnmappableEnum(),
                         new ArrayOrCollectionToArray(),
-                        new ArrayOrCollectionToCollection(), 
-                        new MapToMap(), 
-                        new MapToArray(), 
-                        new MapToCollection(), 
+                        new ArrayOrCollectionToCollection(),
+                        new MapToMap(),
+                        new MapToArray(),
+                        new MapToCollection(),
                         new ArrayOrCollectionToMap(),
-                        new StringToStringConvertible(), 
-                        new AnyTypeToString(), 
+                        new StringToStringConvertible(),
+                        new AnyTypeToString(),
                         new MultiOccurrenceElementToObject(),
-                        new ObjectToMultiOccurrenceElement(), 
-                        new PrimitiveAndObject(), 
+                        new ObjectToMultiOccurrenceElement(),
+                        new PrimitiveAndObject(),
                         new ObjectToObject()));
         
-        this.aggregateSpecifications = new CopyOnWriteArrayList<AggregateSpecification>(
+        this.aggregateSpecifications = new CopyOnWriteArrayList<>(
                 Arrays.asList(new MultiOccurrenceToMultiOccurrence()));
         
     }

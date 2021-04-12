@@ -18,12 +18,6 @@
 
 package ma.glasnost.orika.test.boundmapperfacade;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.MapEntry;
@@ -32,9 +26,14 @@ import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.impl.GeneratedObjectBase;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class MapGenerationTestCase {
     
@@ -47,7 +46,7 @@ public class MapGenerationTestCase {
         BoundMapperFacade<MapWithSetter, MapWithSetterDto> mapper = factory.getMapperFacade(MapWithSetter.class, MapWithSetterDto.class);
         
         MapWithSetter source = new MapWithSetter();
-        Map<String, Integer> testScores = new LinkedHashMap<String, Integer>();
+        Map<String, Integer> testScores = new LinkedHashMap<>();
         
         testScores.put("A", 90);
         testScores.put("B", 80);
@@ -73,7 +72,7 @@ public class MapGenerationTestCase {
         BoundMapperFacade<MapWithSetter, MapWithoutSetter> mapper = factory.getMapperFacade(MapWithSetter.class, MapWithoutSetter.class);
         
         MapWithSetter source = new MapWithSetter();
-        Map<String, Integer> testScores = new LinkedHashMap<String, Integer>();
+        Map<String, Integer> testScores = new LinkedHashMap<>();
         
         testScores.put("A", 90);
         testScores.put("B", 80);
@@ -110,7 +109,7 @@ public class MapGenerationTestCase {
         BoundMapperFacade<MapWithSetter, GenericDto> mapper = factory.getMapperFacade(MapWithSetter.class, GenericDto.class);
         
         MapWithSetter source = new MapWithSetter();
-        Map<String, Integer> testScores = new LinkedHashMap<String, Integer>();
+        Map<String, Integer> testScores = new LinkedHashMap<>();
         
         testScores.put("A", 90);
         testScores.put("B", 80);
@@ -143,7 +142,7 @@ public class MapGenerationTestCase {
         BoundMapperFacade<MapWithSetter, GenericDto> mapper = factory.getMapperFacade(MapWithSetter.class, GenericDto.class);
         
         MapWithSetter source = new MapWithSetter();
-        Map<String, Integer> testScores = new LinkedHashMap<String, Integer>();
+        Map<String, Integer> testScores = new LinkedHashMap<>();
         
         testScores.put("A", 90);
         testScores.put("B", 80);
@@ -168,13 +167,13 @@ public class MapGenerationTestCase {
         factory.getConverterFactory().registerConverter(new CustomConverter<String, Map.Entry<String, Integer>>() {
             
             @SuppressWarnings("serial")
-            private Map<String, Map.Entry<String, Integer>> testScores = new LinkedHashMap<String, Map.Entry<String, Integer>>() {
+            private final Map<String, Map.Entry<String, Integer>> testScores = new LinkedHashMap<String, Map.Entry<String, Integer>>() {
                 {
-                    put("A", new MapEntry<String, Integer>("A", 90));
-                    put("B", new MapEntry<String, Integer>("B", 80));
-                    put("C", new MapEntry<String, Integer>("C", 70));
-                    put("D", new MapEntry<String, Integer>("D", 60));
-                    put("F", new MapEntry<String, Integer>("F", 50));
+                    put("A", new MapEntry<>("A", 90));
+                    put("B", new MapEntry<>("B", 80));
+                    put("C", new MapEntry<>("C", 70));
+                    put("D", new MapEntry<>("D", 60));
+                    put("F", new MapEntry<>("F", 50));
                 }
             };
             
@@ -187,7 +186,7 @@ public class MapGenerationTestCase {
         BoundMapperFacade<GenericDto, MapWithoutSetter> mapper = factory.getMapperFacade(GenericDto.class, MapWithoutSetter.class);
         
         GenericDto source = new GenericDto();
-        List<String> testScores = new ArrayList<String>();
+        List<String> testScores = new ArrayList<>();
         
         testScores.add("A");
         testScores.add("B");
@@ -212,13 +211,13 @@ public class MapGenerationTestCase {
         factory.getConverterFactory().registerConverter(new CustomConverter<String, Map.Entry<String, Integer>>() {
             
             @SuppressWarnings("serial")
-            private Map<String, Map.Entry<String, Integer>> testScores = new LinkedHashMap<String, Map.Entry<String, Integer>>() {
+            private final Map<String, Map.Entry<String, Integer>> testScores = new LinkedHashMap<String, Map.Entry<String, Integer>>() {
                 {
-                    put("A", new MyMapEntry<String, Integer>("A", 90));
-                    put("B", new MapEntry<String, Integer>("B", 80));
-                    put("C", new MapEntry<String, Integer>("C", 70));
-                    put("D", new MapEntry<String, Integer>("D", 60));
-                    put("F", new MapEntry<String, Integer>("F", 50));
+                    put("A", new MyMapEntry<>("A", 90));
+                    put("B", new MapEntry<>("B", 80));
+                    put("C", new MapEntry<>("C", 70));
+                    put("D", new MapEntry<>("D", 60));
+                    put("F", new MapEntry<>("F", 50));
                 }
             };
             
@@ -231,7 +230,7 @@ public class MapGenerationTestCase {
         BoundMapperFacade<GenericDto, MapWithoutSetter> mapper = factory.getMapperFacade(GenericDto.class, MapWithoutSetter.class);
         
         GenericDto source = new GenericDto();
-        List<String> testScores = new ArrayList<String>();
+        List<String> testScores = new ArrayList<>();
         
         testScores.add("A");
         testScores.add("B");
@@ -258,8 +257,8 @@ public class MapGenerationTestCase {
         BoundMapperFacade<GenericDto, MapWithoutSetter> mapper = factory.getMapperFacade(GenericDto.class, MapWithoutSetter.class);
         
         GenericDto source = new GenericDto();
-        List<String> testScores = new ArrayList<String>();
-        List<Integer> numericScores = new ArrayList<Integer>();
+        List<String> testScores = new ArrayList<>();
+        List<Integer> numericScores = new ArrayList<>();
         testScores.add("A");
         numericScores.add(90);
         testScores.add("B");
@@ -290,8 +289,8 @@ public class MapGenerationTestCase {
         BoundMapperFacade<GenericDto, MapWithoutSetter> mapper = factory.getMapperFacade(GenericDto.class, MapWithoutSetter.class);
         
         GenericDto source = new GenericDto();
-        List<String> testScores = new ArrayList<String>();
-        List<Integer> numericScores = new ArrayList<Integer>();
+        List<String> testScores = new ArrayList<>();
+        List<Integer> numericScores = new ArrayList<>();
         testScores.add("A");
         numericScores.add(90);
         testScores.add("B");
@@ -359,7 +358,7 @@ public class MapGenerationTestCase {
     
     public static class MyMapEntry<K, V> implements Map.Entry<K, V> {
         
-        private K key;
+        private final K key;
         private V value;
         
         public MyMapEntry(K key, V value) {

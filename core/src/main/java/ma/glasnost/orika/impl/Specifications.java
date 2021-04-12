@@ -122,179 +122,62 @@ public final class Specifications {
     public static Specification aConversionToString() {
         return CONVERSION_TO_STRING;
     }
-    
-    private static final Specification IS_IMMUTABLE = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getSource().getType().isImmutable()
-                    && fieldMap.getDestination().isAssignableFrom(fieldMap.getSource());
-        }
-    };
-    
-    private static final Specification IS_TO_ENUMERATION = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getDestination().getType().isEnum()
-                    && (fieldMap.getSource().getType().getRawType().equals(String.class) || fieldMap.getSource().getType().isEnum());
-        }
-    };
-    
-    private static final Specification IS_ARRAY = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getDestination().isArray() && (fieldMap.getSource().isArray() || fieldMap.getSource().isCollection());
-        }
-    };
-    
-    private static final Specification IS_COLLECTION = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return (fieldMap.getSource().isArray() || fieldMap.getSource().isCollection()) && fieldMap.getDestination().isCollection();
-        }
-    };
-    
-    private static final Specification IS_PRIMITIVE = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getSource().getType().isPrimitive() || fieldMap.getDestination().getType().isPrimitive();
-        }
-    };
-    
-    private static final Specification WRAPPER_TO_PRIMITIVE = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getDestination().isPrimitive() && fieldMap.getSource().getType().isPrimitiveWrapper();
-        }
-        
-    };
-    
-    private static final Specification PRIMITIVE_TO_WRAPPER = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getDestination().getType().isPrimitiveWrapper() && fieldMap.getSource().isPrimitive();
-        }
-        
-    };
-    
-    private static final Specification STRING_TO_PRIMITIVE_OR_WRAPPER = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return String.class.equals(fieldMap.getSource().getType().getRawType())
-                    && (fieldMap.getDestination().getType().isPrimitive() || fieldMap.getDestination().getType().isPrimitiveWrapper());
-        }
-        
-    };
-    
-    private static final Specification CONVERSION_TO_STRING = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return String.class.equals(fieldMap.getDestination().getType().getRawType());
-        }
-        
-    };
-    
-    private static final Specification MAP_TO_MAP = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getSource().isMap() && fieldMap.getDestination().isMap();
-        }
-    };
-    
-    private static final Specification MAP_TO_ARRAY_OR_COLLECTION = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getSource().isMap() && (fieldMap.getDestination().isCollection() || fieldMap.getDestination().isArray());
-        }
-    };
-    
-    private static final Specification MAP_TO_ARRAY = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getSource().isMap() && fieldMap.getDestination().isArray();
-        }
-    };
-    
-    private static final Specification MAP_TO_COLLECTION = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getSource().isMap() && fieldMap.getDestination().isCollection();
-        }
-    };
-    
-    private static final Specification MAP_TO_BEAN = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getSource().isMapKey()
-                    && (fieldMap.getDestination().getType().isImmutable() || (!fieldMap.getDestination().isCollection()
-                            && !fieldMap.getDestination().isArray() && !fieldMap.getDestination().isMap() && !fieldMap.getDestination()
-                            .isEnum()));
-        }
-    };
-    
-    private static final Specification ARRAY_OR_LIST_TO_BEAN = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return (fieldMap.getSource().isListElement() || fieldMap.getSource().isArrayElement())
-                    && (fieldMap.getDestination().getType().isImmutable() || (!fieldMap.getDestination().isCollection()
-                            && !fieldMap.getDestination().isArray() && !fieldMap.getDestination().isMap() && !fieldMap.getDestination()
-                            .isEnum()));
-        }
-    };
-    
-    private static final Specification ARRAY_OR_COLLECTION_TO_MAP = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getDestination().isMap() && (fieldMap.getSource().isCollection() || fieldMap.getSource().isArray());
-        }
-    };
-    
-    private static final Specification BEAN_TO_MAP = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
 
-            return fieldMap.getDestination().isMapKey()
-                    && (fieldMap.getSource().getType().isImmutable() || (!fieldMap.getSource().isCollection()
-                            && !fieldMap.getSource().isArray() && !fieldMap.getSource().isMap() && !fieldMap.getSource().isEnum()));
-        }
-    };
-    
-    private static final Specification BEAN_TO_ARRAY_OR_LIST = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
+    private static final Specification IS_IMMUTABLE = fieldMap -> fieldMap.getSource().getType().isImmutable()
+            && fieldMap.getDestination().isAssignableFrom(fieldMap.getSource());
 
-            return (fieldMap.getDestination().isListElement() || fieldMap.getDestination().isArrayElement())
-                    && (fieldMap.getSource().getType().isImmutable() || (!fieldMap.getSource().isCollection()
-                            && !fieldMap.getSource().isArray() && !fieldMap.getSource().isMap() && !fieldMap.getSource().isEnum()));
-        }
-    };
-    
-    private static final Specification OBJECT_CLASS_PROPERTY = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return "class".equals(fieldMap.getSource().getName()) && "class".equals(fieldMap.getDestination().getName())
-                    && Class.class.equals(fieldMap.getSource().getRawType());
-            
-        }
-    };
-    
-    private static final Specification MANY_TO_ONE = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getSource().getContainer() != null && fieldMap.getDestination().getContainer() == null;
-        }
-    };
-    
-    private static final Specification ONE_TO_MANY = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getSource().getContainer() == null && fieldMap.getDestination().getContainer() != null;
-        }
-    };
-    
-    private static final Specification MULTI_OCCURRENCE_ELEMENT = new Specification() {
-        
-        public boolean apply(FieldMap fieldMap) {
-            return fieldMap.getSource().getContainer() != null && fieldMap.getDestination().getContainer() != null;
-        }
-    };
+    private static final Specification IS_TO_ENUMERATION = fieldMap -> fieldMap.getDestination().getType().isEnum()
+            && (fieldMap.getSource().getType().getRawType().equals(String.class) || fieldMap.getSource().getType().isEnum());
+
+    private static final Specification IS_ARRAY = fieldMap -> fieldMap.getDestination().isArray() && (fieldMap.getSource().isArray() || fieldMap.getSource().isCollection());
+
+    private static final Specification IS_COLLECTION = fieldMap -> (fieldMap.getSource().isArray() || fieldMap.getSource().isCollection()) && fieldMap.getDestination().isCollection();
+
+    private static final Specification IS_PRIMITIVE = fieldMap -> fieldMap.getSource().getType().isPrimitive() || fieldMap.getDestination().getType().isPrimitive();
+
+    private static final Specification WRAPPER_TO_PRIMITIVE = fieldMap -> fieldMap.getDestination().isPrimitive() && fieldMap.getSource().getType().isPrimitiveWrapper();
+
+    private static final Specification PRIMITIVE_TO_WRAPPER = fieldMap -> fieldMap.getDestination().getType().isPrimitiveWrapper() && fieldMap.getSource().isPrimitive();
+
+    private static final Specification STRING_TO_PRIMITIVE_OR_WRAPPER = fieldMap -> String.class.equals(fieldMap.getSource().getType().getRawType())
+            && (fieldMap.getDestination().getType().isPrimitive() || fieldMap.getDestination().getType().isPrimitiveWrapper());
+
+    private static final Specification CONVERSION_TO_STRING = fieldMap -> String.class.equals(fieldMap.getDestination().getType().getRawType());
+
+    private static final Specification MAP_TO_MAP = fieldMap -> fieldMap.getSource().isMap() && fieldMap.getDestination().isMap();
+
+    private static final Specification MAP_TO_ARRAY_OR_COLLECTION = fieldMap -> fieldMap.getSource().isMap() && (fieldMap.getDestination().isCollection() || fieldMap.getDestination().isArray());
+
+    private static final Specification MAP_TO_ARRAY = fieldMap -> fieldMap.getSource().isMap() && fieldMap.getDestination().isArray();
+
+    private static final Specification MAP_TO_COLLECTION = fieldMap -> fieldMap.getSource().isMap() && fieldMap.getDestination().isCollection();
+
+    private static final Specification MAP_TO_BEAN = fieldMap -> fieldMap.getSource().isMapKey()
+            && (fieldMap.getDestination().getType().isImmutable() || (!fieldMap.getDestination().isCollection()
+            && !fieldMap.getDestination().isArray() && !fieldMap.getDestination().isMap() && !fieldMap.getDestination()
+            .isEnum()));
+
+    private static final Specification ARRAY_OR_LIST_TO_BEAN = fieldMap -> (fieldMap.getSource().isListElement() || fieldMap.getSource().isArrayElement())
+            && (fieldMap.getDestination().getType().isImmutable() || (!fieldMap.getDestination().isCollection()
+            && !fieldMap.getDestination().isArray() && !fieldMap.getDestination().isMap() && !fieldMap.getDestination()
+            .isEnum()));
+
+    private static final Specification ARRAY_OR_COLLECTION_TO_MAP = fieldMap -> fieldMap.getDestination().isMap() && (fieldMap.getSource().isCollection() || fieldMap.getSource().isArray());
+
+    private static final Specification BEAN_TO_MAP = fieldMap -> fieldMap.getDestination().isMapKey()
+            && (fieldMap.getSource().getType().isImmutable() || (!fieldMap.getSource().isCollection()
+            && !fieldMap.getSource().isArray() && !fieldMap.getSource().isMap() && !fieldMap.getSource().isEnum()));
+
+    private static final Specification BEAN_TO_ARRAY_OR_LIST = fieldMap -> (fieldMap.getDestination().isListElement() || fieldMap.getDestination().isArrayElement())
+            && (fieldMap.getSource().getType().isImmutable() || (!fieldMap.getSource().isCollection()
+            && !fieldMap.getSource().isArray() && !fieldMap.getSource().isMap() && !fieldMap.getSource().isEnum()));
+
+    private static final Specification OBJECT_CLASS_PROPERTY = fieldMap -> "class".equals(fieldMap.getSource().getName()) && "class".equals(fieldMap.getDestination().getName())
+            && Class.class.equals(fieldMap.getSource().getRawType());
+
+    private static final Specification MANY_TO_ONE = fieldMap -> fieldMap.getSource().getContainer() != null && fieldMap.getDestination().getContainer() == null;
+
+    private static final Specification ONE_TO_MANY = fieldMap -> fieldMap.getSource().getContainer() == null && fieldMap.getDestination().getContainer() != null;
+
+    private static final Specification MULTI_OCCURRENCE_ELEMENT = fieldMap -> fieldMap.getSource().getContainer() != null && fieldMap.getDestination().getContainer() != null;
 }

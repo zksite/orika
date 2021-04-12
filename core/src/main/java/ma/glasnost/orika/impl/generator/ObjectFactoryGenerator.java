@@ -23,7 +23,11 @@ import ma.glasnost.orika.MappingException;
 import ma.glasnost.orika.constructor.ConstructorResolverStrategy;
 import ma.glasnost.orika.constructor.ConstructorResolverStrategy.ConstructorMapping;
 import ma.glasnost.orika.impl.GeneratedObjectFactory;
-import ma.glasnost.orika.metadata.*;
+import ma.glasnost.orika.metadata.ClassMap;
+import ma.glasnost.orika.metadata.FieldMap;
+import ma.glasnost.orika.metadata.MapperKey;
+import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.metadata.TypeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -75,7 +79,7 @@ public class ObjectFactoryGenerator {
             StringBuilder logDetails;
             if (LOGGER.isDebugEnabled()) {
                 logDetails = new StringBuilder();
-                logDetails.append("Generating new object factory for (" + type + ")");
+                logDetails.append("Generating new object factory for (").append(type).append(")");
             } else {
                 logDetails = null;
             }
@@ -118,7 +122,7 @@ public class ObjectFactoryGenerator {
             UsedMapperFacadesContext usedMappers, Type<?> type, Type<?> sourceType, MappingContext mappingContext, StringBuilder logDetails) {
         
         final StringBuilder out = new StringBuilder();
-        out.append("public Object create(Object s, " + MappingContext.class.getCanonicalName() + " mappingContext) {");
+        out.append("public Object create(Object s, ").append(MappingContext.class.getCanonicalName()).append(" mappingContext) {");
         out.append(format("if(s == null) throw new %s(\"source object must be not null\");",
                 IllegalArgumentException.class.getCanonicalName()));
         
@@ -165,7 +169,7 @@ public class ObjectFactoryGenerator {
                 if (constructor == null) {
                     throw new IllegalArgumentException("no suitable constructors found for " + destinationType);
                 } else if (logDetails != null) {
-                    logDetails.append("\n\tUsing constructor: " + constructor);
+                    logDetails.append("\n\tUsing constructor: ").append(constructor);
                 }
                 
                 List<FieldMap> properties = constructorMapping.getMappedFields();

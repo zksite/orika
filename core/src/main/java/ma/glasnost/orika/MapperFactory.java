@@ -18,14 +18,14 @@
 
 package ma.glasnost.orika;
 
-import java.util.Set;
-
 import ma.glasnost.orika.converter.ConverterFactory;
 import ma.glasnost.orika.metadata.ClassMap;
 import ma.glasnost.orika.metadata.ClassMapBuilder;
 import ma.glasnost.orika.metadata.MapperKey;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.unenhance.UnenhanceStrategy;
+
+import java.util.Set;
 
 /**
  * MapperFactory is used to both configure, register, and generate the
@@ -265,7 +265,7 @@ public interface MapperFactory {
      *            the type for which to look up mapped types
      * @return the set of types which have been mapped for the specified type.
      */
-    Set<Type<? extends Object>> lookupMappedClasses(Type<?> type);
+    Set<Type<?>> lookupMappedClasses(Type<?> type);
     
     /**
      * @return a thread-safe MapperFacade instance as configured by this

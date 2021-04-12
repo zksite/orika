@@ -88,8 +88,8 @@ public class FilePathUtility {
 	
 	static Collection<File> getJavaSourceFiles(File sourceDir) {
 		
-		Set<File> javaSources = new HashSet<File>();
-		LinkedList<File> stack = new LinkedList<File>();
+		Set<File> javaSources = new HashSet<>();
+		LinkedList<File> stack = new LinkedList<>();
 		stack.add(sourceDir);
 		while (!stack.isEmpty()) {
 			File current = stack.removeFirst();

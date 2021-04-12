@@ -17,19 +17,6 @@
  */
 package ma.glasnost.orika.test.community;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import org.junit.Assert;
-
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
@@ -46,10 +33,21 @@ import ma.glasnost.orika.test.community.issue25.modelA.Address;
 import ma.glasnost.orika.test.community.issue25.modelA.ManufacturingFacility;
 import ma.glasnost.orika.test.community.issue25.modelB.AddressDTO;
 import ma.glasnost.orika.test.community.issue25.modelB.ManufacturingFacilityDTS;
-
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 
 
 /**
@@ -182,8 +180,8 @@ public class Issue25TestCase extends BaseManufacturingFacilityTest{
         AddressDTO addressOne = addressesAfterMerge.get(0);
         AddressDTO addressTwo = addressesAfterMerge.get(1);
 
-        assertThat("Land after merge is wrong.", addressOne.getLand(), is(Character.valueOf('D')));
-        assertThat("Land after merge is wrong.", addressTwo.getLand(), is(Character.valueOf('D')));
+        assertThat("Land after merge is wrong.", addressOne.getLand(), is('D'));
+        assertThat("Land after merge is wrong.", addressTwo.getLand(), is('D'));
     }
     
     
@@ -191,7 +189,7 @@ public class Issue25TestCase extends BaseManufacturingFacilityTest{
     public void testMergingWithCustomMapper() {
         MapperFacade mapper = createMapperFacade();
         
-        List<Dto> dtos = new ArrayList<Dto>();
+        List<Dto> dtos = new ArrayList<>();
         
         Dto dto = new Dto();
         dto.setId(1L);
@@ -249,7 +247,7 @@ public class Issue25TestCase extends BaseManufacturingFacilityTest{
     public void testMergingWithCustomMapperForChildren() {
         MapperFacade mapper = createMapperFacade();
         
-        List<ChildDto> dtos = new ArrayList<ChildDto>();
+        List<ChildDto> dtos = new ArrayList<>();
         
         ChildDto dto = new ChildDto();
         dto.setId(1L);
@@ -303,7 +301,7 @@ public class Issue25TestCase extends BaseManufacturingFacilityTest{
         
         private Collection<Entity> merge(Collection<Dto> srcDtos, Collection<Entity> dstEntities) {
             
-            Set<Long> ids = new HashSet<Long>(srcDtos.size());
+            Set<Long> ids = new HashSet<>(srcDtos.size());
             for (Dto memberDto : srcDtos) {
                 Entity memberEntity = findEntity(dstEntities, memberDto.getId());
                 if (memberEntity == null) {
@@ -313,13 +311,8 @@ public class Issue25TestCase extends BaseManufacturingFacilityTest{
                 }
                 ids.add(memberDto.getId());
             }
-            
-            for (Iterator<Entity> iterator = dstEntities.iterator(); iterator.hasNext();) {
-                Entity dstEntity = iterator.next();
-                if (!dstEntity.isNew() && !ids.contains(dstEntity.getId())) {
-                    iterator.remove();
-                }
-            }
+
+            dstEntities.removeIf(dstEntity -> !dstEntity.isNew() && !ids.contains(dstEntity.getId()));
             
             return dstEntities;
             

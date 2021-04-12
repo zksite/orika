@@ -1,15 +1,14 @@
 package ma.glasnost.orika.test.community;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
-
-import org.junit.Test;
-
 import ma.glasnost.orika.BoundMapperFacade;
 import ma.glasnost.orika.CustomMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
+import org.junit.Test;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 /**
  * MapperFacade.map does not map into destination instance when context has already mapped the source Object.
@@ -99,8 +98,8 @@ public class Issue160TestCase {
     
     public static class X {
         private String value1;
-        private Y y1 = new Y();
-        private Y y2 = new Y();
+        private final Y y1 = new Y();
+        private final Y y2 = new Y();
         
         public String getValue1() {
             return value1;

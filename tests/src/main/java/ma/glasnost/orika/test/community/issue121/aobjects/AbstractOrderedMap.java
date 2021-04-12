@@ -1,7 +1,11 @@
 package ma.glasnost.orika.test.community.issue121.aobjects;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author: Ilya Krokhmalyov YC14IK1
@@ -10,7 +14,7 @@ import java.util.*;
 
 public abstract class AbstractOrderedMap<K, T> implements Iterable<T>, Serializable {
 
-    protected final Map<K, T> resultSet = new LinkedHashMap<K, T>();
+    protected final Map<K, T> resultSet = new LinkedHashMap<>();
 
     protected AbstractOrderedMap(Map<K, T> map) {
         resultSet.putAll(map);

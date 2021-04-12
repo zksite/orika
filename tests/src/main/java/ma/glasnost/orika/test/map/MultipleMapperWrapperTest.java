@@ -18,25 +18,23 @@
 
 package ma.glasnost.orika.test.map;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-
-import org.junit.Test;
-
 import ma.glasnost.orika.Mapper;
 import ma.glasnost.orika.impl.GeneratedMapperBase;
 import ma.glasnost.orika.impl.MultipleMapperWrapper;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeBuilder;
 import ma.glasnost.orika.test.TestUtil;
-import ma.glasnost.orika.test.TestUtil.MethodToCall;
 import ma.glasnost.orika.test.community.Issue24TestCase;
 import ma.glasnost.orika.test.community.issue121.Issue121TestCase;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 
 public class MultipleMapperWrapperTest {
 
@@ -68,20 +66,12 @@ public class MultipleMapperWrapperTest {
         
         // ExceptionCase 1: BSuper will be expected, but MultipleMapperWrapper knows that it
         // always generates at least the more specific class B:
-        expectedException = TestUtil.expectException(new MethodToCall() {
-            public void run() throws Exception {
-                multipleMapper.mapAtoB(new A(), new BSuper(), null);
-            }
-        });
+        expectedException = TestUtil.expectException(() -> multipleMapper.mapAtoB(new A(), new BSuper(), null));
         assertThat(expectedException.getMessage(), containsString("No matching Mapper found for A <-> B\n"));
         assertThat(expectedException.getMessage(), containsString("Existing Mapper: A <-> BSub\n"));
 
         // ExceptionCase 2: BSub2 will be expected, but no Mapper is included:
-        expectedException = TestUtil.expectException(new MethodToCall() {
-            public void run() throws Exception {
-                multipleMapper.mapAtoB(new A(), new BSub2(), null);
-            }
-        });
+        expectedException = TestUtil.expectException(() -> multipleMapper.mapAtoB(new A(), new BSub2(), null));
         assertThat(expectedException.getMessage(), containsString("No matching Mapper found for A <-> BSub2\n"));
         assertThat(expectedException.getMessage(), containsString("Existing Mapper: A <-> BSub\n"));
         
@@ -115,20 +105,12 @@ public class MultipleMapperWrapperTest {
 
         // validation ExceptionCases: No Mapper should be found:
         // ExceptionCase 1: A HashSet is not enough as Source, Generics get lost for error-Message.
-        expectedException = TestUtil.expectException(new MethodToCall() {
-            public void run() throws Exception {
-                multipleMapper.mapAtoB(new HashSet<A>(), new ArrayList<BSub>(), null);
-            }
-        });
+        expectedException = TestUtil.expectException(() -> multipleMapper.mapAtoB(new HashSet<A>(), new ArrayList<BSub>(), null));
         assertThat(expectedException.getMessage(), containsString("No matching Mapper found for HashSet<Object> <-> ArrayList<Object>\n"));
         assertThat(expectedException.getMessage(), containsString("Existing Mapper: List<A> <-> List<BSub>\n"));
         
         // ExceptionCase 2: A HashSet is not enough as Target.
-        expectedException = TestUtil.expectException(new MethodToCall() {
-            public void run() throws Exception {
-                multipleMapper.mapAtoB(new ArrayList<A>(), new HashSet<BSub>(), null);
-            }
-        });
+        expectedException = TestUtil.expectException(() -> multipleMapper.mapAtoB(new ArrayList<A>(), new HashSet<BSub>(), null));
         assertThat(expectedException.getMessage(), containsString("No matching Mapper found for ArrayList<Object> <-> HashSet<Object>\n"));
         assertThat(expectedException.getMessage(), containsString("Existing Mapper: List<A> <-> List<BSub>\n"));
         

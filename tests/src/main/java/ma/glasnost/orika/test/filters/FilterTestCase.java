@@ -18,11 +18,6 @@
 
 package ma.glasnost.orika.test.filters;
 
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
@@ -30,9 +25,13 @@ import ma.glasnost.orika.NullFilter;
 import ma.glasnost.orika.metadata.Property;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class FilterTestCase {
     
@@ -177,7 +176,7 @@ public class FilterTestCase {
         
         Source source = new Source();
         source.age = 35;
-        source.infoMap = new HashMap<String, String>();
+        source.infoMap = new HashMap<>();
         source.infoMap.put("weather", "nice");
         
         Destination dest = mapper.map(source, Destination.class);

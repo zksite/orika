@@ -18,16 +18,16 @@
 
 package ma.glasnost.orika.test.collection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.junit.Assert;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * Simple test of maaping collection
@@ -43,7 +43,7 @@ public class ObjectCollectionTestCase {
         
         MapperFacade mapperFacade = factory.getMapperFacade();
         
-        List<Dto> dtos = new ArrayList<Dto>();
+        List<Dto> dtos = new ArrayList<>();
         
         Dto dto = new Dto();
         dto.setId(1L);
@@ -106,7 +106,7 @@ public class ObjectCollectionTestCase {
             
             Entity entity = (Entity) o;
             
-            if (id != null ? !id.equals(entity.id) : entity.id != null) {
+            if (!Objects.equals(id, entity.id)) {
                 return false;
             }
             
@@ -164,7 +164,7 @@ public class ObjectCollectionTestCase {
             
             Dto dto = (Dto) o;
             
-            if (id != null ? !id.equals(dto.id) : dto.id != null) {
+            if (!Objects.equals(id, dto.id)) {
                 return false;
             }
             

@@ -17,15 +17,14 @@
  */
 package ma.glasnost.orika.examples;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.junit.Assert;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * @author matt.deboer@gmail.com
@@ -171,7 +170,7 @@ public class Example2TestCase {
         
         MapperFacade mapper = mapperFactory.getMapperFacade();
         
-        Collection<A> collectionA = new ArrayList<A>();
+        Collection<A> collectionA = new ArrayList<>();
         collectionA.add(source);
 
         /*

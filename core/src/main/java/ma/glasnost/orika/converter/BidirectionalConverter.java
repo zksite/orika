@@ -42,7 +42,7 @@ public abstract class BidirectionalConverter<S, D> extends CustomConverter<Objec
     public abstract S convertFrom(D source, Type<S> destinationType, MappingContext mappingContext);
     
     @SuppressWarnings("unchecked")
-    public Object convert(Object source, Type<? extends Object> destinationType, MappingContext mappingContext) {
+    public Object convert(Object source, Type<?> destinationType, MappingContext mappingContext) {
         if (this.destinationType.isAssignableFrom(destinationType) || this.destinationType.isWrapperFor(destinationType)
                 || this.destinationType.isPrimitiveFor(destinationType)) {
             return convertTo((S) source, (Type<D>) destinationType, mappingContext);
@@ -69,7 +69,7 @@ public abstract class BidirectionalConverter<S, D> extends CustomConverter<Objec
         if (reversed == null) {
             synchronized (this) {
                 if (reversed == null) {
-                    reversed = new Reversed<D, S>(this);
+                    reversed = new Reversed<>(this);
                 }
             }
         }

@@ -45,7 +45,7 @@ public class ConstructorParameter extends Property {
         if (constructors == null) {
             this.owningConstructors = Collections.emptyMap();
         } else {
-            this.owningConstructors = new HashMap<Constructor<?>, Integer>(constructors);
+            this.owningConstructors = new HashMap<>(constructors);
         }
     }
     

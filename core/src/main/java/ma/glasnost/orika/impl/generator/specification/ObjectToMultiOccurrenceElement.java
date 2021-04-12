@@ -18,12 +18,13 @@
 
 package ma.glasnost.orika.impl.generator.specification;
 
-import static ma.glasnost.orika.impl.generator.SourceCodeContext.append;
-import static ma.glasnost.orika.impl.generator.SourceCodeContext.statement;
 import ma.glasnost.orika.impl.generator.SourceCodeContext;
 import ma.glasnost.orika.impl.generator.VariableRef;
 import ma.glasnost.orika.metadata.FieldMap;
 import ma.glasnost.orika.metadata.TypeFactory;
+
+import static ma.glasnost.orika.impl.generator.SourceCodeContext.append;
+import static ma.glasnost.orika.impl.generator.SourceCodeContext.statement;
 
 /**
  * ObjectToMultiOccurrenceElement handles the case where the destination is
@@ -47,7 +48,7 @@ public class ObjectToMultiOccurrenceElement extends AbstractSpecification {
         
         StringBuilder out = new StringBuilder();
         if (!source.isPrimitive()) {
-            out.append(source.ifNotNull() + "{");
+            out.append(source.ifNotNull()).append("{");
         }
         out.append(statement(destination.assign(source)));
         if (!source.isPrimitive()) {

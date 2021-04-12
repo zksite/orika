@@ -18,14 +18,13 @@
 
 package ma.glasnost.orika.unenhance;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeFactory;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  * HibernateUnenhanceStrategy is used to unwrapped objects from
@@ -63,11 +62,7 @@ public class HibernateUnenhanceStrategy implements UnenhanceStrategy {
             Class<?> hibernateLazyInitializer = Class.forName(LAZY_INITIALIZER_CLASS, false, Thread.currentThread().getContextClassLoader());
             getImplementation = hibernateLazyInitializer.getMethod(LAZY_INITIALIZER__GET_IMPLEMENTATION);
             
-        } catch (ClassNotFoundException e) {
-            hibernateInaccessible(e);
-        } catch (NoSuchMethodException e) {
-            hibernateInaccessible(e);
-        } catch (SecurityException e) {
+        } catch (ClassNotFoundException | SecurityException | NoSuchMethodException e) {
             hibernateInaccessible(e);
         }
     }
@@ -92,11 +87,7 @@ public class HibernateUnenhanceStrategy implements UnenhanceStrategy {
         
         try {
             return TypeFactory.resolveValueOf((Class<T>) getHibernateClass.invoke(null, object), type);
-        } catch (IllegalAccessException e) {
-            hibernateGetClassUnavailable(e);
-        } catch (IllegalArgumentException e) {
-            hibernateGetClassUnavailable(e);
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
             hibernateGetClassUnavailable(e);
         }
         return null;
@@ -107,11 +98,7 @@ public class HibernateUnenhanceStrategy implements UnenhanceStrategy {
         if (hibernateProxy.isAssignableFrom(object.getClass())) {
             try {
                 return (T) getImplementation.invoke(getHibernateLazyInitializer.invoke(object));
-            } catch (IllegalAccessException e) {
-                hibernateGetLazyInitUnavailable(e);
-            } catch (IllegalArgumentException e) {
-                hibernateGetLazyInitUnavailable(e);
-            } catch (InvocationTargetException e) {
+            } catch (IllegalAccessException | InvocationTargetException | IllegalArgumentException e) {
                 hibernateGetLazyInitUnavailable(e);
             }
         }

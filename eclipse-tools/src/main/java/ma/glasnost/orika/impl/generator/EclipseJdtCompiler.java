@@ -18,21 +18,9 @@
 
 package ma.glasnost.orika.impl.generator;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import ma.glasnost.orika.impl.generator.eclipsejdt.CompilationUnit;
 import ma.glasnost.orika.impl.generator.eclipsejdt.CompilerRequestor;
 import ma.glasnost.orika.impl.generator.eclipsejdt.NameEnvironment;
-
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.ToolFactory;
 import org.eclipse.jdt.core.compiler.IProblem;
@@ -49,6 +37,17 @@ import org.eclipse.jface.text.IDocument;
 import org.eclipse.text.edits.TextEdit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * EclipseJdtCompiler leverages the eclipse jdt core to compile source code
@@ -111,7 +110,7 @@ public class EclipseJdtCompiler {
 
 	private CompilerOptions getCompilerOptions() {
 
-		Map<String, String> options = new HashMap<String, String>();
+		Map<String, String> options = new HashMap<>();
 
 		options.put(CompilerOptions.OPTION_LocalVariableAttribute,
 				CompilerOptions.GENERATE);
@@ -257,7 +256,7 @@ public class EclipseJdtCompiler {
 			return Collections.emptyMap();
 		} else {
     		
-    		List<ICompilationUnit> compilationUnits = new ArrayList<ICompilationUnit>();
+    		List<ICompilationUnit> compilationUnits = new ArrayList<>();
     		for (File javaSource : javaSources) {
     			compilationUnits.add( 
     					new CompilationUnit(
@@ -331,18 +330,18 @@ public class EclipseJdtCompiler {
 				for (IProblem p : compilerRequester.getProblems()) {
 					if (p.isError()) {
 						hasErrors = true;
-						errorText.append("ERROR: " + p.toString() + "\n\n");
+						errorText.append("ERROR: ").append(p).append("\n\n");
 					} else {
-						warningText.append("WARNING: " + p.toString() + "\n\n");
+						warningText.append("WARNING: ").append(p).append("\n\n");
 					}
 				}
 				if (hasErrors) {
 					throw new RuntimeException(
 							"Compilation encountered errors:\n"
-									+ errorText.toString() + "\n\n"
-									+ warningText.toString());
+									+ errorText + "\n\n"
+									+ warningText);
 				} else {
-					LOG.warn("Compiler warnings:" + warningText.toString());
+					LOG.warn("Compiler warnings:" + warningText);
 				}
 			}
 			compiledClasses = compilerRequester.getCompiledClassFiles();

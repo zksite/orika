@@ -8,7 +8,7 @@ import java.util.Random;
  */
 
 public class RandomUtils {
-    private static Random random = new Random();
+    private static final Random random = new Random();
 
     public static int randomInt() {
         return random.nextInt();

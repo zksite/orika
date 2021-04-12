@@ -1,5 +1,15 @@
 package ma.glasnost.orika.constructor;
 
+import com.thoughtworks.paranamer.AdaptiveParanamer;
+import com.thoughtworks.paranamer.AnnotationParanamer;
+import com.thoughtworks.paranamer.BytecodeReadingParanamer;
+import com.thoughtworks.paranamer.CachingParanamer;
+import com.thoughtworks.paranamer.Paranamer;
+import ma.glasnost.orika.metadata.ConstructorParameter;
+import ma.glasnost.orika.metadata.Property;
+import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.metadata.TypeFactory;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
@@ -10,17 +20,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-
-import ma.glasnost.orika.metadata.ConstructorParameter;
-import ma.glasnost.orika.metadata.Property;
-import ma.glasnost.orika.metadata.Type;
-import ma.glasnost.orika.metadata.TypeFactory;
-
-import com.thoughtworks.paranamer.AdaptiveParanamer;
-import com.thoughtworks.paranamer.AnnotationParanamer;
-import com.thoughtworks.paranamer.BytecodeReadingParanamer;
-import com.thoughtworks.paranamer.CachingParanamer;
-import com.thoughtworks.paranamer.Paranamer;
 
 /**
  * ConstructorParameterResolver is a utility for resolving constructor
@@ -34,7 +33,7 @@ public class ConstructorParameterResolver {
     private final Paranamer paranamer = new CachingParanamer(new AdaptiveParanamer(new BytecodeReadingParanamer(),
             new AnnotationParanamer()));
     
-    private final Map<java.lang.reflect.Type, Map<String, Set<Property>>> constructorPropertiesByType = new ConcurrentHashMap<java.lang.reflect.Type, Map<String, Set<Property>>>();
+    private final Map<java.lang.reflect.Type, Map<String, Set<Property>>> constructorPropertiesByType = new ConcurrentHashMap<>();
     
     /**
      * Resolves constructor arguments as properties for the specified type.
@@ -53,14 +52,14 @@ public class ConstructorParameterResolver {
             Type<?> resolvedType = TypeFactory.valueOf(type);
             if (resolvedType.isConcrete() && !resolvedType.isImmutable()) {
                 synchronized (resolvedType) {
-                    Map<Constructor<?>, List<Property>> constructors = new ConcurrentHashMap<Constructor<?>, List<Property>>();
-                    Map<Property, Map<Constructor<?>, Integer>> constructorsByProperty = new ConcurrentHashMap<Property, Map<Constructor<?>, Integer>>();
+                    Map<Constructor<?>, List<Property>> constructors = new ConcurrentHashMap<>();
+                    Map<Property, Map<Constructor<?>, Integer>> constructorsByProperty = new ConcurrentHashMap<>();
                     
                     for (Constructor<?> constructor : resolvedType.getRawType().getConstructors()) {
                         
                         String[] names = paranamer.lookupParameterNames(constructor, false);
                         java.lang.reflect.Type[] types = constructor.getGenericParameterTypes();
-                        List<Property> constructorArgs = new ArrayList<Property>();
+                        List<Property> constructorArgs = new ArrayList<>();
                         
                         for (int i = 0; i < names.length; ++i) {
                             
@@ -71,28 +70,20 @@ public class ConstructorParameterResolver {
                                 propertyType = TypeFactory.resolveValueOf((Class<?>) types[i], resolvedType);
                             }
                             Property constructorArg = new ConstructorParameter(names[i], propertyType, null);
-                            
-                            Map<Constructor<?>, Integer> associatedConstructors = constructorsByProperty.get(constructorArg);
-                            if (associatedConstructors == null) {
-                                associatedConstructors = new HashMap<Constructor<?>, Integer>();
-                                constructorsByProperty.put(constructorArg, associatedConstructors);
-                            }
-                            
+
+                            Map<Constructor<?>, Integer> associatedConstructors = constructorsByProperty.computeIfAbsent(constructorArg, k -> new HashMap<>());
+
                             associatedConstructors.put(constructor, i);
                             constructorArgs.add(constructorArg);
                         }
                         constructors.put(constructor, constructorArgs);
                         
                     }
-                    properties = new HashMap<String, Set<Property>>();
+                    properties = new HashMap<>();
                     for (Entry<Property, Map<Constructor<?>, Integer>> entry : constructorsByProperty.entrySet()) {
                         String key = entry.getKey().getExpression();
-                        Set<Property> propertiesByName = properties.get(key);
-                        if (propertiesByName == null) {
-                            propertiesByName = new LinkedHashSet<Property>();
-                            properties.put(key, propertiesByName);
-                        }
-                        
+                        Set<Property> propertiesByName = properties.computeIfAbsent(key, k -> new LinkedHashSet<>());
+
                         propertiesByName.add(new ConstructorParameter(entry.getKey().getName(), entry.getKey().getType(), entry.getValue()));
                     }
                     constructorPropertiesByType.put(type, properties);

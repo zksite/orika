@@ -18,15 +18,15 @@
 
 package ma.glasnost.orika.metadata;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-
 import ma.glasnost.orika.DefaultFieldMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.PropertyNotFoundException;
 import ma.glasnost.orika.property.PropertyResolverStrategy;
+
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * ClassMapBuilderForMaps is a custom ClassMapBuilder instance which is
@@ -57,11 +57,11 @@ public class ClassMapBuilderForMaps<A, B> extends ClassMapBuilder<A,B> {
 				PropertyResolverStrategy propertyResolver,
 				DefaultFieldMapper[] defaults) {
 			
-			return new ClassMapBuilderForMaps<A,B>(aType, bType, mapperFactory, propertyResolver, defaults);
+			return new ClassMapBuilderForMaps<>(aType, bType, mapperFactory, propertyResolver, defaults);
 		}
 	}
 	
-	private final Set<String> nestedTypesUsed = new HashSet<String>();
+	private final Set<String> nestedTypesUsed = new HashSet<>();
 	
     /**
      * @param aType
@@ -112,10 +112,10 @@ public class ClassMapBuilderForMaps<A, B> extends ClassMapBuilder<A,B> {
     	
     	Set<String> remainingProperties;
     	if (isATypeBean()) {
-            remainingProperties = new LinkedHashSet<String>(getPropertiesForTypeA());
+            remainingProperties = new LinkedHashSet<>(getPropertiesForTypeA());
             remainingProperties.removeAll(getMappedPropertiesForTypeA());
         } else {
-    	    remainingProperties = new LinkedHashSet<String>(getPropertiesForTypeB());
+    	    remainingProperties = new LinkedHashSet<>(getPropertiesForTypeB());
     	    remainingProperties.removeAll(getMappedPropertiesForTypeB());
     	}  
     	remainingProperties.remove("class");
@@ -160,7 +160,7 @@ public class ClassMapBuilderForMaps<A, B> extends ClassMapBuilder<A,B> {
         String[] parts = epxression.split("[.]");
         StringBuilder name = new StringBuilder();
         for (int i=0; i < parts.length - 1; ++i) {
-            name.append(parts[i] + ".");
+            name.append(parts[i]).append(".");
         }
         return name.substring(0, name.length()-1);
     }

@@ -25,7 +25,10 @@ import ma.glasnost.orika.metadata.Property;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Node {
 
@@ -135,7 +138,7 @@ public class Node {
     }
 
     public FieldMap getMap() {
-        TreeMap<Integer, FieldMap> nodes = new TreeMap<Integer, FieldMap>();
+        TreeMap<Integer, FieldMap> nodes = new TreeMap<>();
 
         for (Node child: children) {
             if (child.value != null) {
@@ -166,20 +169,20 @@ public class Node {
 
     private String toString(String indent) {
         StringBuilder out = new StringBuilder();
-        out.append(indent + this.property.toString());
+        out.append(indent).append(this.property.toString());
         if (!this.children.isEmpty()) {
             out.append(" {");
 
             for (Node child: children) {
-                out.append("\n" + child.toString("  " + indent));
+                out.append("\n").append(child.toString("  " + indent));
             }
-            out.append("\n" + indent + "}");
+            out.append("\n").append(indent).append("}");
         }
         return out.toString();
     }
 
     public static Node findFieldMap(final FieldMap map, final NodeList nodes, boolean useSource) {
-        LinkedList<Property> path = new LinkedList<Property>();
+        LinkedList<Property> path = new LinkedList<>();
         Property container = useSource ? map.getSource() : map.getDestination();
         while (container.getContainer() != null) {
             path.addFirst(container.getContainer());
@@ -256,7 +259,7 @@ public class Node {
         }
 
         public Node addFieldMap(final FieldMap map, boolean useSource) {
-            LinkedList<Property> path = new LinkedList<Property>();
+            LinkedList<Property> path = new LinkedList<>();
             Property root = useSource ? map.getSource() : map.getDestination();
             Property container = root;
 
@@ -325,7 +328,7 @@ public class Node {
             out.append("{");
             if (!isEmpty()) {
                 for (Node node: this) {
-                    out.append("\n" + node.toString("  "));
+                    out.append("\n").append(node.toString("  "));
                 }
                 out.append("\n}");
             } else {

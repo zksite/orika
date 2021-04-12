@@ -1,13 +1,12 @@
 package ma.glasnost.orika.test.community;
 
-import static org.junit.Assert.assertNull;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
-
-import ma.glasnost.orika.impl.DefaultMapperFactory;
+import static org.junit.Assert.assertNull;
 
 /**
  * ClassMapBuilderForMaps class exclude method Does not work
@@ -24,7 +23,7 @@ public class Issue314TestCase {
 		DefaultMapperFactory mapperFactory = new DefaultMapperFactory.Builder().build();
 		mapperFactory.classMap(Map.class, B.class).exclude("b").byDefault().register();
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 		map.put("a", "a");
 		map.put("b", "b");
 

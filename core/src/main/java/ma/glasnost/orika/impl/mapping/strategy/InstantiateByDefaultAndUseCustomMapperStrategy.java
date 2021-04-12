@@ -45,9 +45,7 @@ public class InstantiateByDefaultAndUseCustomMapperStrategy extends UseCustomMap
     protected Object getInstance(Object sourceObject, Object destinationObject, MappingContext context) {
     	try {
             return destinationType.getRawType().newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (InstantiationException | IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }

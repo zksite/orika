@@ -18,16 +18,15 @@
 
 package ma.glasnost.orika.test.primitives;
 
-import java.math.BigDecimal;
-
 import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.MappingContext;
 import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.math.BigDecimal;
 
 public class BigDecimalPrimitiveTestCase {
     
@@ -38,7 +37,7 @@ public class BigDecimalPrimitiveTestCase {
         factory.getConverterFactory().registerConverter(new CustomConverter<BigDecimal, Double>() {
             
             public Double convert(BigDecimal source, Type<? extends Double> destinationType, MappingContext context) {
-                return new Double(source.doubleValue());
+                return source.doubleValue();
             }
             
         });

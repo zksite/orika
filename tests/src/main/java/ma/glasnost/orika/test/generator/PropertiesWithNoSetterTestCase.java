@@ -1,13 +1,12 @@
 package ma.glasnost.orika.test.generator;
 
-import java.util.UUID;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.UUID;
 
 
 /**
@@ -27,7 +26,7 @@ public class PropertiesWithNoSetterTestCase {
 	public static class SomeObject {
 	    
 		private final Person person;
-		private String id;
+		private final String id;
 		
 	    public SomeObject() {
 	        this.person = new Person();
@@ -47,7 +46,7 @@ public class PropertiesWithNoSetterTestCase {
 	public static class AnotherObject {
 	    
 		private final Person person;
-		private String id;
+		private final String id;
 		
 	    public AnotherObject() {
 	        this.person = new Person();

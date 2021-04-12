@@ -18,15 +18,14 @@
 
 package ma.glasnost.orika.test.community;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Mapping for multi-occurrence elements doesn't trigger auto-generated mappings.
@@ -70,7 +69,7 @@ public class Issue109TestCase {
         
         Base source = new Base();
         source.name = "source1";
-        source.elements = new ArrayList<Element>();
+        source.elements = new ArrayList<>();
         Element el = new Element();
         el.id = 1;
         el.name = "element1";

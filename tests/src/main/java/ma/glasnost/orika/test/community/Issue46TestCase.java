@@ -17,16 +17,15 @@
  */
 package ma.glasnost.orika.test.community;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Assert;
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.OrikaSystemProperties;
 import ma.glasnost.orika.test.MappingUtil;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class-cast exception for mapped objects.
@@ -44,7 +43,7 @@ public class Issue46TestCase {
             this.twos = twos;
         }
         
-        List<Two> twos = new ArrayList<Two>();
+        List<Two> twos = new ArrayList<>();
         
         public One(String name) {
             this.name = name;
@@ -94,7 +93,7 @@ public class Issue46TestCase {
             this.oneList = oneList;
         }
         
-        List<One> oneList = new ArrayList<One>();
+        List<One> oneList = new ArrayList<>();
         
         public List<Two> getTwoList() {
             return twoList;
@@ -104,7 +103,7 @@ public class Issue46TestCase {
             this.twoList = twoList;
         }
         
-        List<Two> twoList = new ArrayList<Two>();
+        List<Two> twoList = new ArrayList<>();
     }
     
     @Test
@@ -114,11 +113,11 @@ public class Issue46TestCase {
         MapperFactory factory = MappingUtil.getMapperFactory();
         MapperFacade facade = factory.getMapperFacade();
         
-        List<Parent> parents = new ArrayList<Parent>();
+        List<Parent> parents = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
             Parent parent = new Parent();
-            List<One> ones = new ArrayList<One>();
-            List<Two> twos = new ArrayList<Two>();
+            List<One> ones = new ArrayList<>();
+            List<Two> twos = new ArrayList<>();
             for (int j = 0; j < 1000; j++) {
                 ones.add(new One(Integer.toString(j)));
                 twos.add(new Two(Integer.toString(j)));

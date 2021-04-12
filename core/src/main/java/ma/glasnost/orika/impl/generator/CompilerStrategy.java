@@ -18,10 +18,10 @@
 
 package ma.glasnost.orika.impl.generator;
 
+import ma.glasnost.orika.OrikaSystemProperties;
+
 import java.io.File;
 import java.io.IOException;
-
-import ma.glasnost.orika.OrikaSystemProperties;
 
 /**
  * Defines a standard compiler profile for use in generating mapping objects.
@@ -59,12 +59,12 @@ public abstract class CompilerStrategy {
     
     protected CompilerStrategy(String writeSourceByDefault, String writeClassByDefault) {
 	
-    	this.writeSourceFiles = Boolean.valueOf(System.getProperty(
+    	this.writeSourceFiles = Boolean.parseBoolean(System.getProperty(
     		OrikaSystemProperties.WRITE_SOURCE_FILES,
     		System.getProperty("ma.glasnost.orika.GeneratedSourceCode.writeSourceFiles", 
     			writeSourceByDefault)));
     	
-    	this.writeClassFiles = Boolean.valueOf(System.getProperty(
+    	this.writeClassFiles = Boolean.parseBoolean(System.getProperty(
     		OrikaSystemProperties.WRITE_CLASS_FILES,
     		System.getProperty("ma.glasnost.orika.GeneratedSourceCode.writeClassFiles", 
     			writeClassByDefault)));

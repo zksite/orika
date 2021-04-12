@@ -35,4 +35,4 @@ public abstract class DefaultSuperTypeResolverStrategy implements SuperTypeResol
 	public boolean shouldPreferClassOverInterface() {
 		return true;
 	}
-};
+}

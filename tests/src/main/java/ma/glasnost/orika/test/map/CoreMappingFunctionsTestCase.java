@@ -18,13 +18,6 @@
 
 package ma.glasnost.orika.test.map;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import ma.glasnost.orika.CustomConverter;
 import ma.glasnost.orika.MapEntry;
 import ma.glasnost.orika.MapperFacade;
@@ -34,9 +27,15 @@ import ma.glasnost.orika.metadata.Type;
 import ma.glasnost.orika.metadata.TypeBuilder;
 import ma.glasnost.orika.metadata.TypeFactory;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 public class CoreMappingFunctionsTestCase {
     
@@ -49,7 +48,7 @@ public class CoreMappingFunctionsTestCase {
     @Test
     public void testMapToMap_Simple() {
         
-        Map<String, Integer> sourceMap = new HashMap<String, Integer>();
+        Map<String, Integer> sourceMap = new HashMap<>();
         sourceMap.put("A", 1);
         sourceMap.put("B", 2);
         sourceMap.put("C", 3);
@@ -68,7 +67,7 @@ public class CoreMappingFunctionsTestCase {
     @Test
     public void testMapToMap_WithConversion() {
         
-        Map<String, Integer> sourceMap = new HashMap<String, Integer>();
+        Map<String, Integer> sourceMap = new HashMap<>();
         sourceMap.put("A", 1);
         sourceMap.put("B", 2);
         sourceMap.put("C", 3);
@@ -132,7 +131,7 @@ public class CoreMappingFunctionsTestCase {
     @Test
     public void testCollectionToMap_Simple() {
         
-        Collection<Ranking> source = new ArrayList<Ranking>();
+        Collection<Ranking> source = new ArrayList<>();
         Ranking r = new Ranking();
         r.setName("A");
         r.setRank(1);
@@ -185,7 +184,7 @@ public class CoreMappingFunctionsTestCase {
     @Test
     public void testArrayToMap_Simple() {
         
-        List<Ranking> tempList = new ArrayList<Ranking>();
+        List<Ranking> tempList = new ArrayList<>();
         Ranking r = new Ranking();
         r.setName("A");
         r.setRank(1);
@@ -230,7 +229,7 @@ public class CoreMappingFunctionsTestCase {
     @Test
     public void testMapToCollection_Simple() {
         
-        Map<String, Integer> source = new HashMap<String, Integer>();
+        Map<String, Integer> source = new HashMap<>();
         source.put("A", 1);
         source.put("B", 2);
         source.put("C", 3);
@@ -266,7 +265,7 @@ public class CoreMappingFunctionsTestCase {
     @Test
     public void testMapToArray_Simple() {
         
-        Map<String, Integer> source = new HashMap<String, Integer>();
+        Map<String, Integer> source = new HashMap<>();
         source.put("A", 1);
         source.put("B", 2);
         source.put("C", 3);

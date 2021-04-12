@@ -17,20 +17,19 @@
  */
 package ma.glasnost.orika.test;
 
+import org.junit.rules.MethodRule;
+import org.junit.runners.model.FrameworkMethod;
+import org.junit.runners.model.Statement;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.Executors;
-
-import org.junit.rules.MethodRule;
-import org.junit.runners.model.FrameworkMethod;
-import org.junit.runners.model.Statement;
 
 /**
  * ConcurrentRule is a JUnit Rule which allows a given test method
@@ -84,8 +83,8 @@ public final class ConcurrentRule implements MethodRule {
                      * create a completion service to get jobs in the order they finish, to be able
                      * to cancel remaining jobs as fast as possible if an exception occurs
                      */ 
-                    CompletionService<Void> completionService = 
-                    		new ExecutorCompletionService<Void>(Executors.newFixedThreadPool(concurrent.value()));
+                    CompletionService<Void> completionService =
+                            new ExecutorCompletionService<>(Executors.newFixedThreadPool(concurrent.value()));
                      
                     /*
                      *  Use a latch to pause all threads at a certain point, then
@@ -96,27 +95,24 @@ public final class ConcurrentRule implements MethodRule {
                     
                     // create the tasks
                     for (int i = 0; i < concurrent.value(); i++) {
-                        completionService.submit(new Callable<Void>() {
-                            
-                            public Void call() throws Exception {
-                                try {
-                                    simultaneousStart.await();
-                                    
-                                    statement.evaluate();
-                                } catch (InterruptedException e) {
-                                    Thread.currentThread().interrupt();
-                                } catch (Throwable throwable) {
-                                    if (throwable instanceof Exception) {
-                                        throw (Exception) throwable;
-                                    } else if (throwable instanceof Error) {
-                                        throw (Error) throwable;
-                                    }
-                                    RuntimeException r = new RuntimeException(throwable.getMessage(), throwable);
-                                    r.setStackTrace(throwable.getStackTrace());
-                                    throw r;
+                        completionService.submit(() -> {
+                            try {
+                                simultaneousStart.await();
+
+                                statement.evaluate();
+                            } catch (InterruptedException e) {
+                                Thread.currentThread().interrupt();
+                            } catch (Throwable throwable) {
+                                if (throwable instanceof Exception) {
+                                    throw (Exception) throwable;
+                                } else if (throwable instanceof Error) {
+                                    throw (Error) throwable;
                                 }
-                                return null;
+                                RuntimeException r = new RuntimeException(throwable.getMessage(), throwable);
+                                r.setStackTrace(throwable.getStackTrace());
+                                throw r;
                             }
+                            return null;
                         });
                     }
                     simultaneousStart.countDown();

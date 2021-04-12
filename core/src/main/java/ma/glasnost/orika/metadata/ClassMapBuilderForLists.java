@@ -18,11 +18,11 @@
 
 package ma.glasnost.orika.metadata;
 
-import java.util.List;
-
 import ma.glasnost.orika.DefaultFieldMapper;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.property.PropertyResolverStrategy;
+
+import java.util.List;
 
 /**
  * ClassMapBuilderForMaps is a custom ClassMapBuilder instance which is
@@ -53,7 +53,7 @@ public class ClassMapBuilderForLists<A, B> extends ClassMapBuilderForMaps<A,B> {
 				PropertyResolverStrategy propertyResolver,
 				DefaultFieldMapper[] defaults) {
 			
-			return new ClassMapBuilderForLists<A,B>(aType, bType, mapperFactory, propertyResolver, defaults);
+			return new ClassMapBuilderForLists<>(aType, bType, mapperFactory, propertyResolver, defaults);
 		}
 	}
 	
@@ -88,7 +88,7 @@ public class ClassMapBuilderForLists<A, B> extends ClassMapBuilderForMaps<A,B> {
     protected int resolveAndIncrementIndex(String expr) {
         int nextIndex;
         try {
-            nextIndex = Integer.valueOf(expr.replaceAll("[\\[\\]]", ""));
+            nextIndex = Integer.parseInt(expr.replaceAll("[\\[\\]]", ""));
         } catch (NumberFormatException e) {
             nextIndex =  currentIndex + 1;
         }
@@ -113,7 +113,7 @@ public class ClassMapBuilderForLists<A, B> extends ClassMapBuilderForMaps<A,B> {
             listAncestor = listAncestor.findAncestor(List.class);
         }
         
-        int index = Integer.valueOf(expr.replaceAll("[\\[\\]]", ""));
+        int index = Integer.parseInt(expr.replaceAll("[\\[\\]]", ""));
         return new ListElementProperty(index, listAncestor.getNestedType(0), null);
     }
     

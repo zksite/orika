@@ -1,7 +1,7 @@
 package ma.glasnost.orika.test.packageprivate;
 
 class SimilarEntityCustomConstructor {
-    private String field;
+    private final String field;
 
     public SimilarEntityCustomConstructor(String field) {
         this.field = field;

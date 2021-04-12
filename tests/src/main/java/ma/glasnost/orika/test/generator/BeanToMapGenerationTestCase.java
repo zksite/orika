@@ -18,10 +18,6 @@
 
 package ma.glasnost.orika.test.generator;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.UtilityResolver;
@@ -32,9 +28,11 @@ import ma.glasnost.orika.metadata.TypeBuilder;
 import ma.glasnost.orika.metadata.TypeFactory;
 import ma.glasnost.orika.property.PropertyResolverStrategy;
 import ma.glasnost.orika.test.MappingUtil;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class BeanToMapGenerationTestCase {
 
@@ -361,8 +359,8 @@ public class BeanToMapGenerationTestCase {
 	}
 
     public static enum NameFields {
-        FIRST, LAST;
-    }
+        FIRST, LAST
+	}
 
     public static class Person {
 	    public Name name;
@@ -370,15 +368,15 @@ public class BeanToMapGenerationTestCase {
 	}
 	
 	public static class PersonDto {
-	    public Map<String, String> names = new HashMap<String, String>();
+	    public Map<String, String> names = new HashMap<>();
 	}
 	
 	public static class PersonDto2 {
-	    public Map<String, Name> names = new HashMap<String, Name>();
+	    public Map<String, Name> names = new HashMap<>();
 	}
 
 	public static class PersonDto3 {
-		public Map<String, Map<String, String>> names = new HashMap<String, Map<String, String>>();
+		public Map<String, Map<String, String>> names = new HashMap<>();
 	}
 
 	public static class PersonDto4 {

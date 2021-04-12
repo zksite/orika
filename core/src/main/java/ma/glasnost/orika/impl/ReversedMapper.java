@@ -30,7 +30,7 @@ import ma.glasnost.orika.metadata.Type;
  */
 public class ReversedMapper<A, B> implements Mapper<A, B> {
         
-    private Mapper<B, A> reversedMapper;
+    private final Mapper<B, A> reversedMapper;
 
     /**
      * Reterns a Mapper which is a reversal of the supplied Mapper
@@ -45,7 +45,7 @@ public class ReversedMapper<A, B> implements Mapper<A, B> {
         if (mapperToReverse instanceof ReversedMapper) {
             return ((ReversedMapper<B,A>)mapperToReverse).reversedMapper;
         } else {
-            return new ReversedMapper<A,B>(mapperToReverse);
+            return new ReversedMapper<>(mapperToReverse);
         }
     }
     

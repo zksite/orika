@@ -284,7 +284,7 @@ public class MultiOccurrenceVariableRef extends VariableRef {
 
     private static class EntrySetRef extends MultiOccurrenceVariableRef {
 
-        private String name;
+        private final String name;
         
         public EntrySetRef(VariableRef sourceMap, String variableName) {
             super(getSourceEntryType(sourceMap), sourceMap + ".entrySet()");

@@ -364,8 +364,8 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
         descendingEntrySet = null;
         descendingKeySet = null;
         randomSeed = (int) System.nanoTime();
-        head = new HeadIndex<K,V>(new Node<K,V>(null, BASE_HEADER, null),
-                                  null, null, 1);
+        head = new HeadIndex<>(new Node<>(null, BASE_HEADER, null),
+                null, null, 1);
     }
 
     /** Updater for casHead */
@@ -468,7 +468,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
          * @return true if successful
          */
         boolean appendMarker(Node<K,V> f) {
-            return casNext(f, new Node<K,V>(f));
+            return casNext(f, new Node<>(f));
         }
 
         /**
@@ -981,7 +981,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
                     // else c < 0; fall through
                 }
 
-                Node<K,V> z = new Node<K,V>(kkey, value, n);
+                Node<K,V> z = new Node<>(kkey, value, n);
                 if (!b.casNext(n, z))
                     break;         // restart if lost race to append to b
                 int level = randomLevel();
@@ -1026,7 +1026,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
         if (level <= max) {
             Index<K,V> idx = null;
             for (int i = 1; i <= level; ++i)
-                idx = new Index<K,V>(z, idx, null);
+                idx = new Index<>(z, idx, null);
             addIndex(idx, h, level);
 
         } else { // Add a new level
@@ -1042,7 +1042,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
             Index<K,V>[] idxs = (Index<K,V>[])new Index[level+1];
             Index<K,V> idx = null;
             for (int i = 1; i <= level; ++i)
-                idxs[i] = idx = new Index<K,V>(z, idx, null);
+                idxs[i] = idx = new Index<>(z, idx, null);
 
             HeadIndex<K,V> oldh;
             int k;
@@ -1056,7 +1056,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
                 HeadIndex<K,V> newh = oldh;
                 Node<K,V> oldbase = oldh.node;
                 for (int j = oldLevel+1; j <= level; ++j)
-                    newh = new HeadIndex<K,V>(oldbase, newh, idxs[j], j);
+                    newh = new HeadIndex<>(oldbase, newh, idxs[j], j);
                 if (casHead(oldh, newh)) {
                     k = oldLevel;
                     break;
@@ -1274,7 +1274,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
                 findFirst(); // retry
             clearIndexToFirst();
             K key = n.key;
-            return keyOnly ? key : new SnapshotEntry<K,V>(key, (V)v);
+            return keyOnly ? key : new SnapshotEntry<>(key, (V) v);
         }
     }
 
@@ -1396,7 +1396,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
                     if (head.right == null)
                         tryReduceLevel();
                 }
-                return keyOnly ? key : new SnapshotEntry<K,V>(key, (V)v);
+                return keyOnly ? key : new SnapshotEntry<>(key, (V) v);
             }
         }
     }
@@ -1541,7 +1541,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
             K k = n.key;
             V v = n.getValidValue();
             if (v != null)
-                return keyOnly ? k : new SnapshotEntry<K,V>(k, v);
+                return keyOnly ? k : new SnapshotEntry<>(k, v);
         }
     }
 
@@ -1562,7 +1562,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
                 return null;
             V v = doRemove(k, null);
             if (v != null)
-                return keyOnly ? k : new SnapshotEntry<K,V>(k, v);
+                return keyOnly ? k : new SnapshotEntry<>(k, v);
         }
     }
 
@@ -1583,7 +1583,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
                 return null;
             V v = doRemove(k, null);
             if (v != null)
-                return keyOnly ? k : new SnapshotEntry<K,V>(k, v);
+                return keyOnly ? k : new SnapshotEntry<>(k, v);
         }
     }
 
@@ -1672,7 +1672,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
 
         // Track the current rightmost node at each level. Uses an
         // ArrayList to avoid committing to initial or maximum level.
-        ArrayList<Index<K,V>> preds = new ArrayList<Index<K,V>>();
+        ArrayList<Index<K,V>> preds = new ArrayList<>();
 
         // initialize
         for (int i = 0; i <= h.level; ++i)
@@ -1683,25 +1683,22 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
             q = q.down;
         }
 
-        Iterator<? extends Map.Entry<? extends K, ? extends V>> it =
-            map.entrySet().iterator();
-        while (it.hasNext()) {
-            Map.Entry<? extends K, ? extends V> e = it.next();
+        for (Entry<? extends K, ? extends V> e : map.entrySet()) {
             int j = randomLevel();
             if (j > h.level) j = h.level + 1;
             K k = e.getKey();
             V v = e.getValue();
             if (k == null || v == null)
                 throw new NullPointerException();
-            Node<K,V> z = new Node<K,V>(k, v, null);
+            Node<K, V> z = new Node<>(k, v, null);
             basepred.next = z;
             basepred = z;
             if (j > 0) {
-                Index<K,V> idx = null;
+                Index<K, V> idx = null;
                 for (int i = 1; i <= j; ++i) {
-                    idx = new Index<K,V>(z, idx, null);
+                    idx = new Index<>(z, idx, null);
                     if (i > h.level)
-                        h = new HeadIndex<K,V>(h.node, h, idx, i);
+                        h = new HeadIndex<>(h.node, h, idx, i);
 
                     if (i < preds.size()) {
                         preds.get(i).right = idx;
@@ -1761,7 +1758,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
 
         HeadIndex<K,V> h = head;
         Node<K,V> basepred = h.node;
-        ArrayList<Index<K,V>> preds = new ArrayList<Index<K,V>>();
+        ArrayList<Index<K,V>> preds = new ArrayList<>();
         for (int i = 0; i <= h.level; ++i)
             preds.add(null);
         Index<K,V> q = h;
@@ -1781,15 +1778,15 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
             V val = (V) v;
             int j = randomLevel();
             if (j > h.level) j = h.level + 1;
-            Node<K,V> z = new Node<K,V>(key, val, null);
+            Node<K,V> z = new Node<>(key, val, null);
             basepred.next = z;
             basepred = z;
             if (j > 0) {
                 Index<K,V> idx = null;
                 for (int i = 1; i <= j; ++i) {
-                    idx = new Index<K,V>(z, idx, null);
+                    idx = new Index<>(z, idx, null);
                     if (i > h.level)
-                        h = new HeadIndex<K,V>(h.node, h, idx, i);
+                        h = new HeadIndex<>(h.node, h, idx, i);
 
                     if (i < preds.size()) {
                         preds.get(i).right = idx;
@@ -2092,9 +2089,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
         try {
             return (containsAllMappings(this, t) &&
                     containsAllMappings(t, this));
-        } catch (ClassCastException unused) {
-            return false;
-        } catch (NullPointerException unused) {
+        } catch (ClassCastException | NullPointerException unused) {
             return false;
         }
     }
@@ -2103,9 +2098,7 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
      * Helper for equals -- check for containment, avoiding nulls.
      */
     static <K,V> boolean containsAllMappings(Map<K,V> a, Map<K,V> b) {
-        Iterator<Entry<K,V>> it = b.entrySet().iterator();
-        while (it.hasNext()) {
-            Entry<K,V> e = it.next();
+        for (Entry<K, V> e : b.entrySet()) {
             Object k = e.getKey();
             Object v = e.getValue();
             if (k == null || v == null || !v.equals(a.get(k)))
@@ -2949,15 +2942,11 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
             ConcurrentSkipListMap.this.clear();
         }
         public Object[] toArray() {
-            Collection<K> c = new ArrayList<K>();
-            for (Iterator<K> i = iterator(); i.hasNext(); )
-                c.add(i.next());
+            Collection<K> c = new ArrayList<>(this);
             return c.toArray();
         }
         public <T> T[] toArray(T[] a) {
-            Collection<K> c = new ArrayList<K>();
-            for (Iterator<K> i = iterator(); i.hasNext(); )
-                c.add(i.next());
+            Collection<K> c = new ArrayList<>(this);
             return c.toArray(a);
         }
     }
@@ -2985,15 +2974,11 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
             ConcurrentSkipListMap.this.clear();
         }
         public Object[] toArray() {
-            Collection<V> c = new ArrayList<V>();
-            for (Iterator<V> i = iterator(); i.hasNext(); )
-                c.add(i.next());
+            Collection<V> c = new ArrayList<>(this);
             return c.toArray();
         }
         public <T> T[] toArray(T[] a) {
-            Collection<V> c = new ArrayList<V>();
-            for (Iterator<V> i = iterator(); i.hasNext(); )
-                c.add(i.next());
+            Collection<V> c = new ArrayList<>(this);
             return c.toArray(a);
         }
     }
@@ -3027,13 +3012,13 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
         }
 
         public Object[] toArray() {
-            Collection<Map.Entry<K,V>> c = new ArrayList<Map.Entry<K,V>>();
+            Collection<Map.Entry<K,V>> c = new ArrayList<>();
             for (Map.Entry e : this)
                 c.add(new SnapshotEntry(e.getKey(), e.getValue()));
             return c.toArray();
         }
         public <T> T[] toArray(T[] a) {
-            Collection<Map.Entry<K,V>> c = new ArrayList<Map.Entry<K,V>>();
+            Collection<Map.Entry<K,V>> c = new ArrayList<>();
             for (Map.Entry e : this)
                 c.add(new SnapshotEntry(e.getKey(), e.getValue()));
             return c.toArray(a);
@@ -3373,15 +3358,11 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
                 return ConcurrentSkipListSubMap.this.containsKey(k);
             }
             public Object[] toArray() {
-                Collection<K> c = new ArrayList<K>();
-                for (Iterator<K> i = iterator(); i.hasNext(); )
-                    c.add(i.next());
+                Collection<K> c = new ArrayList<>(this);
                 return c.toArray();
             }
             public <T> T[] toArray(T[] a) {
-                Collection<K> c = new ArrayList<K>();
-                for (Iterator<K> i = iterator(); i.hasNext(); )
-                    c.add(i.next());
+                Collection<K> c = new ArrayList<>(this);
                 return c.toArray(a);
             }
         }
@@ -3416,15 +3397,11 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
                 return ConcurrentSkipListSubMap.this.containsValue(v);
             }
             public Object[] toArray() {
-                Collection<V> c = new ArrayList<V>();
-                for (Iterator<V> i = iterator(); i.hasNext(); )
-                    c.add(i.next());
+                Collection<V> c = new ArrayList<>(this);
                 return c.toArray();
             }
             public <T> T[] toArray(T[] a) {
-                Collection<V> c = new ArrayList<V>();
-                for (Iterator<V> i = iterator(); i.hasNext(); )
-                    c.add(i.next());
+                Collection<V> c = new ArrayList<>(this);
                 return c.toArray(a);
             }
         }
@@ -3464,13 +3441,13 @@ public class ConcurrentSkipListMap<K,V> extends AbstractMap<K,V>
                 return m.remove(key, e.getValue());
             }
             public Object[] toArray() {
-                Collection<Map.Entry<K,V>> c = new ArrayList<Map.Entry<K,V>>();
+                Collection<Map.Entry<K,V>> c = new ArrayList<>();
                 for (Map.Entry e : this)
                     c.add(new SnapshotEntry(e.getKey(), e.getValue()));
                 return c.toArray();
             }
             public <T> T[] toArray(T[] a) {
-                Collection<Map.Entry<K,V>> c = new ArrayList<Map.Entry<K,V>>();
+                Collection<Map.Entry<K,V>> c = new ArrayList<>();
                 for (Map.Entry e : this)
                     c.add(new SnapshotEntry(e.getKey(), e.getValue()));
                 return c.toArray(a);

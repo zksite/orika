@@ -1,16 +1,15 @@
 package ma.glasnost.orika.test.community;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Test;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.impl.generator.EclipseJdtCompilerStrategy;
 import ma.glasnost.orika.metadata.CaseInsensitiveClassMapBuilder;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Compilation Error when referencing collection on class property.
@@ -69,7 +68,7 @@ public class Issue141TestCase {
 	}
 
 	public static class B {
-		private List<C> c = new ArrayList<C>();
+		private List<C> c = new ArrayList<>();
 
 		public List<C> getC() {
 			return c;
@@ -93,7 +92,7 @@ public class Issue141TestCase {
 	}
 
 	public static class D {
-		private List<String> data = new ArrayList<String>();
+		private List<String> data = new ArrayList<>();
 
 		public List<String> getData() {
 			return data;
@@ -119,7 +118,7 @@ public class Issue141TestCase {
 	@Test
 	public void test() {
 		SubClass subClass = new SubClass();
-		subClass.setStrings(new ArrayList<String>(Arrays.asList("abc@mail.com")));
+		subClass.setStrings(new ArrayList<>(Arrays.asList("abc@mail.com")));
 
 		Clazz clazz = new Clazz();
 		clazz.setSubClass(subClass);

@@ -20,6 +20,8 @@ package ma.glasnost.orika.metadata;
 
 import ma.glasnost.orika.MappedTypePair;
 
+import java.util.Objects;
+
 
 /**
  * MapperKey represents a key which can be used to store the types mapped by
@@ -28,8 +30,8 @@ import ma.glasnost.orika.MappedTypePair;
  */
 public class MapperKey implements MappedTypePair<Object,Object>{
 
-	private Type<Object> aType;
-	private Type<Object> bType;
+	private final Type<Object> aType;
+	private final Type<Object> bType;
 
 	/**
 	 * Constructs a new MapperKey instance
@@ -60,7 +62,7 @@ public class MapperKey implements MappedTypePair<Object,Object>{
 	}
 
 	private boolean equals(Type<?> a, Type<?> b) {
-		return a == null ? b == null : a.equals(b);
+		return Objects.equals(a, b);
 	}
 
 	public String toString() {

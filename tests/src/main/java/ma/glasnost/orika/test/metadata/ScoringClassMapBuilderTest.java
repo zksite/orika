@@ -17,7 +17,13 @@
  */
 package ma.glasnost.orika.test.metadata;
 
-import static java.util.Arrays.asList;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import ma.glasnost.orika.metadata.ClassMap;
+import ma.glasnost.orika.metadata.FieldMap;
+import ma.glasnost.orika.metadata.ScoringClassMapBuilder;
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.lang.reflect.Method;
 import java.util.HashMap;
@@ -25,14 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.junit.Assert;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-import ma.glasnost.orika.metadata.ClassMap;
-import ma.glasnost.orika.metadata.FieldMap;
-import ma.glasnost.orika.metadata.ScoringClassMapBuilder;
-
-import org.junit.Test;
+import static java.util.Arrays.asList;
 
 /**
  * @author matt.deboer@gmail.com
@@ -85,7 +84,7 @@ public class ScoringClassMapBuilderTest {
         MapperFactory factory = new DefaultMapperFactory.Builder().classMapBuilderFactory(new ScoringClassMapBuilder.Factory()).build();
         
         ClassMap<Source, Destination> map = factory.classMap(Source.class, Destination.class).byDefault().toClassMap();
-        Map<String, String> mapping = new HashMap<String, String>();
+        Map<String, String> mapping = new HashMap<>();
         for (FieldMap f : map.getFieldsMapping()) {
             mapping.put(f.getSource().getExpression(), f.getDestination().getExpression());
         }

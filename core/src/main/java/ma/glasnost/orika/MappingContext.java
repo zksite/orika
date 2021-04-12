@@ -18,6 +18,11 @@
 
 package ma.glasnost.orika;
 
+import ma.glasnost.orika.cern.colt.map.OpenIntObjectHashMap;
+import ma.glasnost.orika.metadata.ClassMap;
+import ma.glasnost.orika.metadata.MapperKey;
+import ma.glasnost.orika.metadata.Type;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.IdentityHashMap;
@@ -25,11 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import ma.glasnost.orika.cern.colt.map.OpenIntObjectHashMap;
-import ma.glasnost.orika.metadata.ClassMap;
-import ma.glasnost.orika.metadata.MapperKey;
-import ma.glasnost.orika.metadata.Type;
 
 /**
  * MappingContext provides storage for information shared among the various
@@ -53,7 +53,7 @@ public class MappingContext {
     protected boolean capturesFieldContext;
     
     public static enum StackElement {
-        SOURCE_NAME, SOURCE_TYPE, SOURCE, DEST_NAME, DEST_TYPE, DEST;
+        SOURCE_NAME, SOURCE_TYPE, SOURCE, DEST_NAME, DEST_TYPE, DEST
     }
     
     /**
@@ -61,8 +61,8 @@ public class MappingContext {
      */
     public static class Factory implements MappingContextFactory {
         
-        LinkedBlockingQueue<MappingContext> contextQueue = new LinkedBlockingQueue<MappingContext>();
-        ConcurrentHashMap<Object, Object> globalProperties = new ConcurrentHashMap<Object, Object>();
+        LinkedBlockingQueue<MappingContext> contextQueue = new LinkedBlockingQueue<>();
+        ConcurrentHashMap<Object, Object> globalProperties = new ConcurrentHashMap<>();
         
         public MappingContext getContext() {
             MappingContext context = contextQueue.poll();
@@ -95,7 +95,7 @@ public class MappingContext {
      * @param globalProperties
      */
     public MappingContext(Map<Object, Object> globalProperties) {
-        this.mapping = new HashMap<Type<?>, Type<?>>();
+        this.mapping = new HashMap<>();
         this.typeCache = new OpenIntObjectHashMap();
         this.globalProperties = globalProperties;
         Boolean capture = globalProperties != null ? (Boolean)globalProperties.get(Properties.CAPTURE_FIELD_CONTEXT) : null;
@@ -175,7 +175,7 @@ public class MappingContext {
         if (containsCycle) {
             Map<Object, Object> localCache = (Map<Object, Object>) typeCache.get(destinationType.getUniqueIndex());
             if (localCache == null) {
-                localCache = new IdentityHashMap<Object, Object>(2);
+                localCache = new IdentityHashMap<>(2);
                 typeCache.put(destinationType.getUniqueIndex(), localCache);
                 
             }
@@ -211,11 +211,11 @@ public class MappingContext {
      */
     public void registerMapperGeneration(ClassMap<?, ?> classMap) {
         if (mappersSeen == null) {
-            mappersSeen = new ArrayList<Map<MapperKey, ClassMap<?, ?>>>();
+            mappersSeen = new ArrayList<>();
         }
         Map<MapperKey, ClassMap<?, ?>> list = mappersSeen.isEmpty() ? null : this.mappersSeen.get(depth - 1);
         if (list == null) {
-            list = new HashMap<MapperKey, ClassMap<?, ?>>();
+            list = new HashMap<>();
         }
         list.put(classMap.getMapperKey(), classMap);
     }
@@ -287,7 +287,7 @@ public class MappingContext {
      */
     public void beginMappingField(String sourceName, Type<?> sourceType, Object source, String destName, Type<?> destType, Object dest) {
         if (fieldMappingStack == null) {
-            fieldMappingStack = new ArrayList<Object[]>();
+            fieldMappingStack = new ArrayList<>();
         }
         Object[] stackElement = new Object[StackElement.values().length];
         stackElement[StackElement.SOURCE_NAME.ordinal()] = sourceName;
@@ -478,7 +478,7 @@ public class MappingContext {
      */
     public void setProperty(Object key, Object value) {
         if (this.properties == null) {
-            this.properties = new HashMap<Object, Object>();
+            this.properties = new HashMap<>();
         }
         this.properties.put(key, value);
     }

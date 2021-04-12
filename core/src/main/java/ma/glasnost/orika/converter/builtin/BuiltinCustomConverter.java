@@ -27,7 +27,7 @@ import ma.glasnost.orika.CustomConverter;
  */
 abstract class BuiltinCustomConverter<C, D> extends CustomConverter<C, D>{
 
-	private String description = "builtin:" + getClass().getSimpleName() +
+	private final String description = "builtin:" + getClass().getSimpleName() +
 			"<"+sourceType + ", " + destinationType+">";
 	
 	public String toString() {

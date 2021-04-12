@@ -1,17 +1,16 @@
 package ma.glasnost.orika.test.community;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.impl.DefaultMapperFactory;
 import ma.glasnost.orika.metadata.TypeBuilder;
-
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * mapAsMap breaks Object graphs.
@@ -46,7 +45,7 @@ public class Issue140TestCase {
 		a.child = new ChildA();
 		a.child.parent = a;
 
-		Map<String, Object> m = new HashMap<String, Object>();
+		Map<String, Object> m = new HashMap<>();
 		m.put("p", a);
 		m.put("c", a.child);
 
@@ -68,7 +67,7 @@ public class Issue140TestCase {
 		Assert.assertSame(b1, b1.child.parent);
 		Assert.assertSame(b2, b2.child.parent);
 
-		List<Object> l = new ArrayList<Object>();
+		List<Object> l = new ArrayList<>();
 		l.add(a.child);
 		l.add(a);
 

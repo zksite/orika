@@ -26,7 +26,6 @@ import ma.glasnost.orika.test.MappingUtil;
 import ma.glasnost.orika.test.community.issue26.OrderID;
 import ma.glasnost.orika.test.community.issue28.Order;
 import ma.glasnost.orika.test.community.issue28.OrderData;
-
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -44,9 +43,9 @@ public class Issue28TestCase {
         mapperFactory.getConverterFactory().registerConverter(new OrderIdConverter());
         mapperFactory.classMap(Order.class, OrderData.class).field("id", "number").byDefault().register();
         MapperFacade facade = mapperFactory.getMapperFacade();
-        OrderData data = new OrderData(1234l);
+        OrderData data = new OrderData(1234L);
         Order order = facade.map(data, Order.class);
-        Assert.assertEquals(Long.valueOf(1234l), order.getId());
+        Assert.assertEquals(Long.valueOf(1234L), order.getId());
     }
     
     public static class OrderIdConverter extends CustomConverter<Long, OrderID> {

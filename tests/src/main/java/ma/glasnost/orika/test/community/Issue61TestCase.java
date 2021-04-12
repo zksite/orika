@@ -63,7 +63,7 @@ public class Issue61TestCase {
         
         public MyEntity(String name) {
             this.name = name;
-            children = new HashSet<MyEntity>();
+            children = new HashSet<>();
         }
         
         public String getName() {

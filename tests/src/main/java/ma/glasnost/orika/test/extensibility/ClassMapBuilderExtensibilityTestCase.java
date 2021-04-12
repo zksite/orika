@@ -43,7 +43,7 @@ public class ClassMapBuilderExtensibilityTestCase {
 
             protected <A, B> ClassMapBuilder<A, B> newClassMapBuilder(Type<A> aType, Type<B> bType, MapperFactory mapperFactory,
                     PropertyResolverStrategy propertyResolver, DefaultFieldMapper[] defaults) {
-                return new ExtendedClassMapBuilder<A,B>(aType, bType, mapperFactory, propertyResolver, defaults);
+                return new ExtendedClassMapBuilder<>(aType, bType, mapperFactory, propertyResolver, defaults);
             }
         }
         

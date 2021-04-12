@@ -23,34 +23,34 @@ import java.util.List;
 
 public interface DefaultMappingHintTestCaseClasses {
 
-	public interface Book {
+	interface Book {
 		
-		public String getTitle();
+		String getTitle();
 
-		public void setTitle(String title);
+		void setTitle(String title);
 
-		public Author getAuthor();
+		Author getAuthor();
 
-		public void setAuthor(Author author);
+		void setAuthor(Author author);
 
 	}
 	
-	public interface Author {
+	interface Author {
 
-		public String getName();
+		String getName();
 		
-		public void setName(String name);
+		void setName(String name);
 		
 	}
 	
-	public interface Library {
+	interface Library {
 		
-		public String getTitle();
+		String getTitle();
 		
-		public List<Book> getBooks();
+		List<Book> getBooks();
 	}
 	
-	public class BookParent implements Book {
+	class BookParent implements Book {
 
 		private String title;
 		private Author author;
@@ -74,7 +74,7 @@ public interface DefaultMappingHintTestCaseClasses {
 
 	}
 	
-	public class AuthorParent implements Author {
+	class AuthorParent implements Author {
 
 		private String name;
 		
@@ -88,7 +88,7 @@ public interface DefaultMappingHintTestCaseClasses {
 		
 	}
 	
-	public class LibraryParent implements Library {
+	class LibraryParent implements Library {
 		
 		private String title;
 
@@ -104,14 +104,14 @@ public interface DefaultMappingHintTestCaseClasses {
 
 		public List<Book> getBooks() {
 			if (books==null) {
-				books = new ArrayList<Book>();
+				books = new ArrayList<>();
 			}
 			return books;
 		}
 
 	}
 
-	public class BookChild extends BookParent {
+	class BookChild extends BookParent {
 		private String additionalValue;
 		
 		public String getAdditionalValue() {
@@ -123,7 +123,7 @@ public interface DefaultMappingHintTestCaseClasses {
 		}
 	}
 	
-	public class AuthorChild extends AuthorParent {
+	class AuthorChild extends AuthorParent {
 		private String additionalValue;
 		
 		public String getAdditionalValue() {
@@ -135,7 +135,7 @@ public interface DefaultMappingHintTestCaseClasses {
 		}
 	}
 	
-	public class LibraryChild extends LibraryParent {
+	class LibraryChild extends LibraryParent {
 		private String additionalValue;
 		
 		public String getAdditionalValue() {
@@ -148,7 +148,7 @@ public interface DefaultMappingHintTestCaseClasses {
 	}
 	
 	
-	public class AuthorDTO {
+	class AuthorDTO {
 	
 		private String name;
 		private String additionalValue;
@@ -170,7 +170,7 @@ public interface DefaultMappingHintTestCaseClasses {
 		}
 	}
 	
-	public class BookDTO {
+	class BookDTO {
 
 		private String title;
 		private AuthorDTO author;
@@ -201,7 +201,7 @@ public interface DefaultMappingHintTestCaseClasses {
 		}
 	}
 	
-	public class LibraryDTO {
+	class LibraryDTO {
 		
 		private String title;
 		private List<BookDTO> books;
@@ -225,7 +225,7 @@ public interface DefaultMappingHintTestCaseClasses {
 
 		public List<BookDTO> getMyBooks() {
 			if (books==null) {
-				books = new ArrayList<BookDTO>();
+				books = new ArrayList<>();
 			}
 			return books;
 		}

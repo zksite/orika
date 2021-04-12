@@ -49,7 +49,7 @@ public interface MappingHint {
 	 */
 	class DefaultFieldMappingConverter implements DefaultFieldMapper {
 
-		private MappingHint delegate;
+		private final MappingHint delegate;
 		public DefaultFieldMappingConverter(MappingHint delegate) {
 			this.delegate = delegate;
 		}

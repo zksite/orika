@@ -18,9 +18,6 @@
 
 package ma.glasnost.orika.test.unenhance;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.test.MappingUtil;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.Author;
@@ -30,10 +27,12 @@ import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.BookParent;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.Library;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.LibraryDTO;
 import ma.glasnost.orika.test.unenhance.SuperTypeTestCaseClasses.LibraryParent;
-
 import org.easymock.EasyMock;
 import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class SuperTypeForGeneratedTestCase {
 
@@ -61,7 +60,7 @@ public class SuperTypeForGeneratedTestCase {
 		
 		Library lib = EasyMock.createNiceMock(LibraryParent.class);
 		EasyMock.expect(lib.getTitle()).andReturn("Test Library").anyTimes();
-		List<Book> books = new ArrayList<Book>();
+		List<Book> books = new ArrayList<>();
 		Book book = createBook();
 		books.add(book);
 		EasyMock.expect(lib.getBooks()).andReturn(books).anyTimes();

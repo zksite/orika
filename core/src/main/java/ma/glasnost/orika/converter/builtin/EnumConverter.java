@@ -38,7 +38,7 @@ public class EnumConverter extends BuiltinCustomConverter<Object, Object> {
      * @see ma.glasnost.orika.Converter#convert(java.lang.Object,
      * ma.glasnost.orika.metadata.Type)
      */
-    public Object convert(Object source, Type<? extends Object> destinationType, MappingContext context) {
+    public Object convert(Object source, Type<?> destinationType, MappingContext context) {
         @SuppressWarnings({ "unchecked", "rawtypes" })
         Enum<?> result = (Enum<?>) Enum.valueOf((Class<Enum>) destinationType.getRawType(), ((Enum) source).name());
         return result;

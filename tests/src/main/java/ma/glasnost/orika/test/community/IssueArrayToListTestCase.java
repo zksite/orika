@@ -19,19 +19,17 @@
 package ma.glasnost.orika.test.community;
 
 
+import ma.glasnost.orika.MapperFacade;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.impl.DefaultMapperFactory;
+import org.junit.Test;
+
+import java.util.List;
 
 import static java.util.Arrays.asList;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-
-import java.util.List;
-
-import ma.glasnost.orika.MapperFacade;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.impl.DefaultMapperFactory;
-
-import org.junit.Test;
 
 public class IssueArrayToListTestCase {
 
@@ -146,7 +144,7 @@ public class IssueArrayToListTestCase {
         MapperFacade mapperFacade = mapperFactory.getMapperFacade();
 
         B b = new B();
-        b.setIntegers(asList(Integer.valueOf(6)));
+        b.setIntegers(asList(6));
 
         A a = mapperFacade.map(b, A.class);
         assertArrayEquals(new int[] { 6 }, a.getInts());
@@ -175,7 +173,7 @@ public class IssueArrayToListTestCase {
         MapperFacade mapperFacade = mapperFactory.getMapperFacade();
 
         B b = new B();
-        b.setIntegers(asList(Integer.valueOf(7)));
+        b.setIntegers(asList(7));
 
         A a = mapperFacade.map(b, A.class);
         assertArrayEquals(new Integer[] { 7 }, a.getIntegers());

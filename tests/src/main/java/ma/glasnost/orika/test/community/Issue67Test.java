@@ -34,9 +34,9 @@ public class Issue67Test {
     @Test
     public void clone_a_map_of_map() {
         DateToIntegerToStringMap original = new DateToIntegerToStringMap();
-        Map<Integer, String> integerStringMap = new HashMap<Integer, String>();
+        Map<Integer, String> integerStringMap = new HashMap<>();
         integerStringMap.put(5, "five");
-        Map<Date, Map<Integer, String>> dateMapMap = new HashMap<Date, Map<Integer, String>>();
+        Map<Date, Map<Integer, String>> dateMapMap = new HashMap<>();
         dateMapMap.put(A_DATE, integerStringMap);
         original.setDateIntegerStringMap(dateMapMap);
 

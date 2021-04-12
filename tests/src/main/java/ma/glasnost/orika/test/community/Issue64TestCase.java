@@ -17,16 +17,14 @@
  */
 package ma.glasnost.orika.test.community;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Assert;
-
 import ma.glasnost.orika.MapperFacade;
 import ma.glasnost.orika.MapperFactory;
 import ma.glasnost.orika.test.MappingUtil;
-
+import org.junit.Assert;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * SimpleConstructorResolverStrategy ignores generic parameter types
@@ -44,7 +42,7 @@ public class Issue64TestCase {
         Supplier supplier = new Supplier();
         supplier.setName("Chester Tester");
         supplier.setEmail("chester@email.com");
-        supplier.setAddresses(new ArrayList<Address>());
+        supplier.setAddresses(new ArrayList<>());
         Address addr = new Address();
         addr.street = "1234 Test st.";
         addr.city = "Testville";
@@ -54,7 +52,7 @@ public class Issue64TestCase {
         Contact ct = new Contact();
         ct.name = "Bob Tester";
         ct.email = "bob@email.com";
-        supplier.setContacts(new ArrayList<Contact>());
+        supplier.setContacts(new ArrayList<>());
         supplier.getContacts().add(ct);
         
         MapperFactory mapperFactory = MappingUtil.getMapperFactory();

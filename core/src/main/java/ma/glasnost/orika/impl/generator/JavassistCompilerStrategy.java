@@ -18,14 +18,6 @@
 
 package ma.glasnost.orika.impl.generator;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Map;
-import java.util.Random;
-import java.util.WeakHashMap;
-import java.util.concurrent.ConcurrentHashMap;
-
 import javassist.CannotCompileException;
 import javassist.ClassClassPath;
 import javassist.ClassPool;
@@ -35,9 +27,16 @@ import javassist.CtNewMethod;
 import javassist.LoaderClassPath;
 import javassist.NotFoundException;
 import ma.glasnost.orika.impl.generator.Analysis.Visibility;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Random;
+import java.util.WeakHashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Uses Javassist to generate compiled class for the passed GeneratedSourceCode
@@ -55,16 +54,16 @@ public class JavassistCompilerStrategy extends CompilerStrategy {
     private static final String WRITE_CLASS_FILES_BY_DEFAULT = "false";
     
     private final static Logger LOG = LoggerFactory.getLogger(JavassistCompilerStrategy.class);
-    private final static Map<Class<?>, Boolean> superClasses = new ConcurrentHashMap<Class<?>, Boolean>(3);
+    private final static Map<Class<?>, Boolean> superClasses = new ConcurrentHashMap<>(3);
     
-    private ClassPool classPool;
+    private final ClassPool classPool;
     
     /**
      * Keep a set of class-loaders that have already been added to the javassist
      * class-pool Use a WeakHashMap to avoid retaining references to child
      * class-loaders
      */
-    private WeakHashMap<ClassLoader, Boolean> referencedLoaders = new WeakHashMap<ClassLoader, Boolean>(8);
+    private final WeakHashMap<ClassLoader, Boolean> referencedLoaders = new WeakHashMap<>(8);
     
     /**
      */

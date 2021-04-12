@@ -17,9 +17,12 @@
  */
 package ma.glasnost.orika.test.metadata;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.is;
+import ma.glasnost.orika.metadata.Type;
+import ma.glasnost.orika.metadata.TypeFactory;
+import org.junit.Assert;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
@@ -30,13 +33,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
-import ma.glasnost.orika.metadata.Type;
-import ma.glasnost.orika.metadata.TypeFactory;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.is;
 
 /**
  * @author matt.deboer@gmail.com
@@ -140,7 +139,7 @@ public class TypeFactoryTestCase {
 
     @SuppressWarnings("rawtypes")
     public void testRefineBoundsSuccess(Class<?> expetedClass, Class<?>... boundsClass) throws Exception {
-        Set<Type<?>> bounds = new HashSet<Type<?>>();
+        Set<Type<?>> bounds = new HashSet<>();
         for (Class<?> clazz : boundsClass) {
             bounds.add(TypeFactory.valueOf(clazz));
         }
@@ -168,7 +167,7 @@ public class TypeFactoryTestCase {
     }
 
     @SuppressWarnings("unused")
-    public static interface MyInterface<A, B> {
+    public interface MyInterface<A, B> {
         // test Class
     }
 

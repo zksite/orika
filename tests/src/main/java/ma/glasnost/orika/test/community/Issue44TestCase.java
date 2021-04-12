@@ -18,23 +18,22 @@
 
 package ma.glasnost.orika.test.community;
 
+import ma.glasnost.orika.CustomConverter;
+import ma.glasnost.orika.MapperFactory;
+import ma.glasnost.orika.MappingContext;
+import ma.glasnost.orika.impl.ConfigurableMapper;
+import ma.glasnost.orika.metadata.Type;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static java.util.Arrays.asList;
 import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import ma.glasnost.orika.CustomConverter;
-import ma.glasnost.orika.MapperFactory;
-import ma.glasnost.orika.MappingContext;
-import ma.glasnost.orika.impl.ConfigurableMapper;
-import ma.glasnost.orika.metadata.Type;
-
-import org.junit.Test;
 
 /**
  * Allow converters for Lists (or other collections).
@@ -70,7 +69,7 @@ public class Issue44TestCase {
                 factory.getConverterFactory().registerConverter("productToName", new CustomConverter<List<Product>, List<String>>() {
                     
                     public List<String> convert(List<Product> source, Type<? extends List<String>> destinationType, MappingContext context) {
-                        ArrayList<String> list = new ArrayList<String>(source.size());
+                        ArrayList<String> list = new ArrayList<>(source.size());
                         for (Product product : source) {
                             list.add(product.getName());
                         }

@@ -68,7 +68,7 @@ public abstract class MapperBase<A, B> {
      * @param <B>
      */
     public static class MapperBaseAdapter<A, B> extends CustomMapper<A, B> {
-        private MapperBase<A, B> delegate;
+        private final MapperBase<A, B> delegate;
         
         public MapperBaseAdapter(MapperBase<A, B> delegate) {
             this.delegate = delegate;

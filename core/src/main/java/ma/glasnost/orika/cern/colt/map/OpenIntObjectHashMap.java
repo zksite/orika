@@ -49,21 +49,21 @@ public class OpenIntObjectHashMap {
      * 
      * @serial
      */
-    protected int table[];
+    protected int[] table;
     
     /**
      * The hash table values.
      * 
      * @serial
      */
-    protected Object values[];
+    protected Object[] values;
     
     /**
      * The state of each hash table entry (FREE, FULL, REMOVED).
      * 
      * @serial
      */
-    protected byte state[];
+    protected byte[] state;
     
     /**
      * The number of table entries in state==FREE.
@@ -180,8 +180,8 @@ public class OpenIntObjectHashMap {
      *         inserted at slot index.
      */
     protected int indexOfInsertion(int key) {
-        final int tab[] = table;
-        final byte stat[] = state;
+        final int[] tab = table;
+        final byte[] stat = state;
         final int length = tab.length;
         
         final int hash = key & 0x7FFFFFFF;
@@ -233,8 +233,8 @@ public class OpenIntObjectHashMap {
      *         if the key was not found.
      */
     protected int indexOfKey(int key) {
-        final int tab[] = table;
-        final byte stat[] = state;
+        final int[] tab = table;
+        final byte[] stat = state;
         final int length = tab.length;
         
         final int hash = key & 0x7FFFFFFF;
@@ -354,13 +354,13 @@ public class OpenIntObjectHashMap {
         int oldCapacity = table.length;
         // if (oldCapacity == newCapacity) return;
         
-        int oldTable[] = table;
-        Object oldValues[] = values;
-        byte oldState[] = state;
+        int[] oldTable = table;
+        Object[] oldValues = values;
+        byte[] oldState = state;
         
-        int newTable[] = new int[newCapacity];
-        Object newValues[] = new Object[newCapacity];
-        byte newState[] = new byte[newCapacity];
+        int[] newTable = new int[newCapacity];
+        Object[] newValues = new Object[newCapacity];
+        byte[] newState = new byte[newCapacity];
         
         this.highWaterMark = chooseHighWaterMark(newCapacity, this.maxLoadFactor);
         

@@ -48,13 +48,13 @@ public class CaseInsensitiveClassMapBuilder<A,B> extends ClassMapBuilder<A,B> {
                 PropertyResolverStrategy propertyResolver,
                 DefaultFieldMapper[] defaults) {
             
-            return new CaseInsensitiveClassMapBuilder<A,B>(aType, bType, mapperFactory, propertyResolver, defaults);
+            return new CaseInsensitiveClassMapBuilder<>(aType, bType, mapperFactory, propertyResolver, defaults);
         }
     }
 
-    private Map<String, String> lowercasePropertiesForA;
-    private Map<String, String> lowercasePropertiesForB;
-    private boolean initialized;
+    private final Map<String, String> lowercasePropertiesForA;
+    private final Map<String, String> lowercasePropertiesForB;
+    private final boolean initialized;
     
     /**
      * @param aType
@@ -127,7 +127,7 @@ public class CaseInsensitiveClassMapBuilder<A,B> extends ClassMapBuilder<A,B> {
     }
 
     private Map<String, String> lowercasePropertiesFor(Type type) {
-        final LinkedHashMap<String, String> properties = new LinkedHashMap<String, String>();
+        final LinkedHashMap<String, String> properties = new LinkedHashMap<>();
         for (String property : this.getPropertyExpressions(type).keySet()) {
             properties.put(property.toLowerCase(), property);
         }
